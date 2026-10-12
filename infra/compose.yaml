@@ -1,0 +1,308 @@
+# infra/compose.yaml: PORTABLE base topology (Ledgerline Java-vs-.NET benchmark).
+#
+# This file is the portable base: NO cpuset / cpus / mem_limit anywhere. The
+# resource model (the core/memory ledger) lives in the overlays:
+#   compose.bench.yaml        cpuset_cpus + mem_limit (the headline topology)
+#   compose.observability.yaml prom/grafana/cadvisor stub (exploratory, NEVER recorded)
+#
+# Invoked from the REPO ROOT, e.g.
+#   docker compose -f infra/compose.yaml config
+#   docker compose -f infra/compose.yaml -f infra/compose.bench.yaml --profile dotnet up --wait
+#
+# Build contexts are relative to THIS file's directory (infra/), so ".." == repo
+# root; the dockerfile: paths are then repo-root-relative inside that context.
+#
+# Profiles: postgres + redis ALWAYS start (no profile). Exactly one SUT profile
+# is resident per MEASURED probe, so no two SUTs ever share the cpuset (the
+# runner recreates one fresh SUT per probe). load / seed are on demand.
+#
+# IMAGE DIGEST PINNING: postgres and redis here; base images in the four
+# Dockerfiles. Re-resolve deliberately, never implicitly.
+
+name: ledgerline
+
+# --------------------------------------------------------------------------
+# SHARED SUT ENVIRONMENT. Anchored so field-for-field parity between the SUTs
+# is STRUCTURAL rather than something a reviewer has to diff by eye. Anything
+# language-specific goes in the service's own `environment:` block, which
+# compose merges over this one.
+# --------------------------------------------------------------------------
+x-sut-env: &sut-env
+  # connection endpoints (in-network DNS names + container ports)
+  PG_HOST: ${PG_HOST:-postgres}
+  PG_PORT: ${PG_PORT:-5432}
+  PG_DB: ${PG_DB:-ledgerline}
+  PG_USER: ${PG_USER:-ledger}
+  PG_PASSWORD: ${PG_PASSWORD:-ledger}
+  REDIS_ADDR: ${REDIS_ADDR:-redis:6379}
+  # pools (spec/db-access.md, spec/cache.md)
+  DB_POOL_MAX: ${DB_POOL_MAX:-24}
+  DB_POOL_MIN: ${DB_POOL_MIN:-24}
+  DB_CONN_LIFETIME: ${DB_CONN_LIFETIME:-3600}
+  # spec/db-access.md rests the pools_warm gate's MEANING on this: "both
+  # services open all DB_POOL_MAX connections CONCURRENTLY at startup". Both
+  # SUTs default it true internally, but the knob is registry-scrubbed and
+  # manifest-recorded, so compose must DELIVER it -- otherwise an ambient
+  # export reaches neither SUT while the manifest records the intended value.
+  DB_POOL_WARM_ON_START: ${DB_POOL_WARM_ON_START:-true}
+  REDIS_POOL_MAX: ${REDIS_POOL_MAX:-16}
+  CACHE_TTL_SECONDS: ${CACHE_TTL_SECONDS:-300}
+  # logging / limits
+  LOG_QUEUE_LEN: ${LOG_QUEUE_LEN:-8192}
+  BODY_MAX_BYTES: ${BODY_MAX_BYTES:-65536}
+  # The listen port both services read (LedgerConfig / LedgerProperties).
+  # Set explicitly rather than relying on each service's internal default, so
+  # the published-port mapping below cannot drift from what the app binds.
+  PORT: ${PORT:-8080}
+  # Optional build identity echoed in /runtime-stats + the config line.
+  SERVICE_VERSION: ${SERVICE_VERSION:-dev}
+  # pdf-stub write target (per-SUT volume mounted below)
+  PDF_DIR: ${PDF_DIR:-/data/pdf}
+
+
+services:
+  # --------------------------------------------------------------------------
+  # PostgreSQL 18.4: shared DB tier for BOTH services. Config is the
+  # three-way-provenance spec/postgres/postgresql.conf (spec/postgres/README.md),
+  # mounted read-only and loaded via -c config_file. Role/db bootstrap from
+  # spec/postgres/initdb/*.sql.
+  # Schema itself is applied later by the seeder (single DDL source), NOT here.
+  # --------------------------------------------------------------------------
+  postgres:
+    image: postgres:18.4-bookworm@sha256:882236b897e39051d2368c5ccc6cda944904723506b2dfc97f2a8f5bc9afa382  # digest pinned 2026-08-13
+    # Docker's default 64 MB /dev/shm starves PG dynamic shared memory: parallel
+    # hash joins fail with SQLSTATE 53100 at full scale (first hit by the seeder's
+    # orphan_items invariant). Real DB hosts have GBs of shm; 1 GB matches the
+    # production-realistic posture of spec/postgres/postgresql.conf.
+    shm_size: 1gb
+    command:
+      - postgres
+      - -c
+      - config_file=/etc/postgresql/postgresql.conf
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ledgerline}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    volumes:
+      # PG 18 image convention: mount at /var/lib/postgresql (NOT .../data);
+      # the image places PGDATA in a versioned subdirectory beneath it.
+      - pgdata:/var/lib/postgresql
+      # spec/ lives one level above the build-context root (repo root), so these
+      # source paths are relative to THIS compose file (infra/): ../spec/...
+      - ../spec/postgres/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+      - ../spec/postgres/initdb:/docker-entrypoint-initdb.d:ro
+    ports:
+      - "54320:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-ledgerline}"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+    logging:
+      driver: json-file
+      options:
+        max-size: "512m"
+        max-file: "3"
+
+  # --------------------------------------------------------------------------
+  # Redis 8.10.0 (latest stable, trixie-based; Valkey documented drop-in: see README).
+  # Server config from spec/cache.md: maxmemory 1500mb, allkeys-lru,
+  # persistence fully off (save "" + appendonly no). No volume (ephemeral).
+  # --------------------------------------------------------------------------
+  redis:
+    image: redis:8.10.0-trixie@sha256:344e3945a0b431c8ff1eecd58c5573538126bd756f02fc7e218ddf1fc2546366  # digest pinned 2026-08-13
+    command:
+      - redis-server
+      - --maxmemory
+      - "1500mb"
+      - --maxmemory-policy
+      - allkeys-lru
+      - --save
+      - ""
+      - --appendonly
+      - "no"
+    ports:
+      - "63790:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: "512m"
+        max-file: "3"
+
+  # --------------------------------------------------------------------------
+  # Java SUT: profile "java". Spring Boot 4 + Hibernate 7 on Temurin 25
+  # (registry slot "java"; the headline pair's subject side). The base file
+  # carries only the app-level env; every JVM FLAG rides in JDK_JAVA_OPTIONS,
+  # which the bench overlay owns wholesale -- the `java` launcher PREPENDS it
+  # to the command line, and compose `environment` merge REPLACES a key set in
+  # both files, so splitting the flag string across the two files would let
+  # either half silently clobber the other.
+  # --------------------------------------------------------------------------
+  sut-java:
+    profiles: ["java"]
+    build:
+      context: ../services/java
+      dockerfile: Dockerfile
+    environment:
+      <<: *sut-env
+      # D4's Java half: PgJDBC's prepareThreshold, at its driver DEFAULT of 5.
+      # Declared so the registry scrub and the manifest can evidence the pin
+      # (registry.JAVA.knob_env); the .NET side's MAX_AUTO_PREPARE=20 below
+      # equalizes the BEHAVIOUR toward this default (spec/db-access.md).
+      JDBC_PREPARE_THRESHOLD: ${JDBC_PREPARE_THRESHOLD:-5}
+    volumes:
+      - pdfstub-java:/data/pdf
+    ports:
+      - "8081:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    # No container healthcheck, same convention as every SUT: the runner polls
+    # /readyz over the published port.
+    logging:
+      driver: json-file
+      options:
+        max-size: "512m"
+        max-file: "3"
+
+  # --------------------------------------------------------------------------
+  # .NET SUT: profile "dotnet". DATA_LAYER selects efcore (the headline data
+  # layer) vs ado (the P2 shakedown's second slot; dapper remains a service
+  # capability with no measured cell -- decision D5).
+  # --------------------------------------------------------------------------
+  sut-dotnet:
+    profiles: ["dotnet"]
+    build:
+      context: ../services/dotnet
+      dockerfile: Dockerfile
+    environment:
+      <<: *sut-env
+      # data layer + Npgsql prepare mode (spec/db-access.md)
+      DATA_LAYER: ${DATA_LAYER:-efcore}
+      # D4: 20, NOT Npgsql's default 0. PgJDBC auto-prepares by default at
+      # prepareThreshold=5, so Npgsql is set to 20 for behavioural parity
+      # (spec/db-access.md). The default-vs-default contrast is kept as a
+      # declared variant cell instead.
+      MAX_AUTO_PREPARE: ${MAX_AUTO_PREPARE:-20}
+      AUTO_PREPARE_MIN_USAGES: ${AUTO_PREPARE_MIN_USAGES:-5}
+      # .NET GC posture: DATAS on (the runtime default)
+      DOTNET_GCDynamicAdaptationMode: ${DOTNET_GCDynamicAdaptationMode:-1}
+    volumes:
+      - pdfstub-dotnet:/data/pdf
+    ports:
+      - "8082:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    # No container healthcheck: the runner polls /readyz over the published
+    # port, one convention for every SUT. (Historically forced by the chiseled
+    # image having no shell; kept after the 2026-08-27 move to the standard
+    # image so readiness stays runner-observed and identical across SUTs.)
+    logging:
+      driver: json-file
+      options:
+        max-size: "512m"
+        max-file: "3"
+
+  # --------------------------------------------------------------------------
+  # SECOND .NET SUT: profile "dotnet-b". Same image, different DATA_LAYER.
+  #
+  # This exists for the P2 harness shakedown, which runs .NET in BOTH slots
+  # (efcore against ado) to exercise per-language knee fitting, interleaving,
+  # RCB pairing and the whole analysis path against code that already works.
+  #
+  # It is a separate SERVICE rather than the same one re-parameterised because
+  # the two slots need disjoint pdf volumes: a shared one would let slot A's
+  # writes warm the page cache for slot B on 8% of the mix.
+  # --------------------------------------------------------------------------
+  sut-dotnet-b:
+    profiles: ["dotnet-b"]
+    build:
+      context: ../services/dotnet
+      dockerfile: Dockerfile
+    environment:
+      <<: *sut-env
+      DATA_LAYER: ${DATA_LAYER_B:-ado}
+      MAX_AUTO_PREPARE: ${MAX_AUTO_PREPARE:-20}
+      AUTO_PREPARE_MIN_USAGES: ${AUTO_PREPARE_MIN_USAGES:-5}
+      DOTNET_GCDynamicAdaptationMode: ${DOTNET_GCDynamicAdaptationMode:-1}
+    volumes:
+      - pdfstub-dotnet-b:/data/pdf
+    ports:
+      - "8083:8080"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    logging:
+      driver: json-file
+      options:
+        max-size: "512m"
+        max-file: "3"
+
+  # --------------------------------------------------------------------------
+  # vegeta load generator: profile "load". Custom image (infra/vegeta) with
+  # vegeta v12.13.0 only (oha was removed in the scope freeze). No-op
+  # holder command; the runner docker-execs attack invocations so all params
+  # are runner-controlled, never baked. Shares the bench-io volume (targets
+  # in /io, .bin out /io).
+  # --------------------------------------------------------------------------
+  vegeta:
+    profiles: ["load"]
+    build:
+      context: vegeta
+      dockerfile: Dockerfile
+    command: ["sleep", "infinity"]
+    volumes:
+      - bench-io:/io
+    # No ports: the runner reaches SUTs over the compose network; results land
+    # on the bench-io volume. depends_on omitted on purpose; the runner gates
+    # the SUT readiness itself before attacking.
+    logging:
+      driver: json-file
+      options:
+        max-size: "512m"
+        max-file: "3"
+
+  # --------------------------------------------------------------------------
+  # seed: profile "seed". One-shot Go seeder image. Applies spec/schema.sql,
+  # COPY-loads deterministic data (seed 42), restarts IDENTITY sequences, runs
+  # invariants (spec/db-access.md seeder contract). Exits non-zero on failure.
+  # --------------------------------------------------------------------------
+  seed:
+    profiles: ["seed"]
+    build:
+      context: ..
+      dockerfile: seed/Dockerfile
+    # The seeder is flag-driven (no env surface): the runner invokes
+    #   compose run --rm seed --dsn postgres://postgres:...@postgres:5432/ledgerline \
+    #     --scale smoke --seed 42 --schema /spec/schema.sql --grants --truncate
+    # (superuser DSN: DDL + COPY + sequence restart + grants).
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: "no"
+    logging:
+      driver: json-file
+      options:
+        max-size: "512m"
+        max-file: "3"
+
+volumes:
+  pgdata:
+  bench-io:
+  pdfstub-java:
+  pdfstub-dotnet:
+  pdfstub-dotnet-b:

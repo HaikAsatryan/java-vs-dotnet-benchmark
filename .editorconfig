@@ -1,0 +1,26 @@
+; C# uses three-space indentation to match `services/dotnet/`. `dotnet format` defaults
+; to four; CI runs `dotnet format --verify-no-changes`.
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+
+[*.cs]
+indent_size = 3
+
+[*.{py,go,java}]
+indent_size = 4
+
+[*.{yaml,yml,json}]
+indent_size = 2
+
+[Makefile]
+indent_style = tab
+
+[*.md]
+trim_trailing_whitespace = false

@@ -1,0 +1,227 @@
+{
+  "phase": "measured",
+  "slot": "java",
+  "source": "GET /runtime-stats polled at the window boundaries and at 1 Hz between them; counters are process-lifetime totals and the published figures are end-minus-start",
+  "n_polls": 123,
+  "n_poll_errors": 0,
+  "last_error": "",
+  "window_seconds": 120.07456236599683,
+  "start": {
+    "captured_utc": "2026-08-27T21:35:06.103615Z",
+    "monotonic_s": 58253.996432742,
+    "stats": {
+      "ts": "2026-08-27T21:35:06.103014Z",
+      "uptime_seconds": 218.329,
+      "build": {
+        "language": "java",
+        "runtime_version": "25.0.4+7-LTS",
+        "service_version": "dev",
+        "data_layer": "jpa",
+        "processor_count": 6
+      },
+      "config": {
+        "db_pool_max": 24,
+        "db_pool_min": 24,
+        "db_conn_lifetime_seconds": 3600,
+        "redis_pool_max": 16,
+        "cache_ttl_seconds": 300,
+        "log_queue_len": 8192,
+        "max_auto_prepare": null,
+        "gogc": null,
+        "gomemlimit": null,
+        "gc_dynamic_adaptation_mode": null,
+        "jdbc_prepare_threshold": 5,
+        "gc_engine": "G1",
+        "max_ram_percentage": "25.0",
+        "max_heap_bytes": 3221225472,
+        "virtual_threads_enabled": true,
+        "vt_scheduler_parallelism": 6
+      },
+      "gc": {
+        "collections": {
+          "gen0": null,
+          "gen1": null,
+          "gen2": null,
+          "G1 Young Generation": 199,
+          "G1 Concurrent GC": 92,
+          "G1 Old Generation": 0
+        },
+        "pause_total_seconds": 0.267,
+        "heap_in_use_bytes": 101044296,
+        "heap_committed_bytes": 138412032,
+        "heap_goal_bytes": null,
+        "allocated_total_bytes": 14666887752,
+        "collections_note": "gen0/gen1/gen2 are null on the JVM: G1's old-generation bean counts Full GC only and reads 0 where ZGC's major-cycle bean reads 3 on identical work, and neither matches the CLR's generations. The per-bean counters beside them are the real figures, keyed by GarbageCollectorMXBean name."
+      },
+      "db_pool": {
+        "max": 24,
+        "total": 24,
+        "idle": 24,
+        "in_use": 0,
+        "acquire_count": null,
+        "empty_acquire_count": null,
+        "acquire_wait_total_seconds": null
+      },
+      "redis_pool": {
+        "max": 16,
+        "total": 1,
+        "idle": 0,
+        "in_use": 0
+      },
+      "goroutines_or_threadpool": 1,
+      "endpoint_calls": {
+        "GET /invoices/{id}": 44592,
+        "GET /customers/{id}/invoices": 37311,
+        "POST /pricing/quote": 29696,
+        "POST /invoices": 22153,
+        "POST /invoices/{id}/pdf-stub": 11875,
+        "GET /healthz": 2934
+      }
+    },
+    "request_ms": 5.163244997675065
+  },
+  "end": {
+    "captured_utc": "2026-08-27T21:37:06.178177Z",
+    "monotonic_s": 58374.070995108,
+    "stats": {
+      "ts": "2026-08-27T21:37:06.177748Z",
+      "uptime_seconds": 338.404,
+      "build": {
+        "language": "java",
+        "runtime_version": "25.0.4+7-LTS",
+        "service_version": "dev",
+        "data_layer": "jpa",
+        "processor_count": 6
+      },
+      "config": {
+        "db_pool_max": 24,
+        "db_pool_min": 24,
+        "db_conn_lifetime_seconds": 3600,
+        "redis_pool_max": 16,
+        "cache_ttl_seconds": 300,
+        "log_queue_len": 8192,
+        "max_auto_prepare": null,
+        "gogc": null,
+        "gomemlimit": null,
+        "gc_dynamic_adaptation_mode": null,
+        "jdbc_prepare_threshold": 5,
+        "gc_engine": "G1",
+        "max_ram_percentage": "25.0",
+        "max_heap_bytes": 3221225472,
+        "virtual_threads_enabled": true,
+        "vt_scheduler_parallelism": 6
+      },
+      "gc": {
+        "collections": {
+          "gen0": null,
+          "gen1": null,
+          "gen2": null,
+          "G1 Young Generation": 393,
+          "G1 Concurrent GC": 286,
+          "G1 Old Generation": 0
+        },
+        "pause_total_seconds": 0.504,
+        "heap_in_use_bytes": 94458576,
+        "heap_committed_bytes": 138412032,
+        "heap_goal_bytes": null,
+        "allocated_total_bytes": 27993699368,
+        "collections_note": "gen0/gen1/gen2 are null on the JVM: G1's old-generation bean counts Full GC only and reads 0 where ZGC's major-cycle bean reads 3 on identical work, and neither matches the CLR's generations. The per-bean counters beside them are the real figures, keyed by GarbageCollectorMXBean name."
+      },
+      "db_pool": {
+        "max": 24,
+        "total": 24,
+        "idle": 24,
+        "in_use": 0,
+        "acquire_count": null,
+        "empty_acquire_count": null,
+        "acquire_wait_total_seconds": null
+      },
+      "redis_pool": {
+        "max": 16,
+        "total": 1,
+        "idle": 0,
+        "in_use": 0
+      },
+      "goroutines_or_threadpool": 1,
+      "endpoint_calls": {
+        "GET /invoices/{id}": 89377,
+        "GET /customers/{id}/invoices": 74793,
+        "POST /pricing/quote": 59146,
+        "POST /invoices": 44655,
+        "POST /invoices/{id}/pdf-stub": 23941,
+        "GET /healthz": 5929
+      }
+    },
+    "request_ms": 4.565700000966899
+  },
+  "deltas": {
+    "uptime_seconds": 120.07499999999999,
+    "gc_collections_gen0": null,
+    "gc_collections_gen1": null,
+    "gc_collections_gen2": null,
+    "gc_pause_total_seconds": 0.237,
+    "gc_allocated_total_bytes": 13326811616,
+    "db_pool_acquire_count": null,
+    "db_pool_empty_acquire_count": null,
+    "db_pool_acquire_wait_total_seconds": null,
+    "gc_collections_total": null,
+    "gc_collections_generations_summed": [],
+    "endpoint_calls": {
+      "GET /invoices/{id}": 44785,
+      "POST /invoices": 22502,
+      "GET /healthz": 2995,
+      "POST /pricing/quote": 29450,
+      "GET /customers/{id}/invoices": 37482,
+      "POST /invoices/{id}/pdf-stub": 12066
+    }
+  },
+  "levels": {
+    "gc_heap_in_use_bytes": {
+      "start": 101044296,
+      "end": 94458576,
+      "max": 125530704
+    },
+    "gc_heap_committed_bytes": {
+      "start": 138412032,
+      "end": 138412032,
+      "max": 138412032
+    },
+    "gc_heap_goal_bytes": {
+      "start": null,
+      "end": null,
+      "max": null
+    },
+    "db_pool_total": {
+      "start": 24,
+      "end": 24,
+      "max": 24
+    },
+    "db_pool_in_use": {
+      "start": 0,
+      "end": 0,
+      "max": 16
+    },
+    "db_pool_max": {
+      "start": 24,
+      "end": 24,
+      "max": 24
+    },
+    "redis_pool_total": {
+      "start": 1,
+      "end": 1,
+      "max": 1
+    },
+    "goroutines_or_threadpool": {
+      "start": 1,
+      "end": 1,
+      "max": 4
+    }
+  },
+  "poll_cost": {
+    "n_polls": 123,
+    "round_trip_ms_total": 124.332,
+    "round_trip_ms_max": 5.163,
+    "note": "client-side round trip, an UPPER BOUND on the SUT-side CPU these polls added to the cgroup delta. /runtime-stats is not a frozen endpoint_calls route and is not in vegeta's request count, so this cost has no denominator and per-request CPU is overstated by at most (round_trip_ms_total / window CPU-ms)."
+  },
+  "note": ""
+}

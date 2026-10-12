@@ -1,0 +1,6 @@
+{
+  "detail": "An unexpected error occurred.",
+  "status": 500,
+  "title": "Internal server error",
+  "type": "https://ledgerline.test/problems/internal"
+}

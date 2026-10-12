@@ -1,0 +1,53 @@
+{
+  "_note": "Required-key + JSON-type contract per spec/openapi.yaml, used for shape-only gates (every service body must satisfy its shape before the two services are deep-equal-compared). Types: int|str|array|object|number. created_at carries an additional RFC3339-micros-Z format check enforced by normalize.py. RuntimeStats is shape-only by spec (values runtime-specific, never compared).",
+
+  "Invoice": {
+    "required": {
+      "id": "int", "customer_id": "int", "status": "str", "currency": "str",
+      "total_minor": "int", "created_at": "str", "items": "array"
+    },
+    "items_element": "InvoiceItem"
+  },
+  "InvoiceItem": {
+    "required": {
+      "id": "int", "sku": "str", "description": "str", "qty": "int",
+      "unit_price_minor": "int", "line_total_minor": "int"
+    }
+  },
+  "InvoiceListPage": {
+    "required": {
+      "customer_id": "int", "page": "int", "page_size": "int", "items": "array"
+    },
+    "page_size_const": 20,
+    "items_element": "InvoiceSummary"
+  },
+  "InvoiceSummary": {
+    "required": {
+      "id": "int", "customer_id": "int", "status": "str", "currency": "str",
+      "total_minor": "int", "created_at": "str"
+    }
+  },
+  "PdfStub": {
+    "required": {
+      "invoice_id": "int", "bytes_written": "int", "path": "str"
+    },
+    "bytes_written_const": 32768
+  },
+  "RuntimeStats": {
+    "required": {
+      "ts": "str", "uptime_seconds": "number", "build": "object",
+      "config": "object", "gc": "object", "db_pool": "object",
+      "redis_pool": "object", "goroutines_or_threadpool": "int",
+      "endpoint_calls": "object"
+    },
+    "build_required": {
+      "language": "str", "runtime_version": "str", "service_version": "str",
+      "data_layer": "str", "processor_count": "int"
+    },
+    "endpoint_calls_keys": [
+      "GET /invoices/{id}", "GET /customers/{id}/invoices",
+      "POST /pricing/quote", "POST /invoices",
+      "POST /invoices/{id}/pdf-stub", "GET /healthz"
+    ]
+  }
+}

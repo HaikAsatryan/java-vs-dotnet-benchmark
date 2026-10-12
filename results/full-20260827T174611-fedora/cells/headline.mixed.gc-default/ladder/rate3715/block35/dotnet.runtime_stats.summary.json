@@ -1,0 +1,211 @@
+{
+  "phase": "measured",
+  "slot": "dotnet",
+  "source": "GET /runtime-stats polled at the window boundaries and at 1 Hz between them; counters are process-lifetime totals and the published figures are end-minus-start",
+  "n_polls": 123,
+  "n_poll_errors": 0,
+  "last_error": "",
+  "window_seconds": 120.07513070400455,
+  "start": {
+    "captured_utc": "2026-08-28T01:27:04.911910Z",
+    "monotonic_s": 72172.804729977,
+    "stats": {
+      "ts": "2026-08-28T01:27:04.911457Z",
+      "uptime_seconds": 338.2473077,
+      "build": {
+        "language": "dotnet",
+        "runtime_version": "10.0.11",
+        "service_version": "dev",
+        "data_layer": "efcore",
+        "processor_count": 6
+      },
+      "config": {
+        "db_pool_max": 24,
+        "db_pool_min": 24,
+        "db_conn_lifetime_seconds": 3600,
+        "redis_pool_max": 16,
+        "cache_ttl_seconds": 300,
+        "log_queue_len": 8192,
+        "max_auto_prepare": 20,
+        "gogc": null,
+        "gomemlimit": null,
+        "gc_dynamic_adaptation_mode": "1"
+      },
+      "gc": {
+        "collections": {
+          "gen0": 2993,
+          "gen1": 7,
+          "gen2": 3
+        },
+        "pause_total_seconds": 2.400318,
+        "heap_in_use_bytes": 1442560,
+        "heap_committed_bytes": 93646848,
+        "heap_goal_bytes": null,
+        "allocated_total_bytes": 22666094992
+      },
+      "db_pool": {
+        "max": 24,
+        "total": 24,
+        "idle": 24,
+        "in_use": 0,
+        "acquire_count": null,
+        "empty_acquire_count": null,
+        "acquire_wait_total_seconds": null
+      },
+      "redis_pool": {
+        "max": 16,
+        "total": 1,
+        "idle": 0,
+        "in_use": 0
+      },
+      "goroutines_or_threadpool": 8,
+      "endpoint_calls": {
+        "GET /invoices/{id}": 89005,
+        "GET /customers/{id}/invoices": 74279,
+        "POST /pricing/quote": 59274,
+        "POST /invoices": 44645,
+        "POST /invoices/{id}/pdf-stub": 23786,
+        "GET /healthz": 5861
+      }
+    },
+    "request_ms": 4.820482005015947
+  },
+  "end": {
+    "captured_utc": "2026-08-28T01:29:04.987044Z",
+    "monotonic_s": 72292.879860681,
+    "stats": {
+      "ts": "2026-08-28T01:29:04.986728Z",
+      "uptime_seconds": 458.3225793,
+      "build": {
+        "language": "dotnet",
+        "runtime_version": "10.0.11",
+        "service_version": "dev",
+        "data_layer": "efcore",
+        "processor_count": 6
+      },
+      "config": {
+        "db_pool_max": 24,
+        "db_pool_min": 24,
+        "db_conn_lifetime_seconds": 3600,
+        "redis_pool_max": 16,
+        "cache_ttl_seconds": 300,
+        "log_queue_len": 8192,
+        "max_auto_prepare": 20,
+        "gogc": null,
+        "gomemlimit": null,
+        "gc_dynamic_adaptation_mode": "1"
+      },
+      "gc": {
+        "collections": {
+          "gen0": 6009,
+          "gen1": 383,
+          "gen2": 16
+        },
+        "pause_total_seconds": 4.831892,
+        "heap_in_use_bytes": 1508480,
+        "heap_committed_bytes": 45703168,
+        "heap_goal_bytes": null,
+        "allocated_total_bytes": 56174574368
+      },
+      "db_pool": {
+        "max": 24,
+        "total": 24,
+        "idle": 24,
+        "in_use": 0,
+        "acquire_count": null,
+        "empty_acquire_count": null,
+        "acquire_wait_total_seconds": null
+      },
+      "redis_pool": {
+        "max": 16,
+        "total": 1,
+        "idle": 0,
+        "in_use": 0
+      },
+      "goroutines_or_threadpool": 8,
+      "endpoint_calls": {
+        "GET /invoices/{id}": 223035,
+        "GET /customers/{id}/invoices": 185946,
+        "POST /pricing/quote": 148249,
+        "POST /invoices": 111373,
+        "POST /invoices/{id}/pdf-stub": 59340,
+        "GET /healthz": 14706
+      }
+    },
+    "request_ms": 4.323608998674899
+  },
+  "deltas": {
+    "uptime_seconds": 120.07527159999995,
+    "gc_collections_gen0": 3016,
+    "gc_collections_gen1": 376,
+    "gc_collections_gen2": 13,
+    "gc_pause_total_seconds": 2.431574,
+    "gc_allocated_total_bytes": 33508479376,
+    "db_pool_acquire_count": null,
+    "db_pool_empty_acquire_count": null,
+    "db_pool_acquire_wait_total_seconds": null,
+    "gc_collections_total": 3405,
+    "gc_collections_generations_summed": [
+      "gen0",
+      "gen1",
+      "gen2"
+    ],
+    "endpoint_calls": {
+      "GET /invoices/{id}": 134030,
+      "POST /invoices": 66728,
+      "GET /healthz": 8845,
+      "POST /pricing/quote": 88975,
+      "GET /customers/{id}/invoices": 111667,
+      "POST /invoices/{id}/pdf-stub": 35554
+    }
+  },
+  "levels": {
+    "gc_heap_in_use_bytes": {
+      "start": 1442560,
+      "end": 1508480,
+      "max": 1508480
+    },
+    "gc_heap_committed_bytes": {
+      "start": 93646848,
+      "end": 45703168,
+      "max": 123039744
+    },
+    "gc_heap_goal_bytes": {
+      "start": null,
+      "end": null,
+      "max": null
+    },
+    "db_pool_total": {
+      "start": 24,
+      "end": 24,
+      "max": 24
+    },
+    "db_pool_in_use": {
+      "start": 0,
+      "end": 0,
+      "max": 18
+    },
+    "db_pool_max": {
+      "start": 24,
+      "end": 24,
+      "max": 24
+    },
+    "redis_pool_total": {
+      "start": 1,
+      "end": 1,
+      "max": 1
+    },
+    "goroutines_or_threadpool": {
+      "start": 8,
+      "end": 8,
+      "max": 8
+    }
+  },
+  "poll_cost": {
+    "n_polls": 123,
+    "round_trip_ms_total": 97.888,
+    "round_trip_ms_max": 4.82,
+    "note": "client-side round trip, an UPPER BOUND on the SUT-side CPU these polls added to the cgroup delta. /runtime-stats is not a frozen endpoint_calls route and is not in vegeta's request count, so this cost has no denominator and per-request CPU is overstated by at most (round_trip_ms_total / window CPU-ms)."
+  },
+  "note": ""
+}

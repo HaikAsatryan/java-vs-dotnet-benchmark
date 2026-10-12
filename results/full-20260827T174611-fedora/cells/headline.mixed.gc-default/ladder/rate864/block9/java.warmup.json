@@ -1,0 +1,142 @@
+{
+  "language": "java",
+  "cell_id": "headline.mixed.gc-default",
+  "stage": "ladder",
+  "block": 9,
+  "gate_set_id": "1a9ba4cd6509",
+  "warmup_rate": 618,
+  "thresholds": {
+    "hard_cap_seconds": 300,
+    "flatness_trailing_samples": 30,
+    "mann_kendall_alpha": 0.05,
+    "per_endpoint_min_calls": {
+      "get_invoice": 20000,
+      "list_invoices": 20000,
+      "pricing_quote": 15000,
+      "create_invoice": 10000,
+      "pdf_stub": 5000,
+      "healthz": 2000
+    },
+    "flatness_min_samples_per_second": {
+      "p99_flat": 0.0,
+      "p999_flat": 1000.0
+    }
+  },
+  "elapsed_seconds": 182.9043918640018,
+  "gates": [
+    {
+      "name": "per_endpoint_min_calls",
+      "passed": true,
+      "status": "measured",
+      "at_seconds": 182.90374750100455,
+      "enforce": true,
+      "detail": {
+        "shortfall": {}
+      },
+      "enforced": true
+    },
+    {
+      "name": "p99_flat",
+      "passed": true,
+      "status": "measured",
+      "at_seconds": 182.90374750100455,
+      "enforce": true,
+      "detail": {
+        "samples": 30,
+        "usable_samples": 30,
+        "min_samples": 3,
+        "flatness": {
+          "enforced_statistic": "mann_kendall_alpha_only",
+          "quantile": 0.99,
+          "status": "measured",
+          "reason": "",
+          "n": 30,
+          "samples_per_second": 618.0,
+          "samples_per_second_source": "measured_bucket_median",
+          "alpha": 0.05,
+          "min_samples": 3,
+          "min_samples_per_second": 0.0,
+          "median": 1.5841685,
+          "mk_z": 0.8920515501750789,
+          "mk_p_increasing": 0.1861826510990135,
+          "mk_tau": 0.11724137931034483,
+          "slope_per_second": 0.001068733333333342,
+          "s_rel_pct_per_min": 4.0478017332121246,
+          "lag1_autocorrelation": -0.027977872609558915,
+          "half_vs_half_median_ratio": 0.9958468375680725,
+          "observe_only": [
+            "s_rel_pct_per_min",
+            "lag1_autocorrelation",
+            "half_vs_half_median_ratio"
+          ]
+        }
+      },
+      "enforced": true
+    },
+    {
+      "name": "gc_steady",
+      "passed": true,
+      "status": "measured",
+      "at_seconds": 182.90374750100455,
+      "enforce": true,
+      "detail": {
+        "model": "regional-generational (G1) or concurrent-generational (ZGC)",
+        "requires": [
+          "heap_committed",
+          "collection_cadence"
+        ],
+        "cadence_basis": [
+          "collector_cycles"
+        ],
+        "samples": {
+          "heap_committed": 30,
+          "collection_cadence": 30
+        },
+        "usable_samples": {
+          "heap_committed": 30,
+          "collection_cadence": 30
+        },
+        "status_by_series": {
+          "heap_committed": "measured",
+          "collection_cadence": "measured"
+        },
+        "min_samples": 3,
+        "poller_snapshots": 183
+      },
+      "enforced": true
+    },
+    {
+      "name": "pools_warm",
+      "passed": true,
+      "status": "measured",
+      "at_seconds": 182.90374750100455,
+      "enforce": true,
+      "detail": {},
+      "enforced": true
+    }
+  ],
+  "segments": 6,
+  "segment_seconds": 30,
+  "exit_reason": "gates_passed",
+  "final_db_pool_total": 24,
+  "final_db_pool_max": 24,
+  "major_faults": 0,
+  "finished_utc": "2026-08-27T20:08:15.923888Z",
+  "target_draw_incs": [
+    "2e22390509e9fb414e8e44db647c33bb",
+    "51b7e64e73958730f9664944e990d617",
+    "b0fc1c9e7e17528a8dff1241101d188f",
+    "99a62ea5db25640a6e2969cd6a1641e9",
+    "df337ab2c0f8b75681294d0fbad1b209",
+    "c0636f3daa4a4018e59b44bedac8a835"
+  ],
+  "target_draw_seconds": 0.5503472589989542,
+  "gates_evaluated": [
+    "per_endpoint_min_calls",
+    "p99_flat",
+    "gc_steady",
+    "pools_warm"
+  ],
+  "gates_failed": [],
+  "under_warmed": false
+}

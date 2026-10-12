@@ -1,0 +1,5 @@
+# uv / venv / pytest artifacts (uv.lock IS committed; the venv is not)
+.venv/
+.pytest_cache/
+__pycache__/
+*.pyc

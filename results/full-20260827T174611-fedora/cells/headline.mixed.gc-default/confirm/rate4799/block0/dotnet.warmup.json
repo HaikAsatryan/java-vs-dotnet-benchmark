@@ -1,0 +1,143 @@
+{
+  "language": "dotnet",
+  "cell_id": "headline.mixed.gc-default",
+  "stage": "confirm",
+  "block": 0,
+  "gate_set_id": "1a9ba4cd6509",
+  "warmup_rate": 618,
+  "thresholds": {
+    "hard_cap_seconds": 300,
+    "flatness_trailing_samples": 30,
+    "mann_kendall_alpha": 0.05,
+    "per_endpoint_min_calls": {
+      "get_invoice": 20000,
+      "list_invoices": 20000,
+      "pricing_quote": 15000,
+      "create_invoice": 10000,
+      "pdf_stub": 5000,
+      "healthz": 2000
+    },
+    "flatness_min_samples_per_second": {
+      "p99_flat": 0.0,
+      "p999_flat": 1000.0
+    }
+  },
+  "elapsed_seconds": 213.36647676798748,
+  "gates": [
+    {
+      "name": "per_endpoint_min_calls",
+      "passed": true,
+      "status": "measured",
+      "at_seconds": 213.36581606398977,
+      "enforce": true,
+      "detail": {
+        "shortfall": {}
+      },
+      "enforced": true
+    },
+    {
+      "name": "p99_flat",
+      "passed": true,
+      "status": "measured",
+      "at_seconds": 213.36581606398977,
+      "enforce": true,
+      "detail": {
+        "samples": 30,
+        "usable_samples": 30,
+        "min_samples": 3,
+        "flatness": {
+          "enforced_statistic": "mann_kendall_alpha_only",
+          "quantile": 0.99,
+          "status": "measured",
+          "reason": "",
+          "n": 30,
+          "samples_per_second": 618.0,
+          "samples_per_second_source": "measured_bucket_median",
+          "alpha": 0.05,
+          "min_samples": 3,
+          "min_samples_per_second": 0.0,
+          "median": 1.6123720000000001,
+          "mk_z": 1.177508046231104,
+          "mk_p_increasing": 0.11949639395076095,
+          "mk_tau": 0.15402298850574714,
+          "slope_per_second": 0.0019373571428571434,
+          "s_rel_pct_per_min": 7.209343040652442,
+          "lag1_autocorrelation": -0.06960476463681493,
+          "half_vs_half_median_ratio": 1.004816802899162,
+          "observe_only": [
+            "s_rel_pct_per_min",
+            "lag1_autocorrelation",
+            "half_vs_half_median_ratio"
+          ]
+        }
+      },
+      "enforced": true
+    },
+    {
+      "name": "gc_steady",
+      "passed": true,
+      "status": "measured",
+      "at_seconds": 213.36581606398977,
+      "enforce": true,
+      "detail": {
+        "model": "generational (gen0/1/2) with DATAS heap-count adaptation",
+        "requires": [
+          "heap_committed",
+          "collection_cadence"
+        ],
+        "cadence_basis": [
+          "generations"
+        ],
+        "samples": {
+          "heap_committed": 30,
+          "collection_cadence": 30
+        },
+        "usable_samples": {
+          "heap_committed": 30,
+          "collection_cadence": 30
+        },
+        "status_by_series": {
+          "heap_committed": "measured",
+          "collection_cadence": "measured"
+        },
+        "min_samples": 3,
+        "poller_snapshots": 214
+      },
+      "enforced": true
+    },
+    {
+      "name": "pools_warm",
+      "passed": true,
+      "status": "measured",
+      "at_seconds": 213.36581606398977,
+      "enforce": true,
+      "detail": {},
+      "enforced": true
+    }
+  ],
+  "segments": 7,
+  "segment_seconds": 30,
+  "exit_reason": "gates_passed",
+  "final_db_pool_total": 24,
+  "final_db_pool_max": 24,
+  "major_faults": 0,
+  "finished_utc": "2026-08-28T03:00:12.324026Z",
+  "target_draw_incs": [
+    "c13cf2e3e5a350a31b69945cb29d501b",
+    "f3c5b707e59aead2d93c68d1c34fad83",
+    "6af63b6d0db676b6f06e754fc4e565c5",
+    "8ffd8ac3ddfa9bb06b9e54c04a8d8531",
+    "c20cf1b19fd95203a36ac81c8f92383d",
+    "cb6a458d3771ec1f1da48e0cf158d59d",
+    "42ac1985a42b697163c63a27a22a5201"
+  ],
+  "target_draw_seconds": 0.6384405490098288,
+  "gates_evaluated": [
+    "per_endpoint_min_calls",
+    "p99_flat",
+    "gc_steady",
+    "pools_warm"
+  ],
+  "gates_failed": [],
+  "under_warmed": false
+}

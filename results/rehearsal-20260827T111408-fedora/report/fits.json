@@ -1,0 +1,789 @@
+{
+  "run_id": "rehearsal-20260827T111408-fedora",
+  "slo_ms": 20.0,
+  "config_hash": "0f844cdb0284d765338a8f68dce770f6c9903a7cb6f4438b5cd669151d8f4bd8",
+  "slot_set": "headline",
+  "slots": [
+    "java",
+    "dotnet"
+  ],
+  "tier": {
+    "scale": "rehearsal",
+    "resolved": true,
+    "functional_only": false,
+    "measurement_grade": true,
+    "deviations_from_full": {
+      "ladder_step_factor": {
+        "this_tier": 2.0,
+        "full": 1.2
+      },
+      "ladder_max_rungs": {
+        "this_tier": 6,
+        "full": 40
+      },
+      "ladder_reps_per_rung": {
+        "this_tier": 2,
+        "full": 3
+      },
+      "confirm_blocks": {
+        "this_tier": 2,
+        "full": 10
+      },
+      "soak_s": {
+        "this_tier": 300,
+        "full": 600
+      }
+    }
+  },
+  "ratio_direction": {
+    "subject": "java",
+    "reference": "dotnet",
+    "label": "Java : .NET"
+  },
+  "cells": [
+    {
+      "cell_id": "headline.mixed.gc-default",
+      "knee_by_slot": {
+        "java": {
+          "scope": "java",
+          "crossed": true,
+          "knee_rps": 6438.9710667594845,
+          "ci_low_rps": 5605.2775508168,
+          "ci_high_rps": 8000.0,
+          "ci_valid": false,
+          "min_reps_in_bracket": 2,
+          "n_boot": 2000,
+          "n_crossed": 1488,
+          "ci_high_censored": true,
+          "n_rungs": 5,
+          "n_rungs_dropped": 0,
+          "warm_only": true,
+          "max_rung_rps": 8000.0,
+          "max_rung_p99_ms": 30.0365805,
+          "warning": "CI invalid: crossing bracket has 2 rep(s) < min_reps=10 (ladder stage). Treat knee as point-estimate-only; the >=10-rep confirm stage produces the inferential CI.",
+          "note": null,
+          "ledger_crossed": true,
+          "crossed_agrees_with_ledger": true
+        },
+        "dotnet": {
+          "scope": "dotnet",
+          "crossed": true,
+          "knee_rps": 6874.445950446374,
+          "ci_low_rps": 6629.668723160119,
+          "ci_high_rps": 7163.879102909852,
+          "ci_valid": false,
+          "min_reps_in_bracket": 2,
+          "n_boot": 2000,
+          "n_crossed": 2000,
+          "ci_high_censored": false,
+          "n_rungs": 5,
+          "n_rungs_dropped": 0,
+          "warm_only": true,
+          "max_rung_rps": 8000.0,
+          "max_rung_p99_ms": 25.9783045,
+          "warning": "CI invalid: crossing bracket has 2 rep(s) < min_reps=10 (ladder stage). Treat knee as point-estimate-only; the >=10-rep confirm stage produces the inferential CI.",
+          "note": null,
+          "ledger_crossed": true,
+          "crossed_agrees_with_ledger": true
+        }
+      },
+      "warmup_census": [
+        {
+          "cell_id": "headline.mixed.gc-default",
+          "slot": "java",
+          "stages": [
+            "ladder",
+            "confirm",
+            "soak"
+          ],
+          "n_probes": 13,
+          "n_flagged": 0,
+          "flagged_fraction": 0.0,
+          "by_gate": {},
+          "by_reason": {},
+          "by_stage": {
+            "ladder": {
+              "n_probes": 10,
+              "n_flagged": 0
+            },
+            "confirm": {
+              "n_probes": 2,
+              "n_flagged": 0
+            },
+            "soak": {
+              "n_probes": 1,
+              "n_flagged": 0
+            }
+          },
+          "abort_threshold": 0.25,
+          "exceeds_abort_threshold": false
+        },
+        {
+          "cell_id": "headline.mixed.gc-default",
+          "slot": "dotnet",
+          "stages": [
+            "ladder",
+            "confirm",
+            "soak"
+          ],
+          "n_probes": 15,
+          "n_flagged": 1,
+          "flagged_fraction": 0.06666666666666667,
+          "by_gate": {
+            "gc_steady": 1
+          },
+          "by_reason": {
+            "gates_failed": 1
+          },
+          "by_stage": {
+            "ladder": {
+              "n_probes": 10,
+              "n_flagged": 1
+            },
+            "confirm": {
+              "n_probes": 4,
+              "n_flagged": 0
+            },
+            "soak": {
+              "n_probes": 1,
+              "n_flagged": 0
+            }
+          },
+          "abort_threshold": 0.25,
+          "exceeds_abort_threshold": false
+        }
+      ],
+      "stationarity": {
+        "n_series": 22,
+        "any_fail": false,
+        "per_probe_fails": {
+          "ladder/r500.b0.java": false,
+          "ladder/r500.b0.dotnet": false,
+          "ladder/r500.b1.java": false,
+          "ladder/r500.b1.dotnet": false,
+          "ladder/r1000.b2.java": false,
+          "ladder/r1000.b2.dotnet": false,
+          "ladder/r1000.b3.dotnet": false,
+          "ladder/r1000.b3.java": false,
+          "ladder/r2000.b4.dotnet": false,
+          "ladder/r2000.b4.java": false,
+          "ladder/r2000.b5.dotnet": false,
+          "ladder/r2000.b5.java": false,
+          "ladder/r4000.b6.dotnet": false,
+          "ladder/r4000.b6.java": false,
+          "ladder/r4000.b7.dotnet": false,
+          "ladder/r4000.b7.java": false,
+          "ladder/r8000.b8.java": false,
+          "ladder/r8000.b8.dotnet": false,
+          "ladder/r8000.b9.java": false,
+          "ladder/r8000.b9.dotnet": false,
+          "soak/r6874.b0.dotnet": false,
+          "soak/r6439.b0.java": false
+        },
+        "min_slope_ms_per_min": 1.0,
+        "available": true
+      },
+      "paired_primary": {
+        "metric": "cpu_ms_per_req",
+        "rates_by_slot": {
+          "java": 6439,
+          "dotnet": 6874
+        },
+        "verdict_scope": "own_knee",
+        "n_blocks": 2,
+        "min_blocks": 10,
+        "under_min_blocks": true,
+        "n_blocks_solo": 0,
+        "n_blocks_incomplete": 0,
+        "mean_by_slot": {
+          "java": 0.23222560834881975,
+          "dotnet": 0.4376209863265993
+        },
+        "direction": {
+          "subject": "java",
+          "reference": "dotnet",
+          "label": "Java : .NET"
+        },
+        "mean_diff_pct": -46.93453568163473,
+        "ci_pct": 95.0,
+        "ci_low_pct": -54.84841894592938,
+        "ci_high_pct": -39.02065241734007,
+        "margin_pct": 5.0,
+        "verdict": "subject_better",
+        "effect_size": -53.28484870965646
+      },
+      "paired_verdicts": [
+        {
+          "metric": "cpu_ms_per_req",
+          "rates_by_slot": {
+            "java": 6439,
+            "dotnet": 6874
+          },
+          "verdict_scope": "own_knee",
+          "n_blocks": 2,
+          "min_blocks": 10,
+          "under_min_blocks": true,
+          "n_blocks_solo": 0,
+          "n_blocks_incomplete": 0,
+          "mean_by_slot": {
+            "java": 0.23222560834881975,
+            "dotnet": 0.4376209863265993
+          },
+          "direction": {
+            "subject": "java",
+            "reference": "dotnet",
+            "label": "Java : .NET"
+          },
+          "mean_diff_pct": -46.93453568163473,
+          "ci_pct": 95.0,
+          "ci_low_pct": -54.84841894592938,
+          "ci_high_pct": -39.02065241734007,
+          "margin_pct": 5.0,
+          "verdict": "subject_better",
+          "effect_size": -53.28484870965646
+        },
+        {
+          "metric": "anon_mb_per_req",
+          "rates_by_slot": {
+            "java": 6439,
+            "dotnet": 6874
+          },
+          "verdict_scope": "own_knee",
+          "n_blocks": 2,
+          "min_blocks": 10,
+          "under_min_blocks": true,
+          "n_blocks_solo": 0,
+          "n_blocks_incomplete": 0,
+          "mean_by_slot": {
+            "java": 0.0008217487176484209,
+            "dotnet": 0.00019878126464866245
+          },
+          "direction": {
+            "subject": "java",
+            "reference": "dotnet",
+            "label": "Java : .NET"
+          },
+          "mean_diff_pct": 313.3934448504628,
+          "ci_pct": 95.0,
+          "ci_low_pct": 204.55740931674262,
+          "ci_high_pct": 422.229480384183,
+          "margin_pct": 5.0,
+          "verdict": "reference_better",
+          "effect_size": 25.871287698676845
+        },
+        {
+          "metric": "usd_per_million",
+          "rates_by_slot": {
+            "java": 6439,
+            "dotnet": 6874
+          },
+          "verdict_scope": "own_knee",
+          "n_blocks": 2,
+          "min_blocks": 10,
+          "under_min_blocks": true,
+          "n_blocks_solo": 0,
+          "n_blocks_incomplete": 0,
+          "mean_by_slot": {
+            "java": 0.0025802845372091083,
+            "dotnet": 0.004862455403628882
+          },
+          "direction": {
+            "subject": "java",
+            "reference": "dotnet",
+            "label": "Java : .NET"
+          },
+          "mean_diff_pct": -46.93453568163472,
+          "ci_pct": 95.0,
+          "ci_low_pct": -54.84841894592927,
+          "ci_high_pct": -39.02065241734017,
+          "margin_pct": 5.0,
+          "verdict": "subject_better",
+          "effect_size": -53.284848709657204
+        },
+        {
+          "metric": "cpu_ms_per_req",
+          "rates_by_slot": {
+            "java": 6439,
+            "dotnet": 6439
+          },
+          "verdict_scope": "common_rate",
+          "n_blocks": 2,
+          "min_blocks": 10,
+          "under_min_blocks": true,
+          "n_blocks_solo": 0,
+          "n_blocks_incomplete": 0,
+          "mean_by_slot": {
+            "java": 0.23222560834881975,
+            "dotnet": 0.44621425711373164
+          },
+          "direction": {
+            "subject": "java",
+            "reference": "dotnet",
+            "label": "Java : .NET"
+          },
+          "mean_diff_pct": -47.9564795058465,
+          "ci_pct": 95.0,
+          "ci_low_pct": -48.58384235161351,
+          "ci_high_pct": -47.32911666007949,
+          "margin_pct": 5.0,
+          "verdict": "subject_better",
+          "effect_size": -686.7985191048609
+        },
+        {
+          "metric": "anon_mb_per_req",
+          "rates_by_slot": {
+            "java": 6439,
+            "dotnet": 6439
+          },
+          "verdict_scope": "common_rate",
+          "n_blocks": 2,
+          "min_blocks": 10,
+          "under_min_blocks": true,
+          "n_blocks_solo": 0,
+          "n_blocks_incomplete": 0,
+          "mean_by_slot": {
+            "java": 0.0008217487176484209,
+            "dotnet": 0.00021872301000867947
+          },
+          "direction": {
+            "subject": "java",
+            "reference": "dotnet",
+            "label": "Java : .NET"
+          },
+          "mean_diff_pct": 275.7029119230811,
+          "ci_pct": 95.0,
+          "ci_low_pct": 228.37006148467628,
+          "ci_high_pct": 323.03576236148587,
+          "margin_pct": 5.0,
+          "verdict": "reference_better",
+          "effect_size": 52.333471604728615
+        },
+        {
+          "metric": "usd_per_million",
+          "rates_by_slot": {
+            "java": 6439,
+            "dotnet": 6439
+          },
+          "verdict_scope": "common_rate",
+          "n_blocks": 2,
+          "min_blocks": 10,
+          "under_min_blocks": true,
+          "n_blocks_solo": 0,
+          "n_blocks_incomplete": 0,
+          "mean_by_slot": {
+            "java": 0.0025802845372091083,
+            "dotnet": 0.004957936190152574
+          },
+          "direction": {
+            "subject": "java",
+            "reference": "dotnet",
+            "label": "Java : .NET"
+          },
+          "mean_diff_pct": -47.9564795058465,
+          "ci_pct": 95.0,
+          "ci_low_pct": -48.58384235161341,
+          "ci_high_pct": -47.32911666007959,
+          "margin_pct": 5.0,
+          "verdict": "subject_better",
+          "effect_size": -686.7985191049639
+        }
+      ],
+      "slo_consistency": [
+        {
+          "cell_id": "headline.mixed.gc-default",
+          "slot": "java",
+          "stage": "soak",
+          "rate": 6439,
+          "knee_rps": 6438.9710667594845,
+          "mean_p99_ms": 16.873991,
+          "slo_ms": 20.0
+        }
+      ],
+      "slo_at_rates": [
+        {
+          "stage": "confirm",
+          "rate": 6439,
+          "slot": "dotnet",
+          "n_warm": 2,
+          "n_total": 2,
+          "n_used": 2,
+          "n_windows_met_slo": 1,
+          "mean_p99_ms": 21.254058,
+          "max_p99_ms": 26.678017,
+          "meets_slo": false,
+          "meets_slo_rule": "mean of per-window p99 <= slo_ms",
+          "posture_only": false,
+          "dropped_by": {}
+        },
+        {
+          "stage": "confirm",
+          "rate": 6439,
+          "slot": "java",
+          "n_warm": 2,
+          "n_total": 2,
+          "n_used": 2,
+          "n_windows_met_slo": 0,
+          "mean_p99_ms": 28.030345,
+          "max_p99_ms": 28.302181,
+          "meets_slo": false,
+          "meets_slo_rule": "mean of per-window p99 <= slo_ms",
+          "posture_only": false,
+          "dropped_by": {}
+        },
+        {
+          "stage": "confirm",
+          "rate": 6874,
+          "slot": "dotnet",
+          "n_warm": 2,
+          "n_total": 2,
+          "n_used": 2,
+          "n_windows_met_slo": 1,
+          "mean_p99_ms": 18.6403375,
+          "max_p99_ms": 27.048574,
+          "meets_slo": true,
+          "meets_slo_rule": "mean of per-window p99 <= slo_ms",
+          "posture_only": false,
+          "dropped_by": {}
+        },
+        {
+          "stage": "soak",
+          "rate": 6439,
+          "slot": "java",
+          "n_warm": 1,
+          "n_total": 1,
+          "n_used": 1,
+          "n_windows_met_slo": 1,
+          "mean_p99_ms": 16.873991,
+          "max_p99_ms": 16.873991,
+          "meets_slo": true,
+          "meets_slo_rule": "mean of per-window p99 <= slo_ms",
+          "posture_only": false,
+          "dropped_by": {}
+        },
+        {
+          "stage": "soak",
+          "rate": 6874,
+          "slot": "dotnet",
+          "n_warm": 1,
+          "n_total": 1,
+          "n_used": 1,
+          "n_windows_met_slo": 0,
+          "mean_p99_ms": 31.72554,
+          "max_p99_ms": 31.72554,
+          "meets_slo": false,
+          "meets_slo_rule": "mean of per-window p99 <= slo_ms",
+          "posture_only": false,
+          "dropped_by": {}
+        }
+      ],
+      "cpu_vs_rate": {
+        "available": true,
+        "rungs": [
+          {
+            "rate": 500,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.26625375833333337,
+                "db_cpu_ms_per_req": 0.11536124999999998,
+                "n_warm": 2,
+                "n_total": 2,
+                "n_db": 2,
+                "requests": 120000,
+                "db_requests": 120000,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.669427275,
+                "db_cpu_ms_per_req": 0.13354565833333332,
+                "n_warm": 2,
+                "n_total": 2,
+                "n_db": 2,
+                "requests": 120000,
+                "db_requests": 120000,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.39773365722711757
+          },
+          {
+            "rate": 1000,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.2697361208333333,
+                "db_cpu_ms_per_req": 0.10182658750000001,
+                "n_warm": 2,
+                "n_total": 2,
+                "n_db": 2,
+                "requests": 240000,
+                "db_requests": 240000,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.6402853625,
+                "db_cpu_ms_per_req": 0.12334172083333333,
+                "n_warm": 2,
+                "n_total": 2,
+                "n_db": 2,
+                "requests": 240000,
+                "db_requests": 240000,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.4212748512321853
+          },
+          {
+            "rate": 2000,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.27458499583333335,
+                "db_cpu_ms_per_req": 0.10105474166666666,
+                "n_warm": 2,
+                "n_total": 2,
+                "n_db": 2,
+                "requests": 480000,
+                "db_requests": 480000,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.5687239125,
+                "db_cpu_ms_per_req": 0.1170694125,
+                "n_warm": 1,
+                "n_total": 2,
+                "n_db": 1,
+                "requests": 240000,
+                "db_requests": 240000,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.4828089514054561
+          },
+          {
+            "rate": 4000,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.23421930416666667,
+                "db_cpu_ms_per_req": 0.09960881041666667,
+                "n_warm": 2,
+                "n_total": 2,
+                "n_db": 2,
+                "requests": 960000,
+                "db_requests": 960000,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.5079583144964885,
+                "db_cpu_ms_per_req": 0.11515218156704493,
+                "n_warm": 2,
+                "n_total": 2,
+                "n_db": 2,
+                "requests": 959998,
+                "db_requests": 959998,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.4610994593106238
+          },
+          {
+            "rate": 6439,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.22994401702580472,
+                "db_cpu_ms_per_req": 0.09805001100062552,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 3477075,
+                "db_requests": 3477075,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.4462142541451479,
+                "db_cpu_ms_per_req": 0.11083415266724087,
+                "n_warm": 2,
+                "n_total": 2,
+                "n_db": 2,
+                "requests": 1545361,
+                "db_requests": 1545361,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.5153219891335135
+          },
+          {
+            "rate": 6874,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": null,
+                "db_cpu_ms_per_req": null,
+                "n_warm": 0,
+                "n_total": 0,
+                "n_db": 0,
+                "requests": 0,
+                "db_requests": 0,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.43497246046036986,
+                "db_cpu_ms_per_req": 0.11074117557998822,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 3711972,
+                "db_requests": 3711972,
+                "posture_only": false
+              }
+            },
+            "ratio": null
+          },
+          {
+            "rate": 8000,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.23244179831624648,
+                "db_cpu_ms_per_req": 0.09882544494884364,
+                "n_warm": 2,
+                "n_total": 2,
+                "n_db": 2,
+                "requests": 1919996,
+                "db_requests": 1919996,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.41403176616237825,
+                "db_cpu_ms_per_req": 0.10815347247576691,
+                "n_warm": 2,
+                "n_total": 2,
+                "n_db": 2,
+                "requests": 1919999,
+                "db_requests": 1919999,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.5614105421686065
+          }
+        ],
+        "cv_pct_by_slot": {
+          "java": 8.367737802802656,
+          "dotnet": 19.478611631605553
+        },
+        "ratio_min": 0.39773365722711757,
+        "ratio_max": 0.5614105421686065,
+        "ratio_direction": {
+          "subject": "java",
+          "reference": "dotnet",
+          "label": "Java : .NET"
+        },
+        "n_posture_only_values": 0,
+        "note": "per rung: total cgroup CPU delta / total serviced requests over that rung's probe windows (cells/<cell>/ladder/rate*/block*/cpu_mem_<slot>.summary.json)."
+      },
+      "resource": {
+        "available": true,
+        "operating_rates": [
+          6439,
+          6874
+        ],
+        "scope": "own_knee",
+        "scope_degraded_slots": {},
+        "operating_rate_by_slot": {
+          "java": 6439,
+          "dotnet": 6874
+        },
+        "operating_point_basis": "declared",
+        "by_slot": {
+          "java": {
+            "n_windows": 3,
+            "n_flagged_excluded": 0,
+            "posture_only": false,
+            "flagged_gate_counts": {},
+            "waived_gate_counts": {},
+            "non_enforcing_gate_counts": {},
+            "n_warmup_attack_failed": 0,
+            "stage_windows": {
+              "confirm": 2,
+              "soak": 1
+            },
+            "requests": 3477075,
+            "non_2xx": 0,
+            "create_share_pct": 14.988431368319636,
+            "cpu_ms_total": 799532.593,
+            "cpu_ms_per_req": 0.22994401702580472,
+            "cpu_ms_per_req_aggregation": "request-weighted: cpu_ms_total / requests",
+            "cpu_ms_per_req_unweighted": 0.23085665343909187,
+            "db_cpu_ms_total": 340927.24199999997,
+            "db_cpu_ms_per_req": 0.09805001100062552,
+            "db_cpu_ms_per_req_aggregation": "request-weighted: db_cpu_ms_total / the requests serviced by the windows that carried a postgres delta (the SAME rule as the app row, over that subset)",
+            "db_n_windows": 3,
+            "total_cpu_ms_per_req": 0.32799402802643024,
+            "db_share_pct": 29.89384032099649,
+            "anon_p99_mb": 645.9733333333334,
+            "mem_peak_mb": 2239.85664,
+            "throttle_clean": true,
+            "oom_clean": true,
+            "swap_current_clean": true,
+            "swap_peak_clean": true,
+            "n_windows_without_counters": 0,
+            "n_windows_without_oom_counter": 0,
+            "n_windows_without_swap_current": 0,
+            "n_windows_without_swap_peak": 0,
+            "n_swap_current_windows_with_db": 3,
+            "n_swap_peak_windows_with_db": 3,
+            "db_pool_total": 24,
+            "db_pool_max": 24
+          },
+          "dotnet": {
+            "n_windows": 3,
+            "n_flagged_excluded": 0,
+            "posture_only": false,
+            "flagged_gate_counts": {},
+            "waived_gate_counts": {},
+            "non_enforcing_gate_counts": {},
+            "n_warmup_attack_failed": 0,
+            "stage_windows": {
+              "confirm": 2,
+              "soak": 1
+            },
+            "requests": 3711972,
+            "non_2xx": 0,
+            "create_share_pct": 14.99846981604387,
+            "cpu_ms_total": 1614605.594,
+            "cpu_ms_per_req": 0.43497246046036986,
+            "cpu_ms_per_req_aggregation": "request-weighted: cpu_ms_total / requests",
+            "cpu_ms_per_req_unweighted": 0.43603187052279363,
+            "db_cpu_ms_total": 411068.14300000004,
+            "db_cpu_ms_per_req": 0.11074117557998822,
+            "db_cpu_ms_per_req_aggregation": "request-weighted: db_cpu_ms_total / the requests serviced by the windows that carried a postgres delta (the SAME rule as the app row, over that subset)",
+            "db_n_windows": 3,
+            "total_cpu_ms_per_req": 0.545713636040358,
+            "db_share_pct": 20.2929097362336,
+            "anon_p99_mb": 169.19893333333334,
+            "mem_peak_mb": 1938.5862826666666,
+            "throttle_clean": true,
+            "oom_clean": true,
+            "swap_current_clean": true,
+            "swap_peak_clean": true,
+            "n_windows_without_counters": 0,
+            "n_windows_without_oom_counter": 0,
+            "n_windows_without_swap_current": 0,
+            "n_windows_without_swap_peak": 0,
+            "n_swap_current_windows_with_db": 3,
+            "n_swap_peak_windows_with_db": 3,
+            "db_pool_total": 24,
+            "db_pool_max": 24
+          }
+        },
+        "ratio_direction": {
+          "subject": "java",
+          "reference": "dotnet",
+          "label": "Java : .NET"
+        },
+        "cpu_ratio": 0.5286404035382714,
+        "cpu_ratio_unweighted": 0.5294490358291913,
+        "db_cpu_ratio": 0.8853979604885458,
+        "total_cpu_ratio": 0.6010368925473828,
+        "anon_ratio": 3.8178333669558198,
+        "peak_ratio": 1.155407247037214,
+        "note": ""
+      }
+    }
+  ]
+}

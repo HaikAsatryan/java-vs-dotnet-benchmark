@@ -1,0 +1,325 @@
+# spec/openapi.yaml — Ledgerline wire contract. Both services implement this exactly.
+# Conventions (frozen, divergence-critical):
+#   - Money: integer int64 minor units everywhere; bare JSON integers; no floats in money paths.
+#   - Timestamps: RFC3339 UTC, EXACTLY 6 fractional digits, 'Z' suffix, always padded.
+#     Neither runtime reaches this by default and both pad explicitly. The JVM must not
+#     use Instant.toString(): its precision is VARIABLE and it trims trailing zeros, so an
+#     all-zero fraction (common in seeded data) emits no fraction at all -- only an
+#     explicit 'SSSSSS' pattern pads and truncates unconditionally. .NET must not emit
+#     7 digits ('O' format) and uses 'ffffff'. Same wire, two mechanisms.
+#   - ids: int64, JSON integers (not strings).
+#   - request_id: accept inbound X-Request-Id else server-generated UUIDv4; echoed in the
+#     X-Request-Id response header; NEVER in a response body; excluded from equivalence.
+#   - Unknown JSON fields in requests: IGNORED both sides (no strict rejection).
+#   - Validation ordering: 400 (syntactic/range) BEFORE 404 (existence).
+#   - JSON property names: snake_case exactly as written here, both sides.
+openapi: 3.1.0
+info:
+  title: Ledgerline
+  version: "1.0"
+  description: Small invoicing/billing API used as a Java vs .NET benchmark workload.
+
+# Frozen error strings (both services emit these EXACT values).
+x-error-strings:
+  validation: { status: 400, type: "https://ledgerline.test/problems/validation", title: "Validation failed", detail: "The request payload failed validation." }
+  not_found:  { status: 404, type: "https://ledgerline.test/problems/not-found",  title: "Not found",          detail: "The requested resource does not exist." }
+  internal:   { status: 500, type: "https://ledgerline.test/problems/internal",   title: "Internal server error", detail: "An unexpected error occurred." }
+  # POST bodies must declare a JSON content type. Frozen gate grammar, identical code both
+  # sides: take the Content-Type value up to the first ';', trim ASCII spaces/tabs, lowercase;
+  # accept iff it equals "application/json" or (ends with "+json" and contains "/"). Parameters
+  # are never validated. The gate applies only when the request HAS a body (Content-Length != 0);
+  # a body-less POST falls through to body binding -> the frozen 400 {"body":["is required"]}.
+  # Anything else — including a missing header on a request with a body — is this 415, both
+  # sides, logged as one request_error(415, validation). Not counted in endpoint_calls.
+  unsupported_media_type: { status: 415, type: "https://ledgerline.test/problems/unsupported-media-type", title: "Unsupported media type", detail: "The request content type must be application/json." }
+  # Body larger than BODY_MAX_BYTES: enforced BELOW the handler on both stacks --
+  # Kestrel's MaxRequestBodySize on .NET, BodySizeLimitFilter on Java.
+  # Access line only, NO request_error (spec/logging.md).
+  payload_too_large: { status: 413, type: "https://ledgerline.test/problems/payload-too-large", title: "Payload too large", detail: "The request body exceeds the configured limit." }
+
+# Frozen per-rule validation messages used in Problem.errors values (both sides emit identical strings).
+x-validation-messages:
+  required: "is required"
+  sku_pattern: "must match ^[A-Z]{2}-[0-9]{4}$"
+  currency_pattern: "must match ^[A-Z]{3}$"
+  status_enum: "must be one of: draft, open"
+  qty_range: "must be between 1 and 1000"
+  unit_price_range: "must be between 0 and 100000000"
+  items_create_count: "must contain between 3 and 8 items"
+  items_quote_count: "must contain exactly 50 items"
+  description_length: "must be between 1 and 200 characters"
+  page_min: "must be >= 1"
+  page_max: "must be <= 100000"
+  id_positive: "must be a positive integer"
+
+paths:
+  /healthz:
+    get:
+      summary: Liveness; static body; the HTTP-floor endpoint. No DB/Redis touch. Excluded from access log.
+      responses:
+        "200":
+          content: { application/json: { schema: { $ref: "#/components/schemas/Health" } } }
+
+  /readyz:
+    get:
+      summary: Readiness; DB pool + Redis PING. Used by compose healthcheck + warmup gate. Not in the workload mix.
+      responses:
+        "200": { content: { application/json: { schema: { $ref: "#/components/schemas/Health" } } } }
+        "503": { content: { application/json: { schema: { $ref: "#/components/schemas/Health" } } } }
+
+  /runtime-stats:
+    get:
+      summary: Runtime/GC/pool counters for the bench runner (spec/runtime-stats.md). Excluded from mix and access log.
+      responses:
+        "200": { content: { application/json: { schema: { $ref: "#/components/schemas/RuntimeStats" } } } }
+
+  /invoices/{id}:
+    get:
+      summary: Invoice by id. Redis cache-aside (spec/cache.md) -> PG fallback. ~1 KB.
+      parameters: [ { $ref: "#/components/parameters/InvoiceId" } ]
+      responses:
+        "200": { content: { application/json: { schema: { $ref: "#/components/schemas/Invoice" } } } }
+        "400": { $ref: "#/components/responses/Validation" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /invoices:
+    post:
+      summary: >
+        Create invoice: validate, one tx (insert header + 3-8 items + balance update,
+        single batched round-trip per spec/db-access.md), Redis DEL, return full invoice.
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/CreateInvoiceRequest" } } }
+      responses:
+        "201":
+          description: Location header = /invoices/{id}
+          content: { application/json: { schema: { $ref: "#/components/schemas/Invoice" } } }
+        "400": { $ref: "#/components/responses/Validation" }
+        "404": { $ref: "#/components/responses/NotFound" }   # customer_id parses but does not exist
+
+  /invoices/{id}/pdf-stub:
+    post:
+      summary: >
+        Render a deterministic 32768-byte document in memory, buffered write to the volume at
+        /data/pdf/{id}.pdfstub, no fsync. 404 if invoice does not exist.
+      description: >
+        FROZEN rendering algorithm (bytes_written is equivalence-compared): build ASCII lines
+        "%PDFSTUB invoice=<id> line=<k>\n" for k = 1, 2, ... appended until the buffer reaches
+        or exceeds 32768 bytes, then truncate to exactly 32768. Write the 32768 bytes with one
+        buffered write; no fsync/flush-to-disk call. bytes_written is therefore always 32768.
+      parameters: [ { $ref: "#/components/parameters/InvoiceId" } ]
+      responses:
+        "200": { content: { application/json: { schema: { $ref: "#/components/schemas/PdfStub" } } } }
+        "400": { $ref: "#/components/responses/Validation" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /customers/{id}/invoices:
+    get:
+      summary: >
+        Page of 20 invoice summaries, ORDER BY id DESC, OFFSET (page-1)*20 (spec/db-access.md Q3).
+        Page beyond data -> 200 with empty items. Customer existence probed only when the page
+        is empty (then 404 if absent). ~6 KB.
+      parameters:
+        - { name: id, in: path, required: true, schema: { type: integer, format: int64, minimum: 1 } }
+        - { name: page, in: query, required: false, schema: { type: integer, format: int32, minimum: 1, maximum: 100000, default: 1 } }
+      responses:
+        "200": { content: { application/json: { schema: { $ref: "#/components/schemas/InvoiceListPage" } } } }
+        "400": { $ref: "#/components/responses/Validation" }
+        "404": { $ref: "#/components/responses/NotFound" }
+
+  /pricing/quote:
+    post:
+      summary: Tiered pricing over int64 minor units (spec/pricing-algorithm.md). No DB, no Redis.
+      requestBody:
+        required: true
+        content: { application/json: { schema: { $ref: "#/components/schemas/QuoteRequest" } } }
+      responses:
+        "200": { content: { application/json: { schema: { $ref: "#/components/schemas/QuoteResponse" } } } }
+        "400": { $ref: "#/components/responses/Validation" }
+
+components:
+  parameters:
+    InvoiceId:
+      name: id
+      in: path
+      required: true
+      schema: { type: integer, format: int64, minimum: 1 }
+      description: Non-positive or non-integer -> 400; well-formed but absent -> 404.
+
+  responses:
+    Validation:
+      description: RFC 7807, x-error-strings.validation, plus errors map (field -> [frozen messages]).
+      content: { application/problem+json: { schema: { $ref: "#/components/schemas/Problem" } } }
+    NotFound:
+      description: RFC 7807, x-error-strings.not_found. No errors map.
+      content: { application/problem+json: { schema: { $ref: "#/components/schemas/Problem" } } }
+
+  schemas:
+    Problem:
+      type: object
+      required: [type, title, status, detail]
+      properties:
+        type: { type: string }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        errors:
+          type: object
+          description: >
+            Present only for 400 validation; values are arrays of frozen messages
+            (x-validation-messages). KEY FORMAT (frozen 2026-06-06, defined
+            by .NET 10 AddValidation()'s native emission): PascalCase CLR-style
+            names for body fields ("CustomerId", "Currency", "Status", "Items")
+            with zero-based item paths ("Items[0].Sku", "Items[2].Qty",
+            "Items[0].Description", "Items[0].UnitPriceMinor"); manually
+            validated path/query params use lowercase single tokens ("id",
+            "page"); an undeserializable/missing body uses key "body" with
+            message "is required".
+            ONE SIDE EMITS THIS NATIVELY AND ONE DERIVES IT. Jakarta Bean
+            Validation builds its property path from the JAVA component names,
+            so a violation on the first item's sku arrives as "items[0].sku".
+            The Java service therefore transforms the Jakarta path into the
+            frozen key by capitalising each dot-separated segment
+            (io.ledgerline.problem.FieldPath, applied in the exception handler
+            rather than inside SpringValidatorAdapter, where renaming would
+            double-report a field that also failed binding). Pinned by
+            FieldPathTest on the transform and by ErrorContractTest on the
+            emitted key set. The lowercase path/query tokens are not Jakarta's
+            at all on either side: both services validate those by hand.
+          additionalProperties: { type: array, items: { type: string } }
+
+    Health:
+      type: object
+      required: [status]
+      properties:
+        status: { type: string, description: "\"ok\" when healthy" }
+
+    InvoiceItem:
+      type: object
+      required: [id, sku, description, qty, unit_price_minor, line_total_minor]
+      properties:
+        id: { type: integer, format: int64 }
+        sku: { type: string }
+        description: { type: string }
+        qty: { type: integer, format: int32 }
+        unit_price_minor: { type: integer, format: int64 }
+        line_total_minor: { type: integer, format: int64 }
+
+    Invoice:
+      type: object
+      required: [id, customer_id, status, currency, total_minor, created_at, items]
+      properties:
+        id: { type: integer, format: int64 }
+        customer_id: { type: integer, format: int64 }
+        status: { type: string, enum: [draft, open, paid, void] }
+        currency: { type: string }
+        total_minor: { type: integer, format: int64 }
+        created_at: { type: string, description: RFC3339 UTC, 6 fractional digits, Z }
+        items:
+          type: array
+          description: ORDER BY id ASC; order-significant in equivalence.
+          items: { $ref: "#/components/schemas/InvoiceItem" }
+
+    InvoiceSummary:
+      type: object
+      required: [id, customer_id, status, currency, total_minor, created_at]
+      properties:
+        id: { type: integer, format: int64 }
+        customer_id: { type: integer, format: int64 }
+        status: { type: string }
+        currency: { type: string }
+        total_minor: { type: integer, format: int64 }
+        created_at: { type: string }
+
+    InvoiceListPage:
+      type: object
+      required: [customer_id, page, page_size, items]
+      properties:
+        customer_id: { type: integer, format: int64 }
+        page: { type: integer, format: int32 }
+        page_size: { type: integer, format: int32, description: constant 20 }
+        items:
+          type: array
+          description: ORDER BY id DESC; order-significant. No total-count field (would force a second COUNT query).
+          items: { $ref: "#/components/schemas/InvoiceSummary" }
+
+    CreateInvoiceItem:
+      type: object
+      required: [sku, description, qty, unit_price_minor]
+      properties:
+        sku: { type: string, pattern: "^[A-Z]{2}-[0-9]{4}$" }
+        description: { type: string, minLength: 1, maxLength: 200 }
+        qty: { type: integer, format: int32, minimum: 1, maximum: 1000 }
+        unit_price_minor: { type: integer, format: int64, minimum: 0, maximum: 100000000 }
+
+    CreateInvoiceRequest:
+      type: object
+      required: [customer_id, currency, status, items]
+      description: >
+        Server computes line_total_minor = qty*unit_price_minor and total_minor = sum;
+        the client never sends totals.
+      properties:
+        customer_id: { type: integer, format: int64, minimum: 1 }
+        currency: { type: string, pattern: "^[A-Z]{3}$" }
+        status: { type: string, enum: [draft, open] }
+        items:
+          type: array
+          minItems: 3
+          maxItems: 8
+          items: { $ref: "#/components/schemas/CreateInvoiceItem" }
+
+    PdfStub:
+      type: object
+      required: [invoice_id, bytes_written, path]
+      properties:
+        invoice_id: { type: integer, format: int64 }
+        bytes_written: { type: integer, format: int32, description: deterministic ~32768 }
+        path: { type: string, description: "/data/pdf/{invoice_id}.pdfstub" }
+
+    QuoteItem:
+      type: object
+      required: [sku, qty, unit_price_minor]
+      properties:
+        sku: { type: string, pattern: "^[A-Z]{2}-[0-9]{4}$" }
+        qty: { type: integer, format: int32, minimum: 1, maximum: 1000 }
+        unit_price_minor: { type: integer, format: int64, minimum: 0, maximum: 100000000 }
+
+    QuoteRequest:
+      type: object
+      required: [currency, items]
+      properties:
+        currency: { type: string, pattern: "^[A-Z]{3}$" }
+        items:
+          type: array
+          minItems: 50
+          maxItems: 50
+          items: { $ref: "#/components/schemas/QuoteItem" }
+
+    QuoteLine:
+      type: object
+      required: [sku, category, qty, unit_price_minor, category_surcharge_minor, qty_discount_minor, line_total_minor]
+      properties:
+        sku: { type: string }
+        category: { type: string, description: the 2-letter prefix, echoed }
+        qty: { type: integer, format: int32 }
+        unit_price_minor: { type: integer, format: int64 }
+        category_surcharge_minor: { type: integer, format: int64 }
+        qty_discount_minor: { type: integer, format: int64 }
+        line_total_minor: { type: integer, format: int64 }
+
+    QuoteResponse:
+      type: object
+      required: [currency, lines, subtotal_minor, order_discount_minor, total_minor]
+      properties:
+        currency: { type: string }
+        lines:
+          type: array
+          description: input order; order-significant.
+          items: { $ref: "#/components/schemas/QuoteLine" }
+        subtotal_minor: { type: integer, format: int64 }
+        order_discount_minor: { type: integer, format: int64 }
+        total_minor: { type: integer, format: int64 }
+
+    RuntimeStats:
+      type: object
+      description: Exact shape in spec/runtime-stats.md (identical both sides; values runtime-specific).

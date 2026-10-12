@@ -1,0 +1,1063 @@
+{
+  "run_id": "full-20260827T174611-fedora",
+  "slo_ms": 20.0,
+  "config_hash": "e9fef8d3abbba8db034084d6295d3169a302a10a14ee1a13bc0d94b431fa3166",
+  "slot_set": "headline",
+  "slots": [
+    "java",
+    "dotnet"
+  ],
+  "tier": {
+    "scale": "full",
+    "resolved": true,
+    "functional_only": false,
+    "measurement_grade": true,
+    "deviations_from_full": {}
+  },
+  "ratio_direction": {
+    "subject": "java",
+    "reference": "dotnet",
+    "label": "Java : .NET"
+  },
+  "cells": [
+    {
+      "cell_id": "headline.mixed.gc-default",
+      "knee_by_slot": {
+        "java": {
+          "scope": "java",
+          "crossed": true,
+          "knee_rps": 4798.579826210629,
+          "ci_low_rps": 4331.435326643025,
+          "ci_high_rps": 5350.0,
+          "ci_valid": false,
+          "min_reps_in_bracket": 3,
+          "n_boot": 2000,
+          "n_crossed": 1947,
+          "ci_high_censored": true,
+          "n_rungs": 14,
+          "n_rungs_dropped": 0,
+          "warm_only": true,
+          "max_rung_rps": 5350.0,
+          "max_rung_p99_ms": 22.553467333333334,
+          "warning": "CI invalid: crossing bracket has 3 rep(s) < min_reps=10. Treat the knee as point-estimate-only: NO inferential knee CI exists at the spec's rep counts (the confirm stage runs at ONE rate per slot, which cannot re-fit a crossing), and the cost verdicts condition on this point estimate. The published cost-vs-rate curve is the mitigation: it shows how the headline would move if the true knee sits elsewhere in the bracket.",
+          "note": null,
+          "ledger_crossed": true,
+          "crossed_agrees_with_ledger": true
+        },
+        "dotnet": {
+          "scope": "dotnet",
+          "crossed": true,
+          "knee_rps": 4833.4086273622115,
+          "ci_low_rps": 4673.738734396863,
+          "ci_high_rps": 5000.028383626087,
+          "ci_valid": false,
+          "min_reps_in_bracket": 2,
+          "n_boot": 2000,
+          "n_crossed": 2000,
+          "ci_high_censored": false,
+          "n_rungs": 14,
+          "n_rungs_dropped": 0,
+          "warm_only": true,
+          "max_rung_rps": 5350.0,
+          "max_rung_p99_ms": 26.438847666666664,
+          "warning": "CI invalid: crossing bracket has 2 rep(s) < min_reps=10. Treat the knee as point-estimate-only: NO inferential knee CI exists at the spec's rep counts (the confirm stage runs at ONE rate per slot, which cannot re-fit a crossing), and the cost verdicts condition on this point estimate. The published cost-vs-rate curve is the mitigation: it shows how the headline would move if the true knee sits elsewhere in the bracket.",
+          "note": null,
+          "ledger_crossed": true,
+          "crossed_agrees_with_ledger": true
+        }
+      },
+      "warmup_census": [
+        {
+          "cell_id": "headline.mixed.gc-default",
+          "slot": "java",
+          "stages": [
+            "ladder",
+            "confirm",
+            "soak"
+          ],
+          "n_probes": 53,
+          "n_flagged": 0,
+          "flagged_fraction": 0.0,
+          "by_gate": {},
+          "by_reason": {},
+          "by_stage": {
+            "ladder": {
+              "n_probes": 42,
+              "n_flagged": 0
+            },
+            "confirm": {
+              "n_probes": 10,
+              "n_flagged": 0
+            },
+            "soak": {
+              "n_probes": 1,
+              "n_flagged": 0
+            }
+          },
+          "abort_threshold": 0.25,
+          "exceeds_abort_threshold": false
+        },
+        {
+          "cell_id": "headline.mixed.gc-default",
+          "slot": "dotnet",
+          "stages": [
+            "ladder",
+            "confirm",
+            "soak"
+          ],
+          "n_probes": 63,
+          "n_flagged": 4,
+          "flagged_fraction": 0.06349206349206349,
+          "by_gate": {
+            "gc_steady": 2,
+            "p99_flat": 3
+          },
+          "by_reason": {
+            "gates_failed": 4
+          },
+          "by_stage": {
+            "ladder": {
+              "n_probes": 42,
+              "n_flagged": 2
+            },
+            "confirm": {
+              "n_probes": 20,
+              "n_flagged": 2
+            },
+            "soak": {
+              "n_probes": 1,
+              "n_flagged": 0
+            }
+          },
+          "abort_threshold": 0.25,
+          "exceeds_abort_threshold": false
+        }
+      ],
+      "stationarity": {
+        "n_series": 86,
+        "any_fail": false,
+        "per_probe_fails": {
+          "ladder/r500.b0.java": false,
+          "ladder/r500.b0.dotnet": false,
+          "ladder/r500.b1.java": false,
+          "ladder/r500.b1.dotnet": false,
+          "ladder/r500.b2.dotnet": false,
+          "ladder/r500.b2.java": false,
+          "ladder/r600.b3.java": false,
+          "ladder/r600.b3.dotnet": false,
+          "ladder/r600.b4.dotnet": false,
+          "ladder/r600.b4.java": false,
+          "ladder/r600.b5.dotnet": false,
+          "ladder/r600.b5.java": false,
+          "ladder/r720.b6.dotnet": false,
+          "ladder/r720.b6.java": false,
+          "ladder/r720.b7.dotnet": false,
+          "ladder/r720.b7.java": false,
+          "ladder/r720.b8.dotnet": false,
+          "ladder/r720.b8.java": false,
+          "ladder/r864.b9.dotnet": false,
+          "ladder/r864.b9.java": false,
+          "ladder/r864.b10.dotnet": false,
+          "ladder/r864.b10.java": false,
+          "ladder/r864.b11.java": false,
+          "ladder/r864.b11.dotnet": false,
+          "ladder/r1037.b12.java": false,
+          "ladder/r1037.b12.dotnet": false,
+          "ladder/r1037.b13.java": false,
+          "ladder/r1037.b13.dotnet": false,
+          "ladder/r1037.b14.java": false,
+          "ladder/r1037.b14.dotnet": false,
+          "ladder/r1244.b15.dotnet": false,
+          "ladder/r1244.b15.java": false,
+          "ladder/r1244.b16.dotnet": false,
+          "ladder/r1244.b16.java": false,
+          "ladder/r1244.b17.java": false,
+          "ladder/r1244.b17.dotnet": false,
+          "ladder/r1493.b18.java": false,
+          "ladder/r1493.b18.dotnet": false,
+          "ladder/r1493.b19.java": false,
+          "ladder/r1493.b19.dotnet": false,
+          "ladder/r1493.b20.java": false,
+          "ladder/r1493.b20.dotnet": false,
+          "ladder/r1792.b21.dotnet": false,
+          "ladder/r1792.b21.java": false,
+          "ladder/r1792.b22.dotnet": false,
+          "ladder/r1792.b22.java": false,
+          "ladder/r1792.b23.java": false,
+          "ladder/r1792.b23.dotnet": false,
+          "ladder/r2150.b24.java": false,
+          "ladder/r2150.b24.dotnet": false,
+          "ladder/r2150.b25.dotnet": false,
+          "ladder/r2150.b25.java": false,
+          "ladder/r2150.b26.dotnet": false,
+          "ladder/r2150.b26.java": false,
+          "ladder/r2580.b27.java": false,
+          "ladder/r2580.b27.dotnet": false,
+          "ladder/r2580.b28.dotnet": false,
+          "ladder/r2580.b28.java": false,
+          "ladder/r2580.b29.java": false,
+          "ladder/r2580.b29.dotnet": false,
+          "ladder/r3096.b30.java": false,
+          "ladder/r3096.b30.dotnet": false,
+          "ladder/r3096.b31.dotnet": false,
+          "ladder/r3096.b31.java": false,
+          "ladder/r3096.b32.java": false,
+          "ladder/r3096.b32.dotnet": false,
+          "ladder/r3715.b33.java": false,
+          "ladder/r3715.b33.dotnet": false,
+          "ladder/r3715.b34.java": false,
+          "ladder/r3715.b34.dotnet": false,
+          "ladder/r3715.b35.dotnet": false,
+          "ladder/r3715.b35.java": false,
+          "ladder/r4458.b36.java": false,
+          "ladder/r4458.b36.dotnet": false,
+          "ladder/r4458.b37.java": false,
+          "ladder/r4458.b37.dotnet": false,
+          "ladder/r4458.b38.dotnet": false,
+          "ladder/r4458.b38.java": false,
+          "ladder/r5350.b39.java": false,
+          "ladder/r5350.b39.dotnet": false,
+          "ladder/r5350.b40.dotnet": false,
+          "ladder/r5350.b40.java": false,
+          "ladder/r5350.b41.java": false,
+          "ladder/r5350.b41.dotnet": false,
+          "soak/r4833.b0.dotnet": false,
+          "soak/r4799.b0.java": false
+        },
+        "min_slope_ms_per_min": 1.0,
+        "available": true
+      },
+      "paired_primary": {
+        "metric": "cpu_ms_per_req",
+        "rates_by_slot": {
+          "java": 4799,
+          "dotnet": 4833
+        },
+        "verdict_scope": "own_knee",
+        "n_blocks": 9,
+        "min_blocks": 10,
+        "under_min_blocks": true,
+        "n_blocks_solo": 0,
+        "n_blocks_incomplete": 1,
+        "mean_by_slot": {
+          "java": 0.2344422759790064,
+          "dotnet": 0.48395562932531977
+        },
+        "direction": {
+          "subject": "java",
+          "reference": "dotnet",
+          "label": "Java : .NET"
+        },
+        "mean_diff_pct": -51.55707222460844,
+        "ci_pct": 95.0,
+        "ci_low_pct": -51.82660162548778,
+        "ci_high_pct": -51.2875428237291,
+        "margin_pct": 5.0,
+        "verdict": "subject_better",
+        "effect_size": -147.0350684824314
+      },
+      "paired_verdicts": [
+        {
+          "metric": "cpu_ms_per_req",
+          "rates_by_slot": {
+            "java": 4799,
+            "dotnet": 4833
+          },
+          "verdict_scope": "own_knee",
+          "n_blocks": 9,
+          "min_blocks": 10,
+          "under_min_blocks": true,
+          "n_blocks_solo": 0,
+          "n_blocks_incomplete": 1,
+          "mean_by_slot": {
+            "java": 0.2344422759790064,
+            "dotnet": 0.48395562932531977
+          },
+          "direction": {
+            "subject": "java",
+            "reference": "dotnet",
+            "label": "Java : .NET"
+          },
+          "mean_diff_pct": -51.55707222460844,
+          "ci_pct": 95.0,
+          "ci_low_pct": -51.82660162548778,
+          "ci_high_pct": -51.2875428237291,
+          "margin_pct": 5.0,
+          "verdict": "subject_better",
+          "effect_size": -147.0350684824314
+        },
+        {
+          "metric": "anon_mb_per_req",
+          "rates_by_slot": {
+            "java": 4799,
+            "dotnet": 4833
+          },
+          "verdict_scope": "own_knee",
+          "n_blocks": 9,
+          "min_blocks": 10,
+          "under_min_blocks": true,
+          "n_blocks_solo": 0,
+          "n_blocks_incomplete": 1,
+          "mean_by_slot": {
+            "java": 0.0011406237934046047,
+            "dotnet": 0.00030317637695388006
+          },
+          "direction": {
+            "subject": "java",
+            "reference": "dotnet",
+            "label": "Java : .NET"
+          },
+          "mean_diff_pct": 276.2244950826493,
+          "ci_pct": 95.0,
+          "ci_low_pct": 272.6461942967784,
+          "ci_high_pct": 279.80279586852015,
+          "margin_pct": 5.0,
+          "verdict": "reference_better",
+          "effect_size": 59.33680686471864
+        },
+        {
+          "metric": "usd_per_million",
+          "rates_by_slot": {
+            "java": 4799,
+            "dotnet": 4833
+          },
+          "verdict_scope": "own_knee",
+          "n_blocks": 9,
+          "min_blocks": 10,
+          "under_min_blocks": true,
+          "n_blocks_solo": 0,
+          "n_blocks_incomplete": 1,
+          "mean_by_slot": {
+            "java": 0.0026049141775445154,
+            "dotnet": 0.005377284770281331
+          },
+          "direction": {
+            "subject": "java",
+            "reference": "dotnet",
+            "label": "Java : .NET"
+          },
+          "mean_diff_pct": -51.557072224608426,
+          "ci_pct": 95.0,
+          "ci_low_pct": -51.826601625487775,
+          "ci_high_pct": -51.28754282372909,
+          "margin_pct": 5.0,
+          "verdict": "subject_better",
+          "effect_size": -147.03506848243188
+        },
+        {
+          "metric": "cpu_ms_per_req",
+          "rates_by_slot": {
+            "java": 4799,
+            "dotnet": 4799
+          },
+          "verdict_scope": "common_rate",
+          "n_blocks": 9,
+          "min_blocks": 10,
+          "under_min_blocks": true,
+          "n_blocks_solo": 0,
+          "n_blocks_incomplete": 1,
+          "mean_by_slot": {
+            "java": 0.23483808391651215,
+            "dotnet": 0.4836606068932713
+          },
+          "direction": {
+            "subject": "java",
+            "reference": "dotnet",
+            "label": "Java : .NET"
+          },
+          "mean_diff_pct": -51.4456872092679,
+          "ci_pct": 95.0,
+          "ci_low_pct": -51.861959751850556,
+          "ci_high_pct": -51.02941466668526,
+          "margin_pct": 5.0,
+          "verdict": "subject_better",
+          "effect_size": -94.9970314375942
+        },
+        {
+          "metric": "anon_mb_per_req",
+          "rates_by_slot": {
+            "java": 4799,
+            "dotnet": 4799
+          },
+          "verdict_scope": "common_rate",
+          "n_blocks": 9,
+          "min_blocks": 10,
+          "under_min_blocks": true,
+          "n_blocks_solo": 0,
+          "n_blocks_incomplete": 1,
+          "mean_by_slot": {
+            "java": 0.0011403298072523492,
+            "dotnet": 0.0002988039247827387
+          },
+          "direction": {
+            "subject": "java",
+            "reference": "dotnet",
+            "label": "Java : .NET"
+          },
+          "mean_diff_pct": 281.6314688910082,
+          "ci_pct": 95.0,
+          "ci_low_pct": 275.4186517676467,
+          "ci_high_pct": 287.8442860143698,
+          "margin_pct": 5.0,
+          "verdict": "reference_better",
+          "effect_size": 34.84427536231182
+        },
+        {
+          "metric": "usd_per_million",
+          "rates_by_slot": {
+            "java": 4799,
+            "dotnet": 4799
+          },
+          "verdict_scope": "common_rate",
+          "n_blocks": 9,
+          "min_blocks": 10,
+          "under_min_blocks": true,
+          "n_blocks_solo": 0,
+          "n_blocks_incomplete": 1,
+          "mean_by_slot": {
+            "java": 0.002609312043516801,
+            "dotnet": 0.00537400674325857
+          },
+          "direction": {
+            "subject": "java",
+            "reference": "dotnet",
+            "label": "Java : .NET"
+          },
+          "mean_diff_pct": -51.445687209267895,
+          "ci_pct": 95.0,
+          "ci_low_pct": -51.86195975185054,
+          "ci_high_pct": -51.02941466668524,
+          "margin_pct": 5.0,
+          "verdict": "subject_better",
+          "effect_size": -94.99703143759368
+        }
+      ],
+      "slo_consistency": [],
+      "slo_at_rates": [
+        {
+          "stage": "confirm",
+          "rate": 4799,
+          "slot": "dotnet",
+          "n_warm": 9,
+          "n_total": 10,
+          "n_used": 9,
+          "n_windows_met_slo": 0,
+          "mean_p99_ms": 26.617281444444444,
+          "max_p99_ms": 32.807532,
+          "meets_slo": false,
+          "meets_slo_rule": "mean of per-window p99 <= slo_ms",
+          "posture_only": false,
+          "dropped_by": {
+            "under-warmed": 1
+          }
+        },
+        {
+          "stage": "confirm",
+          "rate": 4799,
+          "slot": "java",
+          "n_warm": 10,
+          "n_total": 10,
+          "n_used": 10,
+          "n_windows_met_slo": 3,
+          "mean_p99_ms": 27.5399239,
+          "max_p99_ms": 39.220841,
+          "meets_slo": false,
+          "meets_slo_rule": "mean of per-window p99 <= slo_ms",
+          "posture_only": false,
+          "dropped_by": {}
+        },
+        {
+          "stage": "confirm",
+          "rate": 4833,
+          "slot": "dotnet",
+          "n_warm": 9,
+          "n_total": 10,
+          "n_used": 9,
+          "n_windows_met_slo": 0,
+          "mean_p99_ms": 28.863469555555557,
+          "max_p99_ms": 33.66231,
+          "meets_slo": false,
+          "meets_slo_rule": "mean of per-window p99 <= slo_ms",
+          "posture_only": false,
+          "dropped_by": {
+            "under-warmed": 1
+          }
+        },
+        {
+          "stage": "soak",
+          "rate": 4799,
+          "slot": "java",
+          "n_warm": 1,
+          "n_total": 1,
+          "n_used": 1,
+          "n_windows_met_slo": 0,
+          "mean_p99_ms": 21.075714,
+          "max_p99_ms": 21.075714,
+          "meets_slo": false,
+          "meets_slo_rule": "mean of per-window p99 <= slo_ms",
+          "posture_only": false,
+          "dropped_by": {}
+        },
+        {
+          "stage": "soak",
+          "rate": 4833,
+          "slot": "dotnet",
+          "n_warm": 1,
+          "n_total": 1,
+          "n_used": 1,
+          "n_windows_met_slo": 0,
+          "mean_p99_ms": 45.015236,
+          "max_p99_ms": 45.015236,
+          "meets_slo": false,
+          "meets_slo_rule": "mean of per-window p99 <= slo_ms",
+          "posture_only": false,
+          "dropped_by": {}
+        }
+      ],
+      "cpu_vs_rate": {
+        "available": true,
+        "rungs": [
+          {
+            "rate": 500,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.22422374444444443,
+                "db_cpu_ms_per_req": 0.11256800000000002,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 180000,
+                "db_requests": 180000,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.6681610111111111,
+                "db_cpu_ms_per_req": 0.1329231111111111,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 180000,
+                "db_requests": 180000,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.33558340088053623
+          },
+          {
+            "rate": 600,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.2399396851851852,
+                "db_cpu_ms_per_req": 0.10737371759259258,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 216000,
+                "db_requests": 216000,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.6662466111111112,
+                "db_cpu_ms_per_req": 0.13314400925925926,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 216000,
+                "db_requests": 216000,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.36013644374870973
+          },
+          {
+            "rate": 720,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.2619426815482965,
+                "db_cpu_ms_per_req": 0.1039907099123846,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 259201,
+                "db_requests": 259201,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.663367349537037,
+                "db_cpu_ms_per_req": 0.12875505208333332,
+                "n_warm": 2,
+                "n_total": 3,
+                "n_db": 2,
+                "requests": 172800,
+                "db_requests": 172800,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.3948682155235796
+          },
+          {
+            "rate": 864,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.2657292157625522,
+                "db_cpu_ms_per_req": 0.10608068711198845,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 311041,
+                "db_requests": 311041,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.6573268614969136,
+                "db_cpu_ms_per_req": 0.12632487139917697,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 311040,
+                "db_requests": 311040,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.40425735098884275
+          },
+          {
+            "rate": 1037,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.27053832760546553,
+                "db_cpu_ms_per_req": 0.10464396055941134,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 373321,
+                "db_requests": 373321,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.6370983818215423,
+                "db_cpu_ms_per_req": 0.12335891900000268,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 373321,
+                "db_requests": 373321,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.4246413667414494
+          },
+          {
+            "rate": 1244,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.2794511643693381,
+                "db_cpu_ms_per_req": 0.10322586241930694,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 447839,
+                "db_requests": 447839,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.6183923499464095,
+                "db_cpu_ms_per_req": 0.12236996248660237,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 447840,
+                "db_requests": 447840,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.4518994524973597
+          },
+          {
+            "rate": 1493,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.2722909657865703,
+                "db_cpu_ms_per_req": 0.10172889545452009,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 537479,
+                "db_requests": 537479,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.587231923479801,
+                "db_cpu_ms_per_req": 0.11971805968233178,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 537479,
+                "db_requests": 537479,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.4636855642537906
+          },
+          {
+            "rate": 1792,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.2768080546130106,
+                "db_cpu_ms_per_req": 0.10094256736333183,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 645121,
+                "db_requests": 645121,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.5802701477707283,
+                "db_cpu_ms_per_req": 0.11914392183791878,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 645121,
+                "db_requests": 645121,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.4770330779145661
+          },
+          {
+            "rate": 2150,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.2651491358515967,
+                "db_cpu_ms_per_req": 0.10043964527085952,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 773999,
+                "db_requests": 773999,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.5601243884067633,
+                "db_cpu_ms_per_req": 0.11903904894425474,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 774003,
+                "db_requests": 774003,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.47337545255937863
+          },
+          {
+            "rate": 2580,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.2566735037968305,
+                "db_cpu_ms_per_req": 0.09921941513844193,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 928801,
+                "db_requests": 928801,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.5486701614874198,
+                "db_cpu_ms_per_req": 0.1211090769517325,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 928803,
+                "db_requests": 928803,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.4678102106026695
+          },
+          {
+            "rate": 3096,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.2453502951380945,
+                "db_cpu_ms_per_req": 0.100245905345862,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 1114563,
+                "db_requests": 1114563,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.5365437163152129,
+                "db_cpu_ms_per_req": 0.11542479595105158,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 1114561,
+                "db_requests": 1114561,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.45727922567628054
+          },
+          {
+            "rate": 3715,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.2486755580612503,
+                "db_cpu_ms_per_req": 0.09924142177571674,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 1337398,
+                "db_requests": 1337398,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.5201776009666539,
+                "db_cpu_ms_per_req": 0.11679271899069613,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 1337397,
+                "db_requests": 1337397,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.4780589506336543
+          },
+          {
+            "rate": 4458,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.23600222695500356,
+                "db_cpu_ms_per_req": 0.10013339298465557,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 1604882,
+                "db_requests": 1604882,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.49528940454482145,
+                "db_cpu_ms_per_req": 0.11435034642744651,
+                "n_warm": 2,
+                "n_total": 3,
+                "n_db": 2,
+                "requests": 1069921,
+                "db_requests": 1069921,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.4764935909983643
+          },
+          {
+            "rate": 4799,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.23344027852491744,
+                "db_cpu_ms_per_req": 0.10090986392628061,
+                "n_warm": 11,
+                "n_total": 11,
+                "n_db": 11,
+                "requests": 8636642,
+                "db_requests": 8636642,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.48366047785951294,
+                "db_cpu_ms_per_req": 0.11512236253452968,
+                "n_warm": 9,
+                "n_total": 10,
+                "n_db": 9,
+                "requests": 5181774,
+                "db_requests": 5181774,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.4826532024242096
+          },
+          {
+            "rate": 4833,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": null,
+                "db_cpu_ms_per_req": null,
+                "n_warm": 0,
+                "n_total": 0,
+                "n_db": 0,
+                "requests": 0,
+                "db_requests": 0,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.48099980011005644,
+                "db_cpu_ms_per_req": 0.11522007907414623,
+                "n_warm": 10,
+                "n_total": 11,
+                "n_db": 10,
+                "requests": 8119468,
+                "db_requests": 8119468,
+                "posture_only": false
+              }
+            },
+            "ratio": null
+          },
+          {
+            "rate": 5350,
+            "by_slot": {
+              "java": {
+                "cpu_ms_per_req": 0.23276336564877442,
+                "db_cpu_ms_per_req": 0.10002199310250579,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 1924467,
+                "db_requests": 1924467,
+                "posture_only": false
+              },
+              "dotnet": {
+                "cpu_ms_per_req": 0.4701294998844669,
+                "db_cpu_ms_per_req": 0.11306036435764895,
+                "n_warm": 3,
+                "n_total": 3,
+                "n_db": 3,
+                "requests": 1925855,
+                "db_requests": 1925855,
+                "posture_only": false
+              }
+            },
+            "ratio": 0.4951047864598487
+          }
+        ],
+        "cv_pct_by_slot": {
+          "java": 7.0549845056085205,
+          "dotnet": 12.528073911134117
+        },
+        "ratio_min": 0.33558340088053623,
+        "ratio_max": 0.4951047864598487,
+        "ratio_direction": {
+          "subject": "java",
+          "reference": "dotnet",
+          "label": "Java : .NET"
+        },
+        "n_posture_only_values": 0,
+        "note": "per rung: total cgroup CPU delta / total serviced requests over that rung's probe windows (cells/<cell>/ladder/rate*/block*/cpu_mem_<slot>.summary.json)."
+      },
+      "resource": {
+        "available": true,
+        "operating_rates": [
+          4799,
+          4833
+        ],
+        "scope": "own_knee",
+        "scope_degraded_slots": {},
+        "operating_rate_by_slot": {
+          "java": 4799,
+          "dotnet": 4833
+        },
+        "operating_point_basis": "declared",
+        "by_slot": {
+          "java": {
+            "n_windows": 11,
+            "n_flagged_excluded": 0,
+            "posture_only": false,
+            "flagged_gate_counts": {},
+            "waived_gate_counts": {},
+            "non_enforcing_gate_counts": {},
+            "n_warmup_attack_failed": 0,
+            "stage_windows": {
+              "confirm": 10,
+              "soak": 1
+            },
+            "requests": 8636642,
+            "non_2xx": 0,
+            "create_share_pct": 14.991903103081036,
+            "cpu_ms_total": 2016140.114,
+            "cpu_ms_per_req": 0.23344027852491744,
+            "cpu_ms_per_req_aggregation": "request-weighted: cpu_ms_total / requests",
+            "cpu_ms_per_req_unweighted": 0.23428549977221966,
+            "db_cpu_ms_total": 871522.3690000001,
+            "db_cpu_ms_per_req": 0.10090986392628061,
+            "db_cpu_ms_per_req_aggregation": "request-weighted: db_cpu_ms_total / the requests serviced by the windows that carried a postgres delta (the SAME rule as the app row, over that subset)",
+            "db_n_windows": 11,
+            "total_cpu_ms_per_req": 0.33435014245119804,
+            "db_share_pct": 30.18089455158808,
+            "anon_p99_mb": 655.5621934545455,
+            "mem_peak_mb": 1645.311069090909,
+            "throttle_clean": true,
+            "oom_clean": true,
+            "swap_current_clean": true,
+            "swap_peak_clean": true,
+            "n_windows_without_counters": 0,
+            "n_windows_without_oom_counter": 0,
+            "n_windows_without_swap_current": 0,
+            "n_windows_without_swap_peak": 0,
+            "n_swap_current_windows_with_db": 11,
+            "n_swap_peak_windows_with_db": 11,
+            "db_pool_total": 24,
+            "db_pool_max": 24
+          },
+          "dotnet": {
+            "n_windows": 10,
+            "n_flagged_excluded": 1,
+            "posture_only": false,
+            "flagged_gate_counts": {
+              "gc_steady": 1
+            },
+            "waived_gate_counts": {},
+            "non_enforcing_gate_counts": {},
+            "n_warmup_attack_failed": 0,
+            "stage_windows": {
+              "confirm": 9,
+              "soak": 1
+            },
+            "requests": 8119468,
+            "non_2xx": 1,
+            "create_share_pct": 14.979195681293405,
+            "cpu_ms_total": 3905462.485,
+            "cpu_ms_per_req": 0.48099980011005644,
+            "cpu_ms_per_req_aggregation": "request-weighted: cpu_ms_total / requests",
+            "cpu_ms_per_req_unweighted": 0.4831279970047695,
+            "db_cpu_ms_total": 935525.745,
+            "db_cpu_ms_per_req": 0.11522007907414623,
+            "db_cpu_ms_per_req_aggregation": "request-weighted: db_cpu_ms_total / the requests serviced by the windows that carried a postgres delta (the SAME rule as the app row, over that subset)",
+            "db_n_windows": 10,
+            "total_cpu_ms_per_req": 0.5962198791842027,
+            "db_share_pct": 19.325098524356463,
+            "anon_p99_mb": 176.4503552,
+            "mem_peak_mb": 1201.9236864000002,
+            "throttle_clean": true,
+            "oom_clean": true,
+            "swap_current_clean": true,
+            "swap_peak_clean": true,
+            "n_windows_without_counters": 0,
+            "n_windows_without_oom_counter": 0,
+            "n_windows_without_swap_current": 0,
+            "n_windows_without_swap_peak": 0,
+            "n_swap_current_windows_with_db": 10,
+            "n_swap_peak_windows_with_db": 10,
+            "db_pool_total": 24,
+            "db_pool_max": 24
+          }
+        },
+        "ratio_direction": {
+          "subject": "java",
+          "reference": "dotnet",
+          "label": "Java : .NET"
+        },
+        "cpu_ratio": 0.4853230260625982,
+        "cpu_ratio_unweighted": 0.48493463683477395,
+        "db_cpu_ratio": 0.8758010299692927,
+        "total_cpu_ratio": 0.5607832850335073,
+        "anon_ratio": 3.7152784006101314,
+        "peak_ratio": 1.3688981153362092,
+        "note": ""
+      }
+    }
+  ]
+}

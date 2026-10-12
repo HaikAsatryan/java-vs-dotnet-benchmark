@@ -1,0 +1,16 @@
+# infra/observability/prometheus.yml: EXPLORATORY ONLY, NEVER RECORDED.
+# Scrapes cAdvisor for live human inspection during development. None of these
+# samples feed any benchmark table or plot (cgroup v2 is the only recorded
+# source). Short interval is fine: nothing here is load-bearing.
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  - job_name: cadvisor
+    static_configs:
+      - targets: ["cadvisor:8080"]
+
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]

@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>Ledgerline</RootNamespace>
+    <AssemblyName>Ledgerline</AssemblyName>
+    <LangVersion>latest</LangVersion>
+    <!-- ASP0029: [ValidatableType] is evaluation-only in .NET 10; the SUT uses the built-in
+         AddValidation() source-gen path by design, so the experimental attribute is intentional.
+         SYSLIB1015: [LoggerMessage] args are emitted as structured fields, not interpolated into
+         the (constant) event-name message; that is by design for the frozen flat-JSON schema. -->
+    <NoWarn>$(NoWarn);ASP0029;SYSLIB1015</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The test project lives in a subfolder; keep it out of the web app compile + image. -->
+    <Compile Remove="Ledgerline.Tests\**\*.cs" />
+    <Content Remove="Ledgerline.Tests\**\*" />
+    <None Remove="Ledgerline.Tests\**\*" />
+    <EmbeddedResource Remove="Ledgerline.Tests\**\*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- EF runtime pinned explicitly (Relational pins Core transitively): the provider
+         floats on [10.0.4, 11), so without this pin the app and the test project could
+         resolve different EF patch versions (Core alone leaves Relational floating in
+         the test project). -->
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.11" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="10.0.3" />
+    <PackageReference Include="Npgsql" Version="10.0.3" />
+    <!-- Dapper serves only the DATA_LAYER=dapper variant (the micro-ORM middle point
+         between EF Core and raw ADO.NET); the headline efcore path never loads it. -->
+    <PackageReference Include="Dapper" Version="2.1.79" />
+    <PackageReference Include="StackExchange.Redis" Version="3.1.31" />
+  </ItemGroup>
+
+</Project>

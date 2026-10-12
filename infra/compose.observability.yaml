@@ -1,0 +1,68 @@
+# infra/compose.observability.yaml: EXPLORATORY ONLY. NEVER THE RECORDED SOURCE.
+#
+# ============================================================================
+#  WARNING: This stack is for live human inspection during development only.
+#  The recorded benchmark numbers come EXCLUSIVELY from cgroup v2 (the runner's
+#  50 ms sampler). cAdvisor / Prometheus / Grafana are NEVER a
+#  data source for any headline, table, or plot. Running this stack during a
+#  measured run is itself a fairness violation (its own CPU/IO cost); it is
+#  brought up only outside measured windows, on demand, via `make watch`.
+# ============================================================================
+#
+#   docker compose -f infra/compose.yaml -f infra/compose.observability.yaml \
+#                  up -d prometheus grafana cadvisor
+#
+# Deliberately minimal: no alerting, no long retention, no persistence volume.
+
+services:
+  prometheus:
+    image: prom/prometheus:v3.1.0@sha256:6559acbd5d770b15bb3c954629ce190ac3cbbdb2b7f1c30f0385c4e05104e218  # digest pinned 2026-06-06
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.retention.time=2h
+      - --web.enable-lifecycle
+    volumes:
+      - ./observability/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    ports:
+      - "9090:9090"
+    logging:
+      driver: json-file
+      options:
+        max-size: "128m"
+        max-file: "2"
+
+  grafana:
+    image: grafana/grafana:11.4.0@sha256:d8ea37798ccc41061a62ab080f2676dda6bf7815558499f901bdb0f533a456fb  # digest pinned 2026-06-06
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-admin}
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+    logging:
+      driver: json-file
+      options:
+        max-size: "128m"
+        max-file: "2"
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor:v0.52.1@sha256:f40e65878e25c2e78ea037f73a449527a0fb994e303dc3e34cb6b187b4b91435  # digest pinned 2026-06-06
+    # cAdvisor needs host paths to read container stats. EXPLORATORY ONLY:
+    # these read-only host mounts are why this stack must never run during a
+    # measured window (its scraping perturbs the very cgroup stats it reads).
+    privileged: true
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:ro
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+      - /dev/disk/:/dev/disk:ro
+    ports:
+      - "8080:8080"
+    logging:
+      driver: json-file
+      options:
+        max-size: "128m"
+        max-file: "2"

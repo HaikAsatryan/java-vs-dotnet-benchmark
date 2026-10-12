@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>4.1.1</version>
+    <relativePath/>
+  </parent>
+
+  <groupId>io.ledgerline</groupId>
+  <artifactId>ledgerline</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>ledgerline</name>
+  <description>Ledgerline Java SUT (Spring Boot 4 + Hibernate 7)</description>
+
+  <properties>
+    <!-- spring-boot-starter-parent:4.1.1 sets <java.version>17</java.version> and feeds
+         maven.compiler.release from it. Without this override the SUT compiles to class
+         file 61 while running on JDK 25 (D1) and the manifest's Java-25 claim is false;
+         nothing warns. BuildInvariantsTest asserts the emitted major version, not this
+         property, because the property is what could silently stop taking effect. -->
+    <java.version>25</java.version>
+  </properties>
+
+  <dependencies>
+    <!-- Every version below comes from the Boot 4.1.1 BOM and is deliberately NOT
+         overridden (O6 / research [4-A]): the two SUTs must each ship what their own
+         framework ships. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webmvc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+
+    <!-- ASSERTED BY ABSENCE, not by prose (BuildInvariantsTest):
+         - commons-pool2: Boot's Lettuce gate is `enabled != null ? enabled :
+           COMMONS_POOL2_AVAILABLE`, so the jar alone switches Redis from one shared
+           multiplexed connection (the SE.Redis model) to a pool, with no property set.
+         - jackson-module-blackbird / -afterburner: find-and-add-modules defaults true
+           and both ship a ServiceLoader entry, so the dependency alone would enable a
+           bytecode-generating accelerator (docs/FAIRNESS.md JSON row).
+         - micrometer / actuator: /runtime-stats is written by hand against the frozen
+           spec/runtime-stats.md; a metrics pipeline would be uncounted work per request. -->
+
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- MockMvc's auto-configuration is its own artifact in Boot 4. Test scope, so it changes
+         nothing the SUT ships; it is the counterpart of the Microsoft.AspNetCore.Mvc.Testing
+         reference in services/dotnet/Ledgerline.Tests, and it is what lets the error contract be
+         asserted from an emitted HTTP response rather than from a bean's existence. -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-webmvc-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>ledgerline</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <!-- The counterpart of services/dotnet/Ledgerline.Tests/TestEnv.cs, and here for the
+               same two reasons: the suite boots the REAL context on a host with no PostgreSQL
+               and no /data volume. Spring resolves ${PDF_DIR} and ${DB_POOL_WARM_ON_START} from
+               system properties as readily as from the environment, so no test needs to know. -->
+          <systemPropertyVariables>
+            <PDF_DIR>${project.build.directory}/ledgerline-tests-pdf</PDF_DIR>
+            <DB_POOL_WARM_ON_START>false</DB_POOL_WARM_ON_START>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>

@@ -1,0 +1,93 @@
+# Ledgerline: repo-root ignores. Philosophy: commit small text/JSON run
+# manifests + summaries; never commit per-run scratch (vegeta target fixtures,
+# raw .bin attack logs, full DB dumps). What each rule keeps or drops is stated
+# beside the rule.  The same set is what `CHECKSUMS.sha256` covers: its scope is
+# `git ls-files --cached --others --exclude-standard` inside the run directory,
+# so this file IS the publication scope rather than a description of it.
+
+# --- results/ scratch ------------------------------------------------------
+# Per-run IO scratch: vegeta targets + request bodies the runner stages before
+# each attack. Big, regenerable, never a data source.
+results/**/io/
+# Capacity-gate request-body fixtures (staged outside io/, same scratch nature).
+results/**/bodies/
+# Raw attack logs / binary captures and DB dumps (regenerable, not published).
+results/**/*.bin
+results/**/*.dump
+# Raw per-window traces: cgroup 50 ms cpu/mem samples + per-second p99 series.
+# Tens of MB per run, regenerable-grade detail; the committed *.summary.json
+# roll-ups carry the headline. Not published.
+#
+# THESE RULES ARE MACHINE-APPLIED. `bench/ledgerbench/checksums.py` takes the
+# scope of `CHECKSUMS.sha256` straight from `git ls-files --cached --others
+# --exclude-standard` in a run directory, so the checksum scope and the
+# publication scope are one object rather than two lists that drift. It does not
+# read this file, and does not subtract an exclusion set from a tree walk either
+# (both were wrong, silently, in the same direction); git applies these rules,
+# and whatever is in `.git/info/exclude` or a `core.excludesFile`, and its
+# answer IS the map.
+# Editing ANY rule here that a run directory can match changes what a published
+# run verifies.
+# The two run-id PREFIX rules at the end exclude a smoke/rehearsal run
+# directory ENTIRELY, so git publishes nothing from those tiers and they carry
+# no checksum map at all -- `verify` on one reports exactly that and exits 1,
+# rather than exiting 0 having checked nothing.
+# One rehearsal is tracked anyway, as the cross-tier replication check: its
+# ledger, manifest and report were added by hand (see results/README.md), and
+# it has no map either.
+results/**/*.csv
+# Same rule, same reason, for the /runtime-stats per-poll traces (W17): the
+# `.runtime_stats.summary.json` roll-up beside each one carries both window
+# edges and every delta, and IS committed.
+results/**/*.jsonl
+# Capacity-gate vegeta targets fixture (staged scratch, same nature as bodies/).
+results/**/capacity-gate/targets.txt
+# Keep: manifests, *.summary.json/*.warmup.json roll-ups, report/, ledger.json,
+# verdict.json, doctor.json, CHECKSUMS: small text summaries committed.
+# Rehearsal + smoke runs are never a data source: only full measured runs are
+# committed (the hand-added rehearsal above aside). Both are matched by run-id
+# PREFIX, which is why `_new_run_id` leads with the scale -- round 1 named runs
+# timestamp-first, so this rule matched nothing and staged every rehearsal's
+# artifacts for commit. Anything else under results/ is committed unless a rule
+# above excludes it, so a future published run cannot be ignored by accident.
+results/smoke-*/
+results/rehearsal-*/
+
+# --- atomic-write scratch (repo-wide, and in scope for CHECKSUMS.sha256) ----
+# `util/paths.write_bytes_atomic` stages every artifact as `.<name>.<rand>.tmp`
+# beside its target and renames. Its unlink-on-failure runs for Python
+# exceptions only, not for the SIGKILL/power-cut class the resume protocol
+# exists to survive, so a half-written one outlives a crash. A rule here keeps
+# it out of the publication tree AND out of the checksum map in one move;
+# excluding it in checksums.py alone would leave git committing a scratch file
+# the map does not list, with `verify` green over it.
+.*.tmp
+
+# --- bench (Python runner) -------------------------------------------------
+bench/.venv/
+bench/**/__pycache__/
+bench/.pytest_cache/
+*.pyc
+
+# --- services/dotnet build output ------------------------------------------
+services/dotnet/bin/
+services/dotnet/obj/
+services/dotnet/Ledgerline.Tests/bin/
+services/dotnet/Ledgerline.Tests/obj/
+
+# --- blog working copy (local only) ----------------------------------------
+# The narrative write-up is published separately on dev.to. Its
+# Markdown source is a working copy, not a repo document, so it stays out of the
+# tree; the figures it embeds are the committed docs/figures/*.png. Anchored at
+# the repo root, so it cannot match inside a run directory.
+docs/blog/
+
+# --- editor / IDE ----------------------------------------------------------
+.vs/
+.vscode/
+.idea/
+*.user
+
+# --- OS noise --------------------------------------------------------------
+Thumbs.db
+.DS_Store

@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+title: "Ledgerline: a Java 25 vs .NET 10 benchmark on a realistic backend workload"
+message: "If you quote a number from this benchmark, please cite it and say which run it came from."
+type: dataset
+authors:
+  - family-names: Asatryan
+    given-names: Haik
+repository-code: "https://github.com/HaikAsatryan/java-vs-dotnet-benchmark"
+abstract: >-
+  The same invoicing API, specified once in a frozen spec/ and implemented twice, in Java
+  25 LTS (Spring Boot 4, WebMVC on virtual threads, Spring Data JPA and Hibernate 7) and
+  .NET 10 (Minimal API, EF Core 10), against a shared PostgreSQL 18.4 and Redis. The
+  measured quantity is cost at a fixed latency promise: CPU-ms and steady-state memory per
+  request at the rate where each stack's own mixed-workload p99 crosses 20 ms, read from
+  cgroup v2. Load is open-loop and coordinated-omission-safe. The published run is
+  full-20260827T174611-fedora, config hash
+  e9fef8d3abbba8db034084d6295d3169a302a10a14ee1a13bc0d94b431fa3166.
+keywords:
+  - benchmark
+  - java
+  - dotnet
+  - performance
+  - postgresql
+  - cgroups
+license: MIT
+date-released: "2026-10-12"

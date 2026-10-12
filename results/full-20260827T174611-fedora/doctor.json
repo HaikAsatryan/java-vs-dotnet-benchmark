@@ -1,0 +1,71 @@
+{
+  "platform": "linux",
+  "checks": [
+    {
+      "name": "docker_daemon",
+      "ok": true,
+      "skipped": false,
+      "detail": "daemon reachable"
+    },
+    {
+      "name": "docker_native_engine",
+      "ok": true,
+      "skipped": false,
+      "detail": "native engine on Fedora Linux 43 (Workstation Edition)"
+    },
+    {
+      "name": "docker_compose",
+      "ok": true,
+      "skipped": false,
+      "detail": "Docker Compose version v5.0.2"
+    },
+    {
+      "name": "cgroup_v2_unified",
+      "ok": true,
+      "skipped": false,
+      "detail": "unified present"
+    },
+    {
+      "name": "cpu_cores",
+      "ok": true,
+      "skipped": false,
+      "detail": "32 logical cores; the documented cpusets reach id 15 (housekeeping)"
+    },
+    {
+      "name": "host_ram",
+      "ok": true,
+      "skipped": false,
+      "detail": "61.9 GiB total; the resource ledger commits 26 GiB of container mem_limit"
+    },
+    {
+      "name": "disk_free",
+      "ok": true,
+      "skipped": false,
+      "detail": "868.5 GB free at /home/haik/java-vs-dotnet-benchmark"
+    },
+    {
+      "name": "build_contexts",
+      "ok": true,
+      "skipped": false,
+      "detail": "4 implemented slot(s) present"
+    },
+    {
+      "name": "uv",
+      "ok": true,
+      "skipped": false,
+      "detail": "uv 0.11.19 (x86_64-unknown-linux-gnu)"
+    },
+    {
+      "name": "root_or_sudo",
+      "ok": true,
+      "skipped": false,
+      "detail": "sudo -n ok (NOPASSWD)"
+    },
+    {
+      "name": "spec_parses",
+      "ok": true,
+      "skipped": false,
+      "detail": "workload.yaml + slo.yaml valid"
+    }
+  ]
+}

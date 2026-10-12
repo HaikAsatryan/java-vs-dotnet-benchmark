@@ -1,0 +1,166 @@
+# spec/slo.yaml — frozen measurement numerics.
+slo:
+  metric: p99_latency_ms
+  threshold_ms: 20              # locked decision (user, 2026-06-05)
+  applies_to: mixed_workload    # the p99 the SLO is scored against is the mixed workload's
+  error_rate_max: 0.001         # headline valid only where errors < 0.1%
+
+equivalence:
+  margin_pct: 5.0               # pre-registered +/-5% margin
+  decision_rule: paired_difference_ci   # paired by interleave block (RCB)
+  inside_margin: tie
+  outside_margin: report_effect_size
+
+ladder:
+  # Every ladder seeds here. There is no per-cell start-rate strategy: the seed
+  # is one pre-registered number so that where a ladder began is a property of
+  # this file rather than of a pre-probe run before it.
+  start_rate_rps_default: 500
+  step_factor: 1.2
+  # Most rungs the measurement ladder may climb before it stops without a
+  # crossing. It was a literal in phases.py and therefore invisible to
+  # config_hash, while it is the dial that decides whether a non-crossing cell
+  # is "the stack never crossed" or "the ladder ran out": at 500 rps and 1.2 it
+  # sets the top offered rate to 500 * 1.2^(rung_ceiling-1), and the stage
+  # records `rung_ceiling_rps` beside `ceiling_reached_without_crossing`.
+  # This is the FULL tier's value, like every other numeric in this file. The
+  # reduced tiers deviate deliberately and each deviation is argued at its
+  # ScaleProfile in phases.py.
+  rung_ceiling: 40
+  reps_per_rung: 3              # interleaved
+  confirm_reps: 10              # randomized complete blocks at each slot's fitted knee
+  window_seconds: 120
+  warmup_discard_seconds: 30
+  # Per-request attack timeout (vegeta -timeout). A request that exceeds it is
+  # recorded as an ERROR, so this dial decides what counts against
+  # slo.error_rate_max and is measurement-relevant, not cosmetic. 5 s is two
+  # orders above the 20 ms promise: it bounds a wedged connection without ever
+  # truncating a slow-but-served request into a fake error.
+  # It was read out of co_validation.stall_test.timeout_s until P1 -- a key that
+  # block never defined, so the value below is what was always actually in force.
+  attack_timeout_seconds: 5.0
+  # The three keys below and equivalence's decision_rule/inside_margin/
+  # outside_margin are DESCRIPTIVE pre-registration of method, not gates: they
+  # name what the analysis stage does so that the method is inside config_hash
+  # and cannot be chosen after seeing the data. No code branches on their
+  # values, and the governing rule (nothing enters spec/ as a declared GATE
+  # ahead of its implementation) is about gates. Each names an implementation
+  # that exists: analysis/pava.py, analysis/knee.py, analysis/paired.py.
+  interleave: randomized_complete_blocks   # seeded within-block order; block_id = pairing key
+  knee_fit: isotonic            # PAVA monotone fit of p99-vs-rate; knee = SLO crossing
+  knee_ci: bootstrap_over_reps
+
+warmup:
+  # A CEILING, not a duration: warmup exits the moment the gates pass, so raising
+  # this is free in the normal case and impossible after the P7 freeze. Raised
+  # 180 -> 300 at P1 (PROGRESS O4) because HotSpot C2 plus G1 reaching steady
+  # state is the case that could bind it, and round 1 had no Java to measure.
+  # G6 confirms whether it ever binds.
+  hard_cap_seconds: 300         # not steady by then -> probe flagged under-warmed, recorded
+  poll_hz: 1                    # GET /runtime-stats poll frequency
+  per_endpoint_min_calls:       # FROZEN at P7 (G6 measured 0% Java / 6.7% .NET flagged at these values)
+    get_invoice:    20000
+    list_invoices:  20000
+    pricing_quote:  15000
+    create_invoice: 10000
+    pdf_stub:        5000
+    healthz:         2000
+  # Every key here is one the runner IMPLEMENTS, and every gate a probe was held
+  # to must pass. A posture may waive one -- via a `warmup.gates_by_posture`
+  # block (declared nowhere in this file yet, so no posture waives anything) or
+  # a cell's own `phases.CELLS warmup_gates`. A waived gate is NOT evaluated for
+  # that probe and is recorded in its `<slot>.warmup.json` as `posture_waived` /
+  # `not_applicable` with `enforced: false`, so the waiver is per-probe visible
+  # rather than silent. A test asserts
+  # `set(gates) - warmup.IMPLEMENTED_GATES == set()`, so a gate cannot be
+  # declared here ahead of the code that scores it. That guard, not a list of
+  # names, is what keeps this block honest.
+  gates:
+    p99_flat: true              # across trailing sub-windows
+    # Heap committed flat AND collection cadence flat, BOTH slots
+    # (registry.GcSemantics.requires). The two runtimes reach the cadence series
+    # differently, and which one a probe used is recorded in its
+    # <slot>.warmup.json under gc_steady.detail.cadence_basis:
+    #   .NET -- gen0 + gen1 + gen2, which the CLR publishes directly.
+    #   JVM  -- the per-collector CYCLE-COUNTING beans, because the JVM
+    #           publishes the gen0/1/2 triple as a present null: no bean set
+    #           maps onto the CLR's three generations without meaning something
+    #           different per collector. G1: "G1 Young Generation" and
+    #           "G1 Old Generation". Generational ZGC: "ZGC Minor Cycles" and
+    #           "ZGC Major Cycles".
+    # THREE bean names are excluded from the COUNT, never all three in one run
+    # (the first two exist only under ZGC, the third only under G1), all
+    # measured on this box: ZGC's "ZGC Minor Pauses" and "ZGC Major Pauses" are
+    # separate beans over the same pools as the "*Cycles" beans (a sum over all
+    # four runs 4.2x the true cadence), and "G1 Concurrent GC" counts the
+    # Remark + Cleanup stop-the-world sub-pauses of a concurrent mark cycle
+    # rather than collections.
+    # Their TIME is treated per collector, which is why the count list and the
+    # pause list cannot be one list:
+    #   G1  -- "G1 Concurrent GC"'s time IS stop-the-world and IS summed into
+    #          gc.pause_total_seconds (spec/runtime-stats.md).
+    #   ZGC -- both "*Pauses" beans read getCollectionTime() == 0 on this box,
+    #          because that accessor is millisecond-granular and ZGC's pauses
+    #          are not. gc.pause_total_seconds is therefore NULL under ZGC with
+    #          gc.pause_total_seconds_note carrying the reason -- a measured
+    #          absence, never a measured zero.
+    # The bean names are frozen in registry.GcSemantics.cadence_beans and
+    # spec/runtime-stats.md; warmup.py scores exactly these two series.
+    gc_steady: true
+    pools_warm: true            # db_pool.total == max (min=max policy) ; redis ready
+  # p999 is RECORDED, not gated. Every probe writes
+  # <slot>.warmup_latency_per_second.csv with columns
+  # segment,second,p99_ms,p999_ms,samples, so the per-second q=0.999 series and
+  # the bucket size each row was taken over are both in the artifacts. No
+  # flatness gate is applied to it: the harness warms at 618 rps on the measured
+  # tiers, and vegeta's nearest-rank estimator over a one-second bucket returns
+  # the second-largest sample of that second at those counts, which is a single
+  # event rather than a location parameter.
+  note: durations may differ per language; recorded per probe and published.
+
+stationarity:
+  test: mann_kendall            # per-second p99: no positive trend
+  alpha: 0.05
+  direction: no_positive_trend
+  # Practical-significance band: gate fails only if MK is significant AND the
+  # Theil-Sen slope over the 120 s window exceeds this. Below it, a significant
+  # MK is a window-length artifact (open-loop p99 wobble), not real drift, and
+  # must not bias the knee low. Pre-registered (~0.017 ms/s).
+  min_slope_ms_per_min: 1.0
+  # `supra_knee_policy` and `window_length_sensitivity_rate` were deleted at
+  # the P7 freeze (2026-08-27): both were hashed into config_hash with ZERO
+  # consumers in bench/ -- a pre-registered sensitivity analysis no code
+  # performs, the exact defect class this file's own history warns about.
+  # The stationarity verdicts are RECORD-ONLY (per-probe fails + any_fail in
+  # fits.json); they exclude nothing, and the report states that.
+
+soak:
+  # duration_seconds is the whole block, and the only key here any code reads
+  # (ScaleProfile sizes the soak stage from it). A soak probe is analysed like
+  # every other probe rather than against soak-specific criteria: its per-second
+  # p99 series takes the same `stationarity` test a ladder rung takes
+  # (analyze._STATIONARITY_STAGES), and its CPU and anon-RSS window scalars roll
+  # up with the confirm windows (analyze._RESOURCE_STAGES). No soak-specific
+  # threshold is scored anywhere, so none is declared here.
+  duration_seconds: 600
+
+# Coordinated-omission safety rests on ONE scored check: vegeta's achieved
+# rate must track the offered rate within the tolerance on EVERY probe (an
+# open-loop generator that absorbed a stall would fall short of the offered
+# rate, and the per-probe ratio is recorded and gated). The `stall_test`
+# below is a SMOKE-ONLY liveness step -- docker pause + unpause + /healthz --
+# proving the freeze/unfreeze plumbing works; no attack runs across the
+# freeze, so it is NOT evidence about the generator, and claiming it was
+# (this comment's previous text did) is the P7 review's finding M1. Nothing
+# else here is a CO check.
+co_validation:
+  achieved_vs_offered_tolerance_pct: 2.0
+  stall_test: { freeze_seconds: 1.0, method: docker_pause }
+
+capacity_gate:                  # runs FIRST in bench-all
+  headroom_factor: 1.3
+  levers_in_order:
+    - { name: write_share, from: 0.15, to: 0.10 }
+    - { name: cache_hit_rate, from: 0.80, to: 0.90 }
+    - { name: pg_cores, from: 3, to: 4, taken_from: vegeta }
+  never: synchronous_commit_off

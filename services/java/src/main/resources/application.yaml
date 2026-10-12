@@ -1,0 +1,137 @@
+# The complete declared configuration surface of the Java SUT: everything not written here is a
+# framework default. Properties deliberately NOT set, because each looks like an omission:
+#   server.tomcat.threads.max        - inert once virtual threads are on
+#   spring.jackson.fail-on-unknown-properties - already false in Jackson 3
+#   spring.jackson.default-property-inclusion - a global non_null would delete the
+#                                      present-but-null fields /runtime-stats requires
+#   hibernate.jdbc.batch_size / order_inserts - inert for IDENTITY entities (InvoiceItem)
+#   spring.datasource.*              - the datasource is built in DataSourceConfig
+
+spring:
+  application:
+    name: ledgerline
+  main:
+    # spec/logging.md: stdout carries contract lines only. The startup-info line is written by
+    # the MAIN CLASS's own logger, so a category filter cannot reach it.
+    banner-mode: off
+    log-startup-info: false
+  threads:
+    virtual:
+      # PROGRESS.md D2. Measured on Boot 4.1.1: this property is the ONLY trigger (the JDK
+      # version alone does not switch it), and for this service its one live effect is Tomcat's
+      # request executor.
+      enabled: true
+  jpa:
+    hibernate:
+      # Explicit because the property has no static default: Boot resolves it at runtime
+      # from the datasource ("create-drop when embedded, otherwise none"), and the
+      # PostgreSQL here is shared and holds the seeded dataset. Asserted off the built
+      # EntityManagerFactory by HibernateSettingsTest.schemaManagementIsOff.
+      ddl-auto: none
+    properties:
+      hibernate:
+        jdbc:
+          # Q5's frozen RETURNING clause (spec/db-access.md: "Q5 xN items (RETURNING id)").
+          # Left at its default Hibernate reads the generated id through getGeneratedKeys, and
+          # PgJDBC implements that by appending `RETURNING *` to the insert - measured, all seven
+          # item columns come back per row against EF's one bigint.
+          use_get_generated_keys: false
+          # created_at is timestamptz and Instant is zone-free, so Hibernate 7 already round-trips
+          # it through TIMESTAMP_UTC without consulting a zone. Pinned anyway because the default
+          # is "unset", i.e. whatever java.util.TimeZone.getDefault() happens to be in the
+          # container: an unpinned default zone is exactly how a timestamp contract fails on the
+          # host it was not developed on rather than in a test.
+          time_zone: UTC
+    # Boot's default is true and it logs a startup WARN when left implicit, which would put a
+    # non-contract line on the frozen log stream (spec/logging.md). NON-DEFAULT, and the direction
+    # helps Java - less pool occupancy per request - so it carries a docs/FAIRNESS.md row.
+    open-in-view: false
+  jackson:
+    # spec/openapi.yaml: snake_case on the wire, both sides. .NET spells this per-member
+    # with [JsonPropertyName], so the two mechanisms differ and the wire is identical.
+    property-naming-strategy: SNAKE_CASE
+    mapper:
+      # CONTRACT EQUALIZATION, not a tuning knob, and the only two Jackson features set here.
+      # Measured on both stacks: POST {"qty":5.7} returns 200 with qty silently truncated to 5 on
+      # Jackson's defaults, while System.Text.Json throws and services/dotnet returns the frozen
+      # body-400. Java accepting input .NET refuses is a wire divergence on the error path and a
+      # different stored row on the success path. Asserted by ErrorContractTest.
+      #
+      # This switch is blanket in one direction and blind in the other against System.Text.Json's
+      # Web defaults; io.ledgerline.json.ScalarCoercion corrects both, measured.
+      allow-coercion-of-scalars: false
+    deserialization:
+      accept-float-as-int: false
+  web:
+    resources:
+      # No static content is served, and left at its default Boot maps a ResourceHttpRequestHandler
+      # at /**: every unmatched path then MATCHES, which turns a 404 into an access line whose
+      # `path` is the literal "/**" and puts a filesystem/classpath lookup on it. ASP.NET's
+      # CreateBuilder registers no static-file middleware either (none is added in Program.cs),
+      # so the unmatched request is free there.
+      add-mappings: false
+  data:
+    redis:
+      url: redis://${REDIS_ADDR:localhost:6379}
+      # Lettuce's own default is 60 s; SE.Redis's SyncTimeout is 5000 ms and
+      # services/dotnet/Program.cs leaves it there. Equalizing toward the other side's
+      # default is strictly LESS permissive for Java.
+      timeout: 5s
+      repositories:
+        # Redis is a cache client here (spec/cache.md), never a repository store. Left at its
+        # default the auto-configuration scans the three JPA repositories as Redis candidates
+        # and writes four startup lines the frozen stdout contract does not carry.
+        enabled: false
+
+server:
+  port: ${PORT:8080}
+  # Drain in-flight requests on SIGTERM before the context closes, so shutdown_complete is the
+  # last line and no request is cut mid-response. Kestrel does this by default; Boot does not.
+  shutdown: graceful
+  tomcat:
+    # Tomcat's default is 100: at that value a keep-alive generator pays a connection
+    # re-establishment every 100 requests, pure churn that grows with the offered rate. Kestrel
+    # has no per-connection request cap at all, so -1 is the equalization.
+    max-keep-alive-requests: -1
+    # 1:1 with services/dotnet/Program.cs's RequestHeadersTimeout / KeepAliveTimeout.
+    connection-timeout: 5s
+    keep-alive-timeout: 120s
+
+# spec/logging.md: the frozen events are the ONLY lines on stdout. The counterpart of the three
+# AddFilter(..., Warning) calls in Program.cs - same objective, one level floor per framework
+# root rather than per category.
+logging:
+  level:
+    org.springframework: warn
+    org.apache: warn
+    org.hibernate: warn
+    com.zaxxer.hikari: warn
+    io.lettuce: warn
+    # The one framework category that measurably writes at WARN during traffic: an unmatched
+    # path logs `No mapping for GET /zzz` and a wrong method logs `Request method 'DELETE' is
+    # not supported`. Both land in `msg`, which spec/logging.md freezes as the EVENT NAME, and
+    # the first carries the raw URL into a field pinned to bounded route-template cardinality.
+    # .NET emits neither.
+    org.springframework.web.servlet.PageNotFound: error
+
+# The env surface, name-for-name with services/dotnet/Config/LedgerConfig.cs. Placeholders
+# are written out here rather than relying on relaxed binding so that the container env
+# var, its default, and the property it feeds are all visible in one place to a reviewer.
+ledger:
+  pg:
+    host: ${PG_HOST:localhost}
+    port: ${PG_PORT:5432}
+    database: ${PG_DB:ledgerline}
+    user: ${PG_USER:ledger}
+    password: ${PG_PASSWORD:ledger}
+  db:
+    pool-max: ${DB_POOL_MAX:24}
+    pool-min: ${DB_POOL_MIN:${DB_POOL_MAX:24}}
+    conn-lifetime-seconds: ${DB_CONN_LIFETIME:3600}
+    prepare-threshold: ${JDBC_PREPARE_THRESHOLD:5}
+    pool-warm-on-start: ${DB_POOL_WARM_ON_START:true}
+  redis-pool-max: ${REDIS_POOL_MAX:16}
+  cache-ttl-seconds: ${CACHE_TTL_SECONDS:300}
+  log-queue-len: ${LOG_QUEUE_LEN:8192}
+  body-max-bytes: ${BODY_MAX_BYTES:65536}
+  pdf-dir: ${PDF_DIR:/data/pdf}

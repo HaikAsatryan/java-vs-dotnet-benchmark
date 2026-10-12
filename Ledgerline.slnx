@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/services/" />
+  <Folder Name="/services/dotnet/">
+    <Project Path="services/dotnet/Ledgerline.csproj" />
+    <Project Path="services/dotnet/Ledgerline.Tests/Ledgerline.Tests.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,105 @@
+# infra/compose.bench.yaml: Linux-only RESOURCE OVERLAY (the core/memory ledger).
+#
+# Merge ONTO the base: docker compose -f infra/compose.yaml -f infra/compose.bench.yaml ...
+# Adds ONLY cpuset_cpus + mem_limit + memswap_limit. There is deliberately NO
+# `cpus:` quota here: CFS quota throttling injects period stalls into p99.
+#
+# Resource ledger (AMD Ryzen 9 7950X, two 8-core CCDs, SMT siblings left idle;
+# physical cores only):
+#
+#   | service  | cores            | mem  | notes                                  |
+#   |----------|------------------|------|----------------------------------------|
+#   | sut-*     | 6 phys, CCD0    | 12g  | NO cpus: quota. SUT_CPUS/SUT_MEM knobs |
+#   | (spare)   | 2 phys, CCD0    | -    | left idle so SUT L3 stays private      |
+#   | postgres  | 3 phys, CCD1    | 8g   | matches the 8GB/3-core PG rescale      |
+#   | vegeta    | 3 phys, CCD1    | 4g   | <=60% CPU at max rate asserted         |
+#   | redis     | 1 core, CCD1    | 2g   |                                        |
+#   | runner+housekeeping | 1 core, CCD1 | ~1g | NOT a container: systemd CPUAffinity |
+#
+# CORE-ID NOTE: the numeric cpuset ids below assume CCD0 = physical cores 0-7
+# (SUT 0-5, spare 6-7) and CCD1 = physical cores 8-15 (PG 8-10, vegeta 11-13,
+# redis 14, runner 15). Both halves of that assumption are now EVIDENCED per run
+# rather than declared here: the `host_readback` phase records the L3
+# `shared_cpu_list` groups and the SMT sibling pairs (`manifest.topology
+# .l3_groups`), and the sampler reads each container's own
+# `cpuset.cpus.effective` / `memory.max` / `memory.swap.max` at every window
+# start into `manifest.topology.containers`, beside the cpuset this file asked
+# for. A container that came up somewhere else ABORTS the run on its first
+# measured window (cgroups.MultiSampler.cpuset_mismatches) instead of being
+# silently published as pinned.
+#
+# Swap is off for every container: `memswap_limit` equals `mem_limit`, which
+# leaves `memory.swap.max` at 0. An anon page that is swapped out leaves cgroup
+# v2 `memory.stat anon`, which would understate steady-state memory per request.
+# With no swap allowance the kernel OOM-kills a container instead, and the
+# harness detects that: `memory.events oom_kill` is read at both window edges
+# and a non-zero delta fails the probe.
+#
+# `memory.swap.max` is recorded per container as the SETTING and
+# `memory.swap.current` at both window edges -- plus `memory.swap.peak`, the
+# kernel's lifetime high-water mark -- as the OUTCOME that it bit
+# (`manifest.topology.containers[*].swap_{current,peak}_max_bytes`, and the
+# `swap_current_clean` / `swap_peak_clean` verdicts in the resource roll-up).
+#
+# All cpusets are env-parameterized so the core-rebalance capacity lever
+# (vegeta core -> PG, used if PG becomes the capacity gate) is a pure env
+# edit, no file edit.
+
+# Every SUT service in compose.yaml needs an entry here; a missing one runs
+# unpinned and unlimited.
+services:
+  sut-java:
+    cpuset: ${SUT_CPUS:-0-5}
+    mem_limit: ${SUT_MEM:-12g}
+    memswap_limit: ${SUT_MEM:-12g}
+    environment:
+      # The COMPLETE JVM flag string, owned by this overlay (compose merge
+      # replaces, never appends -- see the sut-java comment in the base file).
+      # ActiveProcessorCount mirrors DOTNET_PROCESSOR_COUNT below: measured on
+      # JDK 25 the cpuset alone already yields availableProcessors()==6, so
+      # this pin is free, and getVMOption reads it back with an origin, which
+      # turns "this is a default" into an artifact (PROGRESS P4 trap 3).
+      # MaxRAMPercentage's ${:-25} default IS the JVM default (G6 measured heap
+      # committed peaking at 298 MB against the ~3 GiB ceiling it implies, so
+      # the ceiling never binds -- D6). JVM_GC_FLAGS empty means the default
+      # collector (G1) -- decision D7. Both stay cell-overridable knobs
+      # (registry.JAVA.knob_env) so a future declared cell can move them.
+      JDK_JAVA_OPTIONS: >-
+        -XX:ActiveProcessorCount=${SUT_CORES:-6}
+        -XX:MaxRAMPercentage=${JVM_MAX_RAM_PERCENT:-25}
+        ${JVM_GC_FLAGS:-}
+
+  sut-dotnet:
+    cpuset: ${SUT_CPUS:-0-5}
+    mem_limit: ${SUT_MEM:-12g}
+    memswap_limit: ${SUT_MEM:-12g}
+    environment:
+      # Pin runtime parallelism to the SUT core count; the runner asserts the
+      # SUT's reported processor_count matches SUT_CORES (default 6).
+      DOTNET_PROCESSOR_COUNT: ${SUT_CORES:-6}
+
+  # P2 shakedown's second .NET slot. Same cpuset and memory as the first: the
+  # two are never co-resident (one fresh SUT per probe), so they are the same
+  # box from the measurement's point of view, which is the entire point of
+  # using them to shake down the harness.
+  sut-dotnet-b:
+    cpuset: ${SUT_CPUS:-0-5}
+    mem_limit: ${SUT_MEM:-12g}
+    memswap_limit: ${SUT_MEM:-12g}
+    environment:
+      DOTNET_PROCESSOR_COUNT: ${SUT_CORES:-6}
+
+  postgres:
+    cpuset: ${PG_CPUS:-8-10}
+    mem_limit: ${PG_MEM:-8g}
+    memswap_limit: ${PG_MEM:-8g}
+
+  vegeta:
+    cpuset: ${VEGETA_CPUS:-11-13}
+    mem_limit: ${VEGETA_MEM:-4g}
+    memswap_limit: ${VEGETA_MEM:-4g}
+
+  redis:
+    cpuset: ${REDIS_CPUS:-14}
+    mem_limit: ${REDIS_MEM:-2g}
+    memswap_limit: ${REDIS_MEM:-2g}

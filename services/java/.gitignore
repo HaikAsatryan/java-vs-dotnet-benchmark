@@ -1,0 +1,13 @@
+# Build output. The repo-root .gitignore carries no Java/Maven entries, so the ignores
+# live here beside the project they belong to.
+target/
+
+# The wrapper is distributionType=only-script (D11): the script downloads the pinned
+# distribution and no maven-wrapper.jar is ever committed. Ignored so an older wrapper
+# invocation cannot silently add one.
+.mvn/wrapper/maven-wrapper.jar
+
+# IDE
+*.iml
+.idea/
+.vscode/

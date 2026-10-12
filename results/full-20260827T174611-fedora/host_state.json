@@ -1,0 +1,2487 @@
+{
+  "source": "measured",
+  "note": "read back from sysfs/procfs/systemd after host_setup, on every run start and every resume",
+  "first_read_utc": "2026-08-27T17:46:25.878228Z",
+  "last_read_utc": "2026-08-27T17:46:25.878228Z",
+  "reads": 1,
+  "readings": [
+    {
+      "attribute": "governor",
+      "kind": "setting",
+      "tier": "1",
+      "paths": [
+        "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu1/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu10/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu11/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu12/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu13/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu14/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu15/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu16/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu17/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu18/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu19/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu2/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu20/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu21/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu22/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu23/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu24/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu25/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu26/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu27/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu28/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu29/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu3/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu30/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu31/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu4/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu5/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu6/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu7/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu8/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu9/cpufreq/scaling_governor"
+      ],
+      "value": [
+        "performance"
+      ],
+      "expected": "performance",
+      "matches": true,
+      "detail": "32 cpu(s) read performance"
+    },
+    {
+      "attribute": "boost",
+      "kind": "setting",
+      "tier": "1",
+      "paths": [
+        "/sys/devices/system/cpu/cpufreq/boost",
+        "/sys/devices/system/cpu/cpufreq/policy0/boost",
+        "/sys/devices/system/cpu/cpufreq/policy1/boost",
+        "/sys/devices/system/cpu/cpufreq/policy10/boost",
+        "/sys/devices/system/cpu/cpufreq/policy11/boost",
+        "/sys/devices/system/cpu/cpufreq/policy12/boost",
+        "/sys/devices/system/cpu/cpufreq/policy13/boost",
+        "/sys/devices/system/cpu/cpufreq/policy14/boost",
+        "/sys/devices/system/cpu/cpufreq/policy15/boost",
+        "/sys/devices/system/cpu/cpufreq/policy16/boost",
+        "/sys/devices/system/cpu/cpufreq/policy17/boost",
+        "/sys/devices/system/cpu/cpufreq/policy18/boost",
+        "/sys/devices/system/cpu/cpufreq/policy19/boost",
+        "/sys/devices/system/cpu/cpufreq/policy2/boost",
+        "/sys/devices/system/cpu/cpufreq/policy20/boost",
+        "/sys/devices/system/cpu/cpufreq/policy21/boost",
+        "/sys/devices/system/cpu/cpufreq/policy22/boost",
+        "/sys/devices/system/cpu/cpufreq/policy23/boost",
+        "/sys/devices/system/cpu/cpufreq/policy24/boost",
+        "/sys/devices/system/cpu/cpufreq/policy25/boost",
+        "/sys/devices/system/cpu/cpufreq/policy26/boost",
+        "/sys/devices/system/cpu/cpufreq/policy27/boost",
+        "/sys/devices/system/cpu/cpufreq/policy28/boost",
+        "/sys/devices/system/cpu/cpufreq/policy29/boost",
+        "/sys/devices/system/cpu/cpufreq/policy3/boost",
+        "/sys/devices/system/cpu/cpufreq/policy30/boost",
+        "/sys/devices/system/cpu/cpufreq/policy31/boost",
+        "/sys/devices/system/cpu/cpufreq/policy4/boost",
+        "/sys/devices/system/cpu/cpufreq/policy5/boost",
+        "/sys/devices/system/cpu/cpufreq/policy6/boost",
+        "/sys/devices/system/cpu/cpufreq/policy7/boost",
+        "/sys/devices/system/cpu/cpufreq/policy8/boost",
+        "/sys/devices/system/cpu/cpufreq/policy9/boost"
+      ],
+      "value": {
+        "/sys/devices/system/cpu/cpufreq/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy0/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy1/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy10/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy11/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy12/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy13/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy14/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy15/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy16/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy17/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy18/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy19/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy2/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy20/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy21/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy22/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy23/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy24/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy25/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy26/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy27/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy28/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy29/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy3/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy30/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy31/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy4/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy5/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy6/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy7/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy8/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy9/boost": "0"
+      },
+      "expected": "0",
+      "matches": true,
+      "detail": "33 knob(s) read 0"
+    },
+    {
+      "attribute": "cpu_freq_outcome",
+      "kind": "outcome",
+      "tier": "2",
+      "paths": [],
+      "value": {
+        "scaling_cur_freq_khz": {
+          "cpu0": "4465472",
+          "cpu1": "4465950",
+          "cpu2": "4475441",
+          "cpu3": "4466433",
+          "cpu4": "4464893",
+          "cpu5": "4457723"
+        },
+        "core_throttle_count": {}
+      },
+      "expected": null,
+      "matches": null,
+      "detail": "single sample at phase time; idle-box frequencies, not a load reading"
+    },
+    {
+      "attribute": "cstates",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/sys/devices/system/cpu/cpu*/cpuidle"
+      ],
+      "value": {
+        "cpu0": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu1": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu2": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu3": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu4": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu5": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu6": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu7": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu8": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu9": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu10": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu11": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu12": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu13": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu14": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu15": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu16": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu17": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu18": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu19": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu20": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu21": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu22": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu23": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu24": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu25": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu26": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu27": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu28": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu29": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu30": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu31": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ]
+      },
+      "expected": [
+        "C2",
+        "C3"
+      ],
+      "matches": true,
+      "detail": "disabled by exit latency > 2 us"
+    },
+    {
+      "attribute": "thp_enabled",
+      "kind": "setting",
+      "tier": "1",
+      "paths": [
+        "/sys/kernel/mm/transparent_hugepage/enabled"
+      ],
+      "value": "madvise",
+      "expected": "madvise",
+      "matches": true,
+      "detail": "raw: always [madvise] never"
+    },
+    {
+      "attribute": "thp_defrag",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/sys/kernel/mm/transparent_hugepage/defrag"
+      ],
+      "value": "madvise",
+      "expected": null,
+      "matches": null,
+      "detail": "raw: always defer defer+madvise [madvise] never"
+    },
+    {
+      "attribute": "thp_shmem_enabled",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/sys/kernel/mm/transparent_hugepage/shmem_enabled"
+      ],
+      "value": "never",
+      "expected": null,
+      "matches": null,
+      "detail": "raw: always within_size advise [never] deny force"
+    },
+    {
+      "attribute": "irq_default_smp_affinity",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/proc/irq/default_smp_affinity"
+      ],
+      "value": "00008000",
+      "expected": "15",
+      "matches": true,
+      "detail": "governs only interrupts allocated after the write; it does not move the ones already on the SUT cores"
+    },
+    {
+      "attribute": "irq_smp_affinity",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/proc/irq/*/smp_affinity_list"
+      ],
+      "value": {
+        "0": "0-31",
+        "1": "0-31",
+        "10": "0-31",
+        "100": "26",
+        "101": "11",
+        "102": "27",
+        "103": "12",
+        "104": "28",
+        "105": "13",
+        "106": "29",
+        "107": "14",
+        "108": "30",
+        "109": "15",
+        "11": "0-31",
+        "110": "31",
+        "111": "2",
+        "112": "18",
+        "113": "0",
+        "114": "16",
+        "115": "26",
+        "116": "28",
+        "117": "11",
+        "118": "21",
+        "119": "9",
+        "12": "0-31",
+        "120": "7",
+        "121": "18",
+        "123": "0-31",
+        "124": "0-31",
+        "13": "0-31",
+        "14": "0-31",
+        "15": "0-31",
+        "2": "0-31",
+        "26": "0-31",
+        "27": "0-31",
+        "28": "3,19",
+        "29": "4,20",
+        "3": "0-31",
+        "30": "9,25",
+        "31": "12,28",
+        "32": "8,24",
+        "33": "1,17",
+        "35": "11,27",
+        "37": "0,16",
+        "39": "13,29",
+        "4": "0-31",
+        "40": "14,30",
+        "41": "7,23",
+        "42": "5,21",
+        "43": "2,18",
+        "44": "25",
+        "45": "15,31",
+        "5": "0-31",
+        "54": "6,22",
+        "6": "0-31",
+        "63": "10,26",
+        "7": "0-31",
+        "71": "8,24",
+        "8": "0-31",
+        "80": "0-31",
+        "82": "2",
+        "83": "1",
+        "84": "17",
+        "85": "3",
+        "86": "19",
+        "87": "4",
+        "88": "20",
+        "89": "5",
+        "9": "0-31",
+        "90": "21",
+        "91": "6",
+        "92": "22",
+        "93": "7",
+        "94": "23",
+        "95": "8",
+        "96": "24",
+        "97": "9",
+        "98": "25",
+        "99": "10"
+      },
+      "expected": "no intersection with SUT cpus 0-5",
+      "matches": false,
+      "detail": "0(IR-IO-APIC 2-edge timer)=0-31; 1()=0-31; 10(IR-IO-APIC 10-edge AMDI0010:00)=0-31; 11(IR-IO-APIC 11-edge AMDI0010:01)=0-31; 111(IR-PCI-MSIX-0000:0e:00.0 29-edge nvme0q29)=2; 113(IR-PCI-MSIX-0000:0e:00.0 31-edge nvme0q31)=0; 12()=0-31; 123(IR-PCI-MSI-0000:0f:00.1 0-edge snd_hda_intel:card0)=0-31; +26 more"
+    },
+    {
+      "attribute": "irq_counts_on_sut_cores",
+      "kind": "outcome",
+      "tier": "2",
+      "paths": [
+        "/proc/interrupts"
+      ],
+      "value": {
+        "0": 41998250,
+        "1": 35228946,
+        "2": 40379056,
+        "3": 34931812,
+        "4": 33970386,
+        "5": 38636626
+      },
+      "expected": null,
+      "matches": null,
+      "detail": "lifetime counts at phase time; a delta needs two reads"
+    },
+    {
+      "attribute": "daemon_cpus_allowed",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/proc/<pid>/status"
+      ],
+      "value": {
+        "docker.service": "0-31",
+        "containerd.service": "0-31",
+        "systemd-journald.service": "0-31"
+      },
+      "expected": null,
+      "matches": null,
+      "detail": "recorded, not gated: the system.conf.d drop-in applies to units started after it, and host-setup.sh issues no set-property, so a running dockerd keeps its old mask"
+    },
+    {
+      "attribute": "pgdata_attrs",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/var/lib/docker/volumes/ledgerline_pgdata/_data"
+      ],
+      "value": null,
+      "expected": "C (nodatacow)",
+      "matches": null,
+      "detail": "lsattr unavailable or path absent"
+    },
+    {
+      "attribute": "pgdata_mount_options",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/var/lib/docker/volumes/ledgerline_pgdata/_data"
+      ],
+      "value": null,
+      "expected": "noatime",
+      "matches": null,
+      "detail": "findmnt unavailable"
+    },
+    {
+      "attribute": "services_active",
+      "kind": "setting",
+      "tier": "1",
+      "paths": [],
+      "value": {
+        "tuned.service": "inactive",
+        "power-profiles-daemon.service": "inactive",
+        "irqbalance.service": "inactive"
+      },
+      "expected": "not active",
+      "matches": true,
+      "detail": ""
+    },
+    {
+      "attribute": "services_enabled",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [],
+      "value": {
+        "tuned.service": "enabled",
+        "power-profiles-daemon.service": "not-found",
+        "irqbalance.service": "enabled"
+      },
+      "expected": null,
+      "matches": null,
+      "detail": "recorded, not gated: host-setup.sh stops these units, never disables them"
+    },
+    {
+      "attribute": "isolcpus",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/sys/devices/system/cpu/isolated",
+        "/proc/cmdline"
+      ],
+      "value": null,
+      "expected": "0-5",
+      "matches": null,
+      "detail": "source: /sys/devices/system/cpu/isolated (the kernel's own answer); the SUT cores are not isolated"
+    },
+    {
+      "attribute": "nohz_full",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/sys/devices/system/cpu/nohz_full",
+        "/proc/cmdline"
+      ],
+      "value": null,
+      "expected": "0-5",
+      "matches": null,
+      "detail": "source: /sys/devices/system/cpu/nohz_full (the kernel's own answer); the SUT cores are not isolated"
+    },
+    {
+      "attribute": "kernel_cmdline",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/proc/cmdline"
+      ],
+      "value": "BOOT_IMAGE=(hd0,gpt5)/vmlinuz-7.1.8-100.fc43.x86_64 root=UUID=104a5e6f-6a57-46f4-a90b-83a44defe29e ro rootflags=subvol=root rhgb quiet",
+      "expected": null,
+      "matches": null,
+      "detail": "recorded verbatim; no expectation is declared for the whole line"
+    },
+    {
+      "attribute": "topology",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/sys/devices/system/cpu/cpu*/cache/index*/shared_cpu_list"
+      ],
+      "value": {
+        "l3_groups": {
+          "0-7,16-23": [
+            "cpu0",
+            "cpu1",
+            "cpu2",
+            "cpu3",
+            "cpu4",
+            "cpu5",
+            "cpu6",
+            "cpu7",
+            "cpu16",
+            "cpu17",
+            "cpu18",
+            "cpu19",
+            "cpu20",
+            "cpu21",
+            "cpu22",
+            "cpu23"
+          ],
+          "8-15,24-31": [
+            "cpu8",
+            "cpu9",
+            "cpu10",
+            "cpu11",
+            "cpu12",
+            "cpu13",
+            "cpu14",
+            "cpu15",
+            "cpu24",
+            "cpu25",
+            "cpu26",
+            "cpu27",
+            "cpu28",
+            "cpu29",
+            "cpu30",
+            "cpu31"
+          ]
+        },
+        "thread_siblings": {
+          "cpu0": "0,16",
+          "cpu1": "1,17",
+          "cpu2": "2,18",
+          "cpu3": "3,19",
+          "cpu4": "4,20",
+          "cpu5": "5,21",
+          "cpu6": "6,22",
+          "cpu7": "7,23",
+          "cpu8": "8,24",
+          "cpu9": "9,25",
+          "cpu10": "10,26",
+          "cpu11": "11,27",
+          "cpu12": "12,28",
+          "cpu13": "13,29",
+          "cpu14": "14,30",
+          "cpu15": "15,31",
+          "cpu16": "0,16",
+          "cpu17": "1,17",
+          "cpu18": "2,18",
+          "cpu19": "3,19",
+          "cpu20": "4,20",
+          "cpu21": "5,21",
+          "cpu22": "6,22",
+          "cpu23": "7,23",
+          "cpu24": "8,24",
+          "cpu25": "9,25",
+          "cpu26": "10,26",
+          "cpu27": "11,27",
+          "cpu28": "12,28",
+          "cpu29": "13,29",
+          "cpu30": "14,30",
+          "cpu31": "15,31"
+        },
+        "smt_control": "on",
+        "scaling_driver": [
+          "amd-pstate-epp"
+        ],
+        "energy_performance_preference": [
+          "performance"
+        ],
+        "amd_pstate_status": "active"
+      },
+      "expected": null,
+      "matches": null,
+      "detail": "recorded as evidence for the compose cpusets; no target declared"
+    },
+    {
+      "attribute": "systemd_cpuaffinity_dropin",
+      "kind": "setting",
+      "tier": "1",
+      "paths": [
+        "/etc/systemd/system.conf.d/99-ledgerline-affinity.conf"
+      ],
+      "value": "[Manager]\nCPUAffinity=15",
+      "expected": "[Manager]\nCPUAffinity=15",
+      "matches": true,
+      "detail": ""
+    }
+  ],
+  "first_readings": [
+    {
+      "attribute": "governor",
+      "kind": "setting",
+      "tier": "1",
+      "paths": [
+        "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu1/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu10/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu11/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu12/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu13/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu14/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu15/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu16/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu17/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu18/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu19/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu2/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu20/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu21/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu22/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu23/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu24/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu25/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu26/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu27/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu28/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu29/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu3/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu30/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu31/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu4/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu5/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu6/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu7/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu8/cpufreq/scaling_governor",
+        "/sys/devices/system/cpu/cpu9/cpufreq/scaling_governor"
+      ],
+      "value": [
+        "performance"
+      ],
+      "expected": "performance",
+      "matches": true,
+      "detail": "32 cpu(s) read performance"
+    },
+    {
+      "attribute": "boost",
+      "kind": "setting",
+      "tier": "1",
+      "paths": [
+        "/sys/devices/system/cpu/cpufreq/boost",
+        "/sys/devices/system/cpu/cpufreq/policy0/boost",
+        "/sys/devices/system/cpu/cpufreq/policy1/boost",
+        "/sys/devices/system/cpu/cpufreq/policy10/boost",
+        "/sys/devices/system/cpu/cpufreq/policy11/boost",
+        "/sys/devices/system/cpu/cpufreq/policy12/boost",
+        "/sys/devices/system/cpu/cpufreq/policy13/boost",
+        "/sys/devices/system/cpu/cpufreq/policy14/boost",
+        "/sys/devices/system/cpu/cpufreq/policy15/boost",
+        "/sys/devices/system/cpu/cpufreq/policy16/boost",
+        "/sys/devices/system/cpu/cpufreq/policy17/boost",
+        "/sys/devices/system/cpu/cpufreq/policy18/boost",
+        "/sys/devices/system/cpu/cpufreq/policy19/boost",
+        "/sys/devices/system/cpu/cpufreq/policy2/boost",
+        "/sys/devices/system/cpu/cpufreq/policy20/boost",
+        "/sys/devices/system/cpu/cpufreq/policy21/boost",
+        "/sys/devices/system/cpu/cpufreq/policy22/boost",
+        "/sys/devices/system/cpu/cpufreq/policy23/boost",
+        "/sys/devices/system/cpu/cpufreq/policy24/boost",
+        "/sys/devices/system/cpu/cpufreq/policy25/boost",
+        "/sys/devices/system/cpu/cpufreq/policy26/boost",
+        "/sys/devices/system/cpu/cpufreq/policy27/boost",
+        "/sys/devices/system/cpu/cpufreq/policy28/boost",
+        "/sys/devices/system/cpu/cpufreq/policy29/boost",
+        "/sys/devices/system/cpu/cpufreq/policy3/boost",
+        "/sys/devices/system/cpu/cpufreq/policy30/boost",
+        "/sys/devices/system/cpu/cpufreq/policy31/boost",
+        "/sys/devices/system/cpu/cpufreq/policy4/boost",
+        "/sys/devices/system/cpu/cpufreq/policy5/boost",
+        "/sys/devices/system/cpu/cpufreq/policy6/boost",
+        "/sys/devices/system/cpu/cpufreq/policy7/boost",
+        "/sys/devices/system/cpu/cpufreq/policy8/boost",
+        "/sys/devices/system/cpu/cpufreq/policy9/boost"
+      ],
+      "value": {
+        "/sys/devices/system/cpu/cpufreq/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy0/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy1/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy10/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy11/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy12/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy13/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy14/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy15/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy16/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy17/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy18/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy19/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy2/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy20/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy21/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy22/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy23/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy24/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy25/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy26/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy27/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy28/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy29/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy3/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy30/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy31/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy4/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy5/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy6/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy7/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy8/boost": "0",
+        "/sys/devices/system/cpu/cpufreq/policy9/boost": "0"
+      },
+      "expected": "0",
+      "matches": true,
+      "detail": "33 knob(s) read 0"
+    },
+    {
+      "attribute": "cpu_freq_outcome",
+      "kind": "outcome",
+      "tier": "2",
+      "paths": [],
+      "value": {
+        "scaling_cur_freq_khz": {
+          "cpu0": "4465472",
+          "cpu1": "4465950",
+          "cpu2": "4475441",
+          "cpu3": "4466433",
+          "cpu4": "4464893",
+          "cpu5": "4457723"
+        },
+        "core_throttle_count": {}
+      },
+      "expected": null,
+      "matches": null,
+      "detail": "single sample at phase time; idle-box frequencies, not a load reading"
+    },
+    {
+      "attribute": "cstates",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/sys/devices/system/cpu/cpu*/cpuidle"
+      ],
+      "value": {
+        "cpu0": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu1": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu2": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu3": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu4": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu5": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu6": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu7": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu8": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu9": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu10": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu11": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu12": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu13": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu14": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu15": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu16": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu17": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu18": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu19": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu20": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu21": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu22": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu23": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu24": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu25": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu26": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu27": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu28": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu29": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu30": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ],
+        "cpu31": [
+          [
+            "POLL",
+            0,
+            0
+          ],
+          [
+            "C1",
+            0,
+            1
+          ],
+          [
+            "C2",
+            1,
+            18
+          ],
+          [
+            "C3",
+            1,
+            350
+          ]
+        ]
+      },
+      "expected": [
+        "C2",
+        "C3"
+      ],
+      "matches": true,
+      "detail": "disabled by exit latency > 2 us"
+    },
+    {
+      "attribute": "thp_enabled",
+      "kind": "setting",
+      "tier": "1",
+      "paths": [
+        "/sys/kernel/mm/transparent_hugepage/enabled"
+      ],
+      "value": "madvise",
+      "expected": "madvise",
+      "matches": true,
+      "detail": "raw: always [madvise] never"
+    },
+    {
+      "attribute": "thp_defrag",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/sys/kernel/mm/transparent_hugepage/defrag"
+      ],
+      "value": "madvise",
+      "expected": null,
+      "matches": null,
+      "detail": "raw: always defer defer+madvise [madvise] never"
+    },
+    {
+      "attribute": "thp_shmem_enabled",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/sys/kernel/mm/transparent_hugepage/shmem_enabled"
+      ],
+      "value": "never",
+      "expected": null,
+      "matches": null,
+      "detail": "raw: always within_size advise [never] deny force"
+    },
+    {
+      "attribute": "irq_default_smp_affinity",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/proc/irq/default_smp_affinity"
+      ],
+      "value": "00008000",
+      "expected": "15",
+      "matches": true,
+      "detail": "governs only interrupts allocated after the write; it does not move the ones already on the SUT cores"
+    },
+    {
+      "attribute": "irq_smp_affinity",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/proc/irq/*/smp_affinity_list"
+      ],
+      "value": {
+        "0": "0-31",
+        "1": "0-31",
+        "10": "0-31",
+        "100": "26",
+        "101": "11",
+        "102": "27",
+        "103": "12",
+        "104": "28",
+        "105": "13",
+        "106": "29",
+        "107": "14",
+        "108": "30",
+        "109": "15",
+        "11": "0-31",
+        "110": "31",
+        "111": "2",
+        "112": "18",
+        "113": "0",
+        "114": "16",
+        "115": "26",
+        "116": "28",
+        "117": "11",
+        "118": "21",
+        "119": "9",
+        "12": "0-31",
+        "120": "7",
+        "121": "18",
+        "123": "0-31",
+        "124": "0-31",
+        "13": "0-31",
+        "14": "0-31",
+        "15": "0-31",
+        "2": "0-31",
+        "26": "0-31",
+        "27": "0-31",
+        "28": "3,19",
+        "29": "4,20",
+        "3": "0-31",
+        "30": "9,25",
+        "31": "12,28",
+        "32": "8,24",
+        "33": "1,17",
+        "35": "11,27",
+        "37": "0,16",
+        "39": "13,29",
+        "4": "0-31",
+        "40": "14,30",
+        "41": "7,23",
+        "42": "5,21",
+        "43": "2,18",
+        "44": "25",
+        "45": "15,31",
+        "5": "0-31",
+        "54": "6,22",
+        "6": "0-31",
+        "63": "10,26",
+        "7": "0-31",
+        "71": "8,24",
+        "8": "0-31",
+        "80": "0-31",
+        "82": "2",
+        "83": "1",
+        "84": "17",
+        "85": "3",
+        "86": "19",
+        "87": "4",
+        "88": "20",
+        "89": "5",
+        "9": "0-31",
+        "90": "21",
+        "91": "6",
+        "92": "22",
+        "93": "7",
+        "94": "23",
+        "95": "8",
+        "96": "24",
+        "97": "9",
+        "98": "25",
+        "99": "10"
+      },
+      "expected": "no intersection with SUT cpus 0-5",
+      "matches": false,
+      "detail": "0(IR-IO-APIC 2-edge timer)=0-31; 1()=0-31; 10(IR-IO-APIC 10-edge AMDI0010:00)=0-31; 11(IR-IO-APIC 11-edge AMDI0010:01)=0-31; 111(IR-PCI-MSIX-0000:0e:00.0 29-edge nvme0q29)=2; 113(IR-PCI-MSIX-0000:0e:00.0 31-edge nvme0q31)=0; 12()=0-31; 123(IR-PCI-MSI-0000:0f:00.1 0-edge snd_hda_intel:card0)=0-31; +26 more"
+    },
+    {
+      "attribute": "irq_counts_on_sut_cores",
+      "kind": "outcome",
+      "tier": "2",
+      "paths": [
+        "/proc/interrupts"
+      ],
+      "value": {
+        "0": 41998250,
+        "1": 35228946,
+        "2": 40379056,
+        "3": 34931812,
+        "4": 33970386,
+        "5": 38636626
+      },
+      "expected": null,
+      "matches": null,
+      "detail": "lifetime counts at phase time; a delta needs two reads"
+    },
+    {
+      "attribute": "daemon_cpus_allowed",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/proc/<pid>/status"
+      ],
+      "value": {
+        "docker.service": "0-31",
+        "containerd.service": "0-31",
+        "systemd-journald.service": "0-31"
+      },
+      "expected": null,
+      "matches": null,
+      "detail": "recorded, not gated: the system.conf.d drop-in applies to units started after it, and host-setup.sh issues no set-property, so a running dockerd keeps its old mask"
+    },
+    {
+      "attribute": "pgdata_attrs",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/var/lib/docker/volumes/ledgerline_pgdata/_data"
+      ],
+      "value": null,
+      "expected": "C (nodatacow)",
+      "matches": null,
+      "detail": "lsattr unavailable or path absent"
+    },
+    {
+      "attribute": "pgdata_mount_options",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/var/lib/docker/volumes/ledgerline_pgdata/_data"
+      ],
+      "value": null,
+      "expected": "noatime",
+      "matches": null,
+      "detail": "findmnt unavailable"
+    },
+    {
+      "attribute": "services_active",
+      "kind": "setting",
+      "tier": "1",
+      "paths": [],
+      "value": {
+        "tuned.service": "inactive",
+        "power-profiles-daemon.service": "inactive",
+        "irqbalance.service": "inactive"
+      },
+      "expected": "not active",
+      "matches": true,
+      "detail": ""
+    },
+    {
+      "attribute": "services_enabled",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [],
+      "value": {
+        "tuned.service": "enabled",
+        "power-profiles-daemon.service": "not-found",
+        "irqbalance.service": "enabled"
+      },
+      "expected": null,
+      "matches": null,
+      "detail": "recorded, not gated: host-setup.sh stops these units, never disables them"
+    },
+    {
+      "attribute": "isolcpus",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/sys/devices/system/cpu/isolated",
+        "/proc/cmdline"
+      ],
+      "value": null,
+      "expected": "0-5",
+      "matches": null,
+      "detail": "source: /sys/devices/system/cpu/isolated (the kernel's own answer); the SUT cores are not isolated"
+    },
+    {
+      "attribute": "nohz_full",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/sys/devices/system/cpu/nohz_full",
+        "/proc/cmdline"
+      ],
+      "value": null,
+      "expected": "0-5",
+      "matches": null,
+      "detail": "source: /sys/devices/system/cpu/nohz_full (the kernel's own answer); the SUT cores are not isolated"
+    },
+    {
+      "attribute": "kernel_cmdline",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/proc/cmdline"
+      ],
+      "value": "BOOT_IMAGE=(hd0,gpt5)/vmlinuz-7.1.8-100.fc43.x86_64 root=UUID=104a5e6f-6a57-46f4-a90b-83a44defe29e ro rootflags=subvol=root rhgb quiet",
+      "expected": null,
+      "matches": null,
+      "detail": "recorded verbatim; no expectation is declared for the whole line"
+    },
+    {
+      "attribute": "topology",
+      "kind": "setting",
+      "tier": "2",
+      "paths": [
+        "/sys/devices/system/cpu/cpu*/cache/index*/shared_cpu_list"
+      ],
+      "value": {
+        "l3_groups": {
+          "0-7,16-23": [
+            "cpu0",
+            "cpu1",
+            "cpu2",
+            "cpu3",
+            "cpu4",
+            "cpu5",
+            "cpu6",
+            "cpu7",
+            "cpu16",
+            "cpu17",
+            "cpu18",
+            "cpu19",
+            "cpu20",
+            "cpu21",
+            "cpu22",
+            "cpu23"
+          ],
+          "8-15,24-31": [
+            "cpu8",
+            "cpu9",
+            "cpu10",
+            "cpu11",
+            "cpu12",
+            "cpu13",
+            "cpu14",
+            "cpu15",
+            "cpu24",
+            "cpu25",
+            "cpu26",
+            "cpu27",
+            "cpu28",
+            "cpu29",
+            "cpu30",
+            "cpu31"
+          ]
+        },
+        "thread_siblings": {
+          "cpu0": "0,16",
+          "cpu1": "1,17",
+          "cpu2": "2,18",
+          "cpu3": "3,19",
+          "cpu4": "4,20",
+          "cpu5": "5,21",
+          "cpu6": "6,22",
+          "cpu7": "7,23",
+          "cpu8": "8,24",
+          "cpu9": "9,25",
+          "cpu10": "10,26",
+          "cpu11": "11,27",
+          "cpu12": "12,28",
+          "cpu13": "13,29",
+          "cpu14": "14,30",
+          "cpu15": "15,31",
+          "cpu16": "0,16",
+          "cpu17": "1,17",
+          "cpu18": "2,18",
+          "cpu19": "3,19",
+          "cpu20": "4,20",
+          "cpu21": "5,21",
+          "cpu22": "6,22",
+          "cpu23": "7,23",
+          "cpu24": "8,24",
+          "cpu25": "9,25",
+          "cpu26": "10,26",
+          "cpu27": "11,27",
+          "cpu28": "12,28",
+          "cpu29": "13,29",
+          "cpu30": "14,30",
+          "cpu31": "15,31"
+        },
+        "smt_control": "on",
+        "scaling_driver": [
+          "amd-pstate-epp"
+        ],
+        "energy_performance_preference": [
+          "performance"
+        ],
+        "amd_pstate_status": "active"
+      },
+      "expected": null,
+      "matches": null,
+      "detail": "recorded as evidence for the compose cpusets; no target declared"
+    },
+    {
+      "attribute": "systemd_cpuaffinity_dropin",
+      "kind": "setting",
+      "tier": "1",
+      "paths": [
+        "/etc/systemd/system.conf.d/99-ledgerline-affinity.conf"
+      ],
+      "value": "[Manager]\nCPUAffinity=15",
+      "expected": "[Manager]\nCPUAffinity=15",
+      "matches": true,
+      "detail": ""
+    }
+  ],
+  "changed_during_run": [],
+  "tier1_failures": [],
+  "tier1_not_evaluable": [],
+  "tier2_notes": [
+    "irq_smp_affinity: read {'0': '0-31', '1': '0-31', '10': '0-31', '100': '26', '101': '11', '102': '27', '103': '12', '104': '28', '105': '13', '106': '29', '107': '14', '108': '30', '109': '15', '11': '0-31', '110': '31',..., expected 'no intersection with SUT cpus 0-5' (0(IR-IO-APIC 2-edge timer)=0-31; 1()=0-31; 10(IR-IO-APIC 10-edge AMDI0010:00)=0-31; 11(IR-IO-APIC 11-edge AMDI0010:01)=0-31; 111(IR-PCI-MSIX-0000:0e:00.0 29-edge nvme0q29)=2; 113(IR-PCI-MSIX-0000:0e:00.0 31-edge nvme0q31)=0; 12()=0-31; 123(IR-PCI-MSI-0000:0f:00.1 0-edge snd_hda_intel:card0)=0-31; +26 more)",
+    "pgdata_attrs: not evaluable on this box (lsattr unavailable or path absent)",
+    "pgdata_mount_options: not evaluable on this box (findmnt unavailable)",
+    "isolcpus: not evaluable on this box (source: /sys/devices/system/cpu/isolated (the kernel's own answer); the SUT cores are not isolated)",
+    "nohz_full: not evaluable on this box (source: /sys/devices/system/cpu/nohz_full (the kernel's own answer); the SUT cores are not isolated)"
+  ]
+}

@@ -1,0 +1,9 @@
+# The repo-root .gitattributes lists .cs/.csproj/.go/.py/.sql but no Java entries, and
+# `* text=auto` alone will not keep mvnw LF-and-executable on a mixed-platform checkout.
+*.java   text eol=lf
+*.xml    text eol=lf
+*.yaml   text eol=lf
+*.properties text eol=lf
+mvnw     text eol=lf
+mvnw.cmd text eol=crlf
+Dockerfile text eol=lf

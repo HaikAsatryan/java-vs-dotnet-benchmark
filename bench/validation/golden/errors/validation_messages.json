@@ -1,0 +1,15 @@
+{
+  "_note": "Frozen per-rule validation message VALUES from spec/openapi.yaml x-validation-messages. Both services emit these EXACT strings as the values inside Problem.errors. The errors-map KEYS (field paths like Items[2].Sku) are defined by .NET's built-in validation emission and compared structurally (Go matches what .NET emits) rather than pinned here. See services/dotnet/NOTES-equivalence.md.",
+  "required": "is required",
+  "sku_pattern": "must match ^[A-Z]{2}-[0-9]{4}$",
+  "currency_pattern": "must match ^[A-Z]{3}$",
+  "status_enum": "must be one of: draft, open",
+  "qty_range": "must be between 1 and 1000",
+  "unit_price_range": "must be between 0 and 100000000",
+  "items_create_count": "must contain between 3 and 8 items",
+  "items_quote_count": "must contain exactly 50 items",
+  "description_length": "must be between 1 and 200 characters",
+  "page_min": "must be >= 1",
+  "page_max": "must be <= 100000",
+  "id_positive": "must be a positive integer"
+}

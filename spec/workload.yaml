@@ -1,0 +1,99 @@
+# spec/workload.yaml — frozen workload definition.
+# Consumed by: the vegeta target generator (bench/runner), the seeder hot-set
+# warm-touch, and the cache-hit construction. Services do NOT read this file.
+
+mix:                      # request mix percentages (sum = 100)
+  get_invoice:    30      # GET /invoices/{id}
+  list_invoices:  25      # GET /customers/{id}/invoices?page=N
+  pricing_quote:  20      # POST /pricing/quote
+  create_invoice: 15      # POST /invoices
+  pdf_stub:        8      # POST /invoices/{id}/pdf-stub
+  healthz:         2      # GET /healthz
+
+zipf:
+  alpha: 1.0              # classic Zipf exponent s = 1.0, inherited from the prior post
+  note: >
+    alpha is the rank exponent s (weight of rank k proportional to 1/k^alpha).
+    numpy.random.zipf parameterizes a = s + 1; implementations MUST NOT pass 1.0
+    to numpy.random.zipf. The reference generator uses an explicit finite-support
+    inverse-CDF Zipf over ranks 1..N to avoid the ambiguity entirely.
+
+# Which keyspace each endpoint draws its id from, and how. CHECKED, not merely
+# declared: bench/ledgerbench/vegeta.assert_keyspace_contract raises before a
+# targets file is written if the generator's own endpoint -> keyspace mapping or
+# its Zipf draw stops matching this block.
+#
+# The keyspace SIZE is deliberately not here. It was `seeded_range`, a
+# full-scale pair that stayed [1, 5000000] whatever tier ran; the corpus is
+# `seeding.scales[<the run's seed_scale>]` below, which is the table the
+# generator and the manifest both read.
+keyspaces:
+  customers:
+    selection: zipf                  # rank 1 = customer id 1
+    used_by: [list_invoices, create_invoice]
+  invoices:
+    selection: zipf                  # rank 1 = invoice id 1
+    used_by: [get_invoice, pdf_stub]
+    runtime_created_ids: >
+      v1 LIMITATION (documented): ids created by POST /invoices during a run do
+      NOT enter the GET/pdf keyspace. An open-loop static targets file cannot
+      reference runtime-assigned IDENTITY values without brittle id prediction.
+      Cache invalidation on create is still exercised (DEL on the new id).
+      Recent-ids ring is a v1.5 candidate.
+
+page_distribution:        # GET /customers/{id}/invoices?page=N — pages 1..5, skewed to 1
+  weights: { 1: 0.70, 2: 0.15, 3: 0.08, 4: 0.04, 5: 0.03 }
+
+payloads:
+  create_invoice:         # target ~2 KB body, 6..8 items realized (see below)
+    # The DRAW is uniform int over [min, max], but the generator then GROWS the
+    # item count toward max while the fully-padded body still falls short of
+    # target_bytes - 512: a 3-item body cannot reach ~1536 B, so the REALIZED
+    # live-traffic distribution at these dials is {6: ~67%, 7: ~16%, 8: ~17%},
+    # mean 6.50, and no create with fewer than 6 items is ever sent. Corrected
+    # at the P7 freeze (review finding C1) -- this line previously said
+    # "uniform int" and spec/db-access.md's round-trip arithmetic was computed
+    # from the distribution that does not run. NOTE the seeded rows keep the
+    # true uniform 3..8 (the Go seeder pads nothing), so stored and
+    # live-created invoices differ in item-count mix; reads are unaffected
+    # (row shape, not row count, is what reads touch).
+    item_count: { min: 3, max: 8 }
+    target_bytes: 2048                    # +/- 512 asserted in validation
+    fields:
+      currency: { const: "USD" }
+      status:   { choice: ["draft", "open"], weights: [0.5, 0.5] }
+      sku:      { format: "<CAT>-<NNNN>", categories: [EL, GR, HZ, LX, DG, FU, MD, AP, BK, TL, ZZ] }
+      description: { filler: true, note: padded so the whole body lands near target_bytes }
+      qty: { uniform_int: [1, 50] }
+      unit_price_minor: { uniform_int: [100, 5000000] }
+  pricing_quote:          # target ~8 KB body, exactly 50 items
+    item_count: { min: 50, max: 50 }
+    target_bytes: 8192                    # +/- 1024 asserted in validation
+    fields:
+      currency: { const: "USD" }
+      sku:      { format: "<CAT>-<NNNN>", categories: [EL, GR, HZ, LX, DG, FU, MD, AP, BK, TL, ZZ] }
+      qty: { uniform_int: [1, 200] }      # spans every qty tier
+      unit_price_minor: { uniform_int: [100, 1000000] }
+
+rng:
+  # Deterministic request streams. Distinct from the SEEDER seed (42): one seeds
+  # database contents, the other the request stream. Both echoed in the manifest.
+  target_generator_seed_default: 12345
+  algorithm: PCG64
+
+cache_construction:
+  # RECORDED AND REPORTED beside the realized rate, never asserted against it
+  # (spec/cache.md): `manifest.cache_stats` carries the measured Redis
+  # hits/misses delta plus this target, the analysis prints both, and the
+  # capacity re-gate projects from the MEASURED rate. `asserted_in_manifest:
+  # true` stood here until 2026-08-24 with zero readers -- a pre-registered
+  # check, hashed into config_hash, that nothing performed.
+  target_hit_rate: 0.80   # by construction: Zipf alpha=1.0 + TTL (spec/cache.md)
+  capacity_gate_lever: "raise CACHE_TTL_SECONDS / hot-set to reach 0.90 (pre-registered capacity-gate lever 2)"
+
+seeding:                  # mirrors spec/db-access.md seeder contract
+  seed: 42
+  scales:
+    full:  { customers: 1000000, invoices: 5000000 }
+    smoke: { customers: 1000,    invoices: 5000 }
+  items_per_invoice: { min: 3, max: 8 }

@@ -1,0 +1,6 @@
+{
+  "detail": "The request payload failed validation.",
+  "status": 400,
+  "title": "Validation failed",
+  "type": "https://ledgerline.test/problems/validation"
+}

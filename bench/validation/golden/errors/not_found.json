@@ -1,0 +1,6 @@
+{
+  "detail": "The requested resource does not exist.",
+  "status": 404,
+  "title": "Not found",
+  "type": "https://ledgerline.test/problems/not-found"
+}

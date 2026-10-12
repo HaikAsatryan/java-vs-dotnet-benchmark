@@ -1,0 +1,106 @@
+{
+  "knee_rps": 3715.0824314162064,
+  "usable_rungs": 12,
+  "total_rungs": 12,
+  "measured_at_cores": 3,
+  "lower_bound": true,
+  "detail": "ladder never broke (every rung tracked): knee is a LOWER BOUND, not a ceiling",
+  "rungs": [
+    {
+      "rate": 500,
+      "achieved": 500.00665795115543,
+      "p99_ms": 11.76208,
+      "error_rate": 0.0,
+      "pg_cpu_delta_usec": 33927173,
+      "usable": true
+    },
+    {
+      "rate": 600,
+      "achieved": 600.0069077869211,
+      "p99_ms": 2.643708,
+      "error_rate": 0.0,
+      "pg_cpu_delta_usec": 35669778,
+      "usable": true
+    },
+    {
+      "rate": 720,
+      "achieved": 720.0127599417809,
+      "p99_ms": 2.753935,
+      "error_rate": 0.0,
+      "pg_cpu_delta_usec": 41617034,
+      "usable": true
+    },
+    {
+      "rate": 864,
+      "achieved": 864.0121172550589,
+      "p99_ms": 2.847953,
+      "error_rate": 9.999900000945416e-06,
+      "pg_cpu_delta_usec": 49072646,
+      "usable": true
+    },
+    {
+      "rate": 1037,
+      "achieved": 1037.0083842273145,
+      "p99_ms": 2.994361,
+      "error_rate": 2.9999100026989467e-05,
+      "pg_cpu_delta_usec": 48547809,
+      "usable": true
+    },
+    {
+      "rate": 1244,
+      "achieved": 1244.0187463975824,
+      "p99_ms": 3.471389,
+      "error_rate": 9.999900000945416e-06,
+      "pg_cpu_delta_usec": 49291925,
+      "usable": true
+    },
+    {
+      "rate": 1493,
+      "achieved": 1493.0202816843287,
+      "p99_ms": 15.322469,
+      "error_rate": 1.999960000798051e-05,
+      "pg_cpu_delta_usec": 47785182,
+      "usable": true
+    },
+    {
+      "rate": 1792,
+      "achieved": 1792.0224774601124,
+      "p99_ms": 4.112345,
+      "error_rate": 1.999960000798051e-05,
+      "pg_cpu_delta_usec": 45909919,
+      "usable": true
+    },
+    {
+      "rate": 2150,
+      "achieved": 2150.0471398157906,
+      "p99_ms": 3.569517,
+      "error_rate": 1.999960000798051e-05,
+      "pg_cpu_delta_usec": 43133801,
+      "usable": true
+    },
+    {
+      "rate": 2580,
+      "achieved": 2580.042892251005,
+      "p99_ms": 31.642191,
+      "error_rate": 1.999960000798051e-05,
+      "pg_cpu_delta_usec": 40306186,
+      "usable": true
+    },
+    {
+      "rate": 3096,
+      "achieved": 3096.1033861728392,
+      "p99_ms": 72.834737,
+      "error_rate": 1.999960000798051e-05,
+      "pg_cpu_delta_usec": 38082350,
+      "usable": true
+    },
+    {
+      "rate": 3715,
+      "achieved": 3715.0824314162064,
+      "p99_ms": 73.227988,
+      "error_rate": 1.999960000798051e-05,
+      "pg_cpu_delta_usec": 36182972,
+      "usable": true
+    }
+  ]
+}

@@ -1,0 +1,6820 @@
+{
+  "schema_version": 8,
+  "created_utc": "2026-08-27T17:46:11.010400Z",
+  "identity": {
+    "run_id": "full-20260827T174611-fedora",
+    "git_sha": "ff1d98e528f4531bcf6582ab940aae882148dae6",
+    "git_dirty": false,
+    "git_sha_changed_during_run": [],
+    "schema_sql_sha256": "9fd495d3a96b9b1bc46b05d00c021cc01e4e3da68979f34d12123e14a5c1e16c",
+    "config_hash": "e9fef8d3abbba8db034084d6295d3169a302a10a14ee1a13bc0d94b431fa3166"
+  },
+  "versions": {
+    "source": "/runtime-stats build block + docker inspect RepoDigests",
+    "note": "runtime_by_slot / service_version_by_slot / image_digests are read off the running containers; library and infrastructure-image pins are not recorded here -- they are resolved by identity.git_sha against the build files and infra/compose.yaml",
+    "image_digests": {
+      "sut-java": "ledgerline-sut-java@sha256:40de28fdc11a54545e96e771f918e156e680cd9c9935ac416f6aa98376628a3a",
+      "sut-dotnet": "ledgerline-sut-dotnet@sha256:b677594a55c61831c0514203f24906432d1b8748dd697e506d3a4ea5f0008e12"
+    },
+    "runtime_by_slot": {
+      "java": "25.0.4+7-LTS",
+      "dotnet": "10.0.11"
+    },
+    "service_version_by_slot": {
+      "java": "dev",
+      "dotnet": "dev"
+    }
+  },
+  "knobs_by_slot": {
+    "java": {
+      "db_pool_max": null,
+      "db_pool_min": null,
+      "db_conn_lifetime_seconds": null,
+      "db_pool_warm_on_start": null,
+      "redis_pool_max": null,
+      "cache_ttl_seconds": null,
+      "log_queue_len": null,
+      "max_ram_percent": null,
+      "gc_engine": null,
+      "prepare_threshold": null,
+      "gc_dynamic_adaptation_mode": null,
+      "max_auto_prepare": null,
+      "auto_prepare_min_usages": null,
+      "data_layer": null,
+      "processor_count": 6
+    },
+    "dotnet": {
+      "db_pool_max": null,
+      "db_pool_min": null,
+      "db_conn_lifetime_seconds": null,
+      "db_pool_warm_on_start": null,
+      "redis_pool_max": null,
+      "cache_ttl_seconds": null,
+      "log_queue_len": null,
+      "max_ram_percent": null,
+      "gc_engine": null,
+      "prepare_threshold": null,
+      "gc_dynamic_adaptation_mode": null,
+      "max_auto_prepare": null,
+      "auto_prepare_min_usages": null,
+      "data_layer": null,
+      "processor_count": 6
+    }
+  },
+  "knobs_by_cell": {
+    "headline.mixed.gc-default": {
+      "cell_id": "headline.mixed.gc-default",
+      "extra_env": {},
+      "by_slot": {
+        "java": {
+          "db_pool_max": null,
+          "db_pool_min": null,
+          "db_conn_lifetime_seconds": null,
+          "db_pool_warm_on_start": null,
+          "redis_pool_max": null,
+          "cache_ttl_seconds": null,
+          "log_queue_len": null,
+          "max_ram_percent": null,
+          "gc_engine": null,
+          "prepare_threshold": null,
+          "gc_dynamic_adaptation_mode": null,
+          "max_auto_prepare": null,
+          "auto_prepare_min_usages": null,
+          "data_layer": "jpa",
+          "processor_count": 6
+        },
+        "dotnet": {
+          "db_pool_max": null,
+          "db_pool_min": null,
+          "db_conn_lifetime_seconds": null,
+          "db_pool_warm_on_start": null,
+          "redis_pool_max": null,
+          "cache_ttl_seconds": null,
+          "log_queue_len": null,
+          "max_ram_percent": null,
+          "gc_engine": null,
+          "prepare_threshold": null,
+          "gc_dynamic_adaptation_mode": null,
+          "max_auto_prepare": null,
+          "auto_prepare_min_usages": null,
+          "data_layer": "efcore",
+          "processor_count": 6
+        }
+      }
+    }
+  },
+  "capacity_gate": {
+    "verdict": "pass",
+    "detail": "",
+    "pg_knee_rps": 3715.0824314162064,
+    "pg_knee_measured": true,
+    "pg_knee_usable_rungs": 12,
+    "pg_knee_measured_at_cores": 3,
+    "pg_capacity_projected_rps": 3715.0824314162064,
+    "pg_capacity_projection_basis": "no scaling applied: pg_cores unchanged at 3, so the projection equals the measured knee",
+    "projected_db_rps": 2160.0,
+    "headroom_factor": 1.3,
+    "levers_fired": [],
+    "levers_applied": [],
+    "levers_not_applied": {},
+    "remeasured_pg_knee_rps": null,
+    "projected_knee_rps": 4000.0,
+    "projected_knee_basis": "PLANNING PROXY, not a measurement: ladder_start_rps 500 x 8 = 4000.0 rps of expected mixed-workload knee. The knee this run actually measures is not known until the first cell's fit, which is what the capacity re-gate (phase `capacity_regate`) tests against",
+    "regate": {
+      "verdict": "pass-at-realized-rates",
+      "detail": "PostgreSQL ran at 0.1855 of its 3-core budget over the first cell's operating-point windows (dotnet is the binding slot), within the 0.7692 ceiling that leaves 1.3x headroom",
+      "rule": "PostgreSQL cgroup cpu.stat delta / (pg cores x window wall seconds), per slot, over the first cell's operating-point windows; the MAX over slots must be <= 1/headroom_factor. A direct measurement under the actual cells, not a second projection: see capacity_gate.regate_decision",
+      "pg_utilization": 0.1854706053426692,
+      "pg_utilization_ceiling": 0.7692307692307692,
+      "pg_utilization_by_slot": {
+        "dotnet": 0.1854706053426692,
+        "java": 0.16176278249950335
+      },
+      "pg_utilization_binding_slot": "dotnet",
+      "pg_cpu_seconds": 1250.8408479999998,
+      "window_seconds": 2401.551819878965,
+      "windows": 20,
+      "windows_by_slot": {
+        "dotnet": 10,
+        "java": 10
+      },
+      "pg_cores": 3,
+      "pg_cores_source": "cpuset.cpus.effective, read off the measured windows",
+      "utilization_ok": true,
+      "realized_rates_by_slot": {
+        "java": 4799.0,
+        "dotnet": 4833.0
+      },
+      "realized_knee_rps": 4833.4086273622115,
+      "window_selection": "PG UTILIZATION ONLY: confirm-stage windows at each slot's OWN declared confirm rate (`confirm_rates_by_slot`); the common-rate windows the paired verdict uses sit below the operating point and are excluded. This does NOT describe `measured_cache_hit_rate`, which is taken over ALL of the cell's confirm windows (a hit rate is a property of the workload's key draw, not of the rate it was drawn at) -- `cache_hit_rate_source` states its own window count",
+      "measured_cache_hit_rate": 0.6381090772214169,
+      "cache_hit_rate_source": "MEASURED: redis INFO keyspace deltas over 30 confirm window(s) of headline.mixed.gc-default",
+      "projected_db_rps_at_realized_rates": 2844.7861536304845,
+      "pg_capacity_rps": 3715.0824314162064,
+      "projection_evaluated": false,
+      "projection_ok": null,
+      "projection_skipped_because": "stage 1's create-only ladder never broke, so its 3715.1 rps is a lower bound on PostgreSQL's ceiling, not a measurement of it",
+      "headroom_factor": 1.3,
+      "cells_measured_before_regate": [
+        "headline.mixed.gc-default"
+      ],
+      "degraded": false,
+      "degraded_allowed_by": null
+    },
+    "degraded": false,
+    "degraded_allowed_by": null
+  },
+  "effective_workload": {
+    "spec_mix": {
+      "get_invoice": 30,
+      "list_invoices": 25,
+      "pricing_quote": 20,
+      "create_invoice": 15,
+      "pdf_stub": 8,
+      "healthz": 2
+    },
+    "effective_mix": {
+      "get_invoice": 30,
+      "list_invoices": 25,
+      "pricing_quote": 20,
+      "create_invoice": 15,
+      "pdf_stub": 8,
+      "healthz": 2
+    },
+    "spec_write_share": 0.15,
+    "effective_write_share": 0.15,
+    "spec_cache_hit_rate": 0.8,
+    "effective_cache_hit_rate": 0.8,
+    "spec_pg_cores": 3,
+    "effective_pg_cores": 3,
+    "write_share_absorbed_by": "pricing_quote",
+    "levers_fired": [],
+    "levers_applied": [],
+    "levers_not_applied": {},
+    "env_overrides": {},
+    "note": "spec/ is frozen; the levers produce this effective workload in run state only. Any difference between spec_* and effective_* was APPLIED to the measured cells."
+  },
+  "working_set": {
+    "draw_mode": "per_probe_stream",
+    "draw_seed_formula": "PCG64(seed=workload.rng.target_generator_seed_default, inc=util.pcg64.stream_for(seed, run_id, cell_id, stage, rate, block, phase))",
+    "requests_drawn_per_probe": {
+      "n": 116,
+      "min": 61200.0,
+      "median": 315792.0,
+      "max": 2957796.0
+    },
+    "distinct_invoice_ids_per_probe": {
+      "n": 116,
+      "min": 12323.0,
+      "median": 51642.5,
+      "max": 330163.0
+    },
+    "distinct_customer_ids_per_probe": {
+      "n": 116,
+      "min": 11335.0,
+      "median": 43270.0,
+      "max": 198531.0
+    },
+    "draw_seconds_per_probe": {
+      "n": 116,
+      "min": 0.8339,
+      "median": 1.78355,
+      "max": 9.8215
+    },
+    "prewarm_containment_per_probe": {
+      "n": 116,
+      "min": 0.570201,
+      "median": 0.6035565,
+      "max": 0.635047
+    },
+    "body_pool_create_bodies": 150000,
+    "body_pool_quote_bodies": 200000,
+    "body_pool_distinct_customer_ids": 52097,
+    "seeded_invoices": 5000000,
+    "seeded_customers": 1000000,
+    "cache_ttl_seconds": 300,
+    "cache_ttl_source": "infra/compose.yaml default (no override in force)",
+    "measured_window_seconds": 600,
+    "note": "per-probe draw over 116 measured windows; every attack (each warmup segment, the head-of-window discard, the measured window) draws its own PCG64 stream, so no attack replays another's SEQUENCE. That is not the same as no pre-warming: two independent Zipf draws over one keyspace share the head by construction, and prewarm_containment_per_probe is the measured request-weighted share of each window's reads that an earlier attack had already touched. Counts are the ids the READ path asks for; the write path additionally inserts invoice ids that appear in no target. Create bodies are drawn uniformly from a pool of 150000 built from Zipf customer draws, so the create path's customer_id distribution is that pool's empirical sample rather than a fresh draw per request -- identical on the head, thinner in the tail. The read path is URL-only and unaffected"
+  },
+  "unimplemented_warmup_gates": [],
+  "host_state": {
+    "source": "measured",
+    "note": "read back from sysfs/procfs/systemd after host_setup, on every run start and every resume",
+    "first_read_utc": "2026-08-27T17:46:25.878228Z",
+    "last_read_utc": "2026-08-27T17:46:25.878228Z",
+    "reads": 1,
+    "readings": [
+      {
+        "attribute": "governor",
+        "kind": "setting",
+        "tier": "1",
+        "paths": [
+          "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu1/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu10/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu11/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu12/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu13/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu14/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu15/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu16/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu17/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu18/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu19/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu2/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu20/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu21/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu22/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu23/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu24/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu25/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu26/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu27/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu28/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu29/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu3/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu30/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu31/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu4/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu5/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu6/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu7/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu8/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu9/cpufreq/scaling_governor"
+        ],
+        "value": [
+          "performance"
+        ],
+        "expected": "performance",
+        "matches": true,
+        "detail": "32 cpu(s) read performance"
+      },
+      {
+        "attribute": "boost",
+        "kind": "setting",
+        "tier": "1",
+        "paths": [
+          "/sys/devices/system/cpu/cpufreq/boost",
+          "/sys/devices/system/cpu/cpufreq/policy0/boost",
+          "/sys/devices/system/cpu/cpufreq/policy1/boost",
+          "/sys/devices/system/cpu/cpufreq/policy10/boost",
+          "/sys/devices/system/cpu/cpufreq/policy11/boost",
+          "/sys/devices/system/cpu/cpufreq/policy12/boost",
+          "/sys/devices/system/cpu/cpufreq/policy13/boost",
+          "/sys/devices/system/cpu/cpufreq/policy14/boost",
+          "/sys/devices/system/cpu/cpufreq/policy15/boost",
+          "/sys/devices/system/cpu/cpufreq/policy16/boost",
+          "/sys/devices/system/cpu/cpufreq/policy17/boost",
+          "/sys/devices/system/cpu/cpufreq/policy18/boost",
+          "/sys/devices/system/cpu/cpufreq/policy19/boost",
+          "/sys/devices/system/cpu/cpufreq/policy2/boost",
+          "/sys/devices/system/cpu/cpufreq/policy20/boost",
+          "/sys/devices/system/cpu/cpufreq/policy21/boost",
+          "/sys/devices/system/cpu/cpufreq/policy22/boost",
+          "/sys/devices/system/cpu/cpufreq/policy23/boost",
+          "/sys/devices/system/cpu/cpufreq/policy24/boost",
+          "/sys/devices/system/cpu/cpufreq/policy25/boost",
+          "/sys/devices/system/cpu/cpufreq/policy26/boost",
+          "/sys/devices/system/cpu/cpufreq/policy27/boost",
+          "/sys/devices/system/cpu/cpufreq/policy28/boost",
+          "/sys/devices/system/cpu/cpufreq/policy29/boost",
+          "/sys/devices/system/cpu/cpufreq/policy3/boost",
+          "/sys/devices/system/cpu/cpufreq/policy30/boost",
+          "/sys/devices/system/cpu/cpufreq/policy31/boost",
+          "/sys/devices/system/cpu/cpufreq/policy4/boost",
+          "/sys/devices/system/cpu/cpufreq/policy5/boost",
+          "/sys/devices/system/cpu/cpufreq/policy6/boost",
+          "/sys/devices/system/cpu/cpufreq/policy7/boost",
+          "/sys/devices/system/cpu/cpufreq/policy8/boost",
+          "/sys/devices/system/cpu/cpufreq/policy9/boost"
+        ],
+        "value": {
+          "/sys/devices/system/cpu/cpufreq/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy0/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy1/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy10/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy11/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy12/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy13/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy14/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy15/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy16/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy17/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy18/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy19/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy2/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy20/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy21/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy22/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy23/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy24/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy25/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy26/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy27/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy28/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy29/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy3/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy30/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy31/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy4/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy5/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy6/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy7/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy8/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy9/boost": "0"
+        },
+        "expected": "0",
+        "matches": true,
+        "detail": "33 knob(s) read 0"
+      },
+      {
+        "attribute": "cpu_freq_outcome",
+        "kind": "outcome",
+        "tier": "2",
+        "paths": [],
+        "value": {
+          "scaling_cur_freq_khz": {
+            "cpu0": "4465472",
+            "cpu1": "4465950",
+            "cpu2": "4475441",
+            "cpu3": "4466433",
+            "cpu4": "4464893",
+            "cpu5": "4457723"
+          },
+          "core_throttle_count": {}
+        },
+        "expected": null,
+        "matches": null,
+        "detail": "single sample at phase time; idle-box frequencies, not a load reading"
+      },
+      {
+        "attribute": "cstates",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/sys/devices/system/cpu/cpu*/cpuidle"
+        ],
+        "value": {
+          "cpu0": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu1": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu2": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu3": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu4": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu5": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu6": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu7": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu8": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu9": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu10": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu11": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu12": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu13": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu14": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu15": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu16": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu17": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu18": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu19": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu20": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu21": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu22": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu23": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu24": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu25": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu26": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu27": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu28": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu29": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu30": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu31": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ]
+        },
+        "expected": [
+          "C2",
+          "C3"
+        ],
+        "matches": true,
+        "detail": "disabled by exit latency > 2 us"
+      },
+      {
+        "attribute": "thp_enabled",
+        "kind": "setting",
+        "tier": "1",
+        "paths": [
+          "/sys/kernel/mm/transparent_hugepage/enabled"
+        ],
+        "value": "madvise",
+        "expected": "madvise",
+        "matches": true,
+        "detail": "raw: always [madvise] never"
+      },
+      {
+        "attribute": "thp_defrag",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/sys/kernel/mm/transparent_hugepage/defrag"
+        ],
+        "value": "madvise",
+        "expected": null,
+        "matches": null,
+        "detail": "raw: always defer defer+madvise [madvise] never"
+      },
+      {
+        "attribute": "thp_shmem_enabled",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/sys/kernel/mm/transparent_hugepage/shmem_enabled"
+        ],
+        "value": "never",
+        "expected": null,
+        "matches": null,
+        "detail": "raw: always within_size advise [never] deny force"
+      },
+      {
+        "attribute": "irq_default_smp_affinity",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/proc/irq/default_smp_affinity"
+        ],
+        "value": "00008000",
+        "expected": "15",
+        "matches": true,
+        "detail": "governs only interrupts allocated after the write; it does not move the ones already on the SUT cores"
+      },
+      {
+        "attribute": "irq_smp_affinity",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/proc/irq/*/smp_affinity_list"
+        ],
+        "value": {
+          "0": "0-31",
+          "1": "0-31",
+          "10": "0-31",
+          "100": "26",
+          "101": "11",
+          "102": "27",
+          "103": "12",
+          "104": "28",
+          "105": "13",
+          "106": "29",
+          "107": "14",
+          "108": "30",
+          "109": "15",
+          "11": "0-31",
+          "110": "31",
+          "111": "2",
+          "112": "18",
+          "113": "0",
+          "114": "16",
+          "115": "26",
+          "116": "28",
+          "117": "11",
+          "118": "21",
+          "119": "9",
+          "12": "0-31",
+          "120": "7",
+          "121": "18",
+          "123": "0-31",
+          "124": "0-31",
+          "13": "0-31",
+          "14": "0-31",
+          "15": "0-31",
+          "2": "0-31",
+          "26": "0-31",
+          "27": "0-31",
+          "28": "3,19",
+          "29": "4,20",
+          "3": "0-31",
+          "30": "9,25",
+          "31": "12,28",
+          "32": "8,24",
+          "33": "1,17",
+          "35": "11,27",
+          "37": "0,16",
+          "39": "13,29",
+          "4": "0-31",
+          "40": "14,30",
+          "41": "7,23",
+          "42": "5,21",
+          "43": "2,18",
+          "44": "25",
+          "45": "15,31",
+          "5": "0-31",
+          "54": "6,22",
+          "6": "0-31",
+          "63": "10,26",
+          "7": "0-31",
+          "71": "8,24",
+          "8": "0-31",
+          "80": "0-31",
+          "82": "2",
+          "83": "1",
+          "84": "17",
+          "85": "3",
+          "86": "19",
+          "87": "4",
+          "88": "20",
+          "89": "5",
+          "9": "0-31",
+          "90": "21",
+          "91": "6",
+          "92": "22",
+          "93": "7",
+          "94": "23",
+          "95": "8",
+          "96": "24",
+          "97": "9",
+          "98": "25",
+          "99": "10"
+        },
+        "expected": "no intersection with SUT cpus 0-5",
+        "matches": false,
+        "detail": "0(IR-IO-APIC 2-edge timer)=0-31; 1()=0-31; 10(IR-IO-APIC 10-edge AMDI0010:00)=0-31; 11(IR-IO-APIC 11-edge AMDI0010:01)=0-31; 111(IR-PCI-MSIX-0000:0e:00.0 29-edge nvme0q29)=2; 113(IR-PCI-MSIX-0000:0e:00.0 31-edge nvme0q31)=0; 12()=0-31; 123(IR-PCI-MSI-0000:0f:00.1 0-edge snd_hda_intel:card0)=0-31; +26 more"
+      },
+      {
+        "attribute": "irq_counts_on_sut_cores",
+        "kind": "outcome",
+        "tier": "2",
+        "paths": [
+          "/proc/interrupts"
+        ],
+        "value": {
+          "0": 41998250,
+          "1": 35228946,
+          "2": 40379056,
+          "3": 34931812,
+          "4": 33970386,
+          "5": 38636626
+        },
+        "expected": null,
+        "matches": null,
+        "detail": "lifetime counts at phase time; a delta needs two reads"
+      },
+      {
+        "attribute": "daemon_cpus_allowed",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/proc/<pid>/status"
+        ],
+        "value": {
+          "docker.service": "0-31",
+          "containerd.service": "0-31",
+          "systemd-journald.service": "0-31"
+        },
+        "expected": null,
+        "matches": null,
+        "detail": "recorded, not gated: the system.conf.d drop-in applies to units started after it, and host-setup.sh issues no set-property, so a running dockerd keeps its old mask"
+      },
+      {
+        "attribute": "pgdata_attrs",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/var/lib/docker/volumes/ledgerline_pgdata/_data"
+        ],
+        "value": null,
+        "expected": "C (nodatacow)",
+        "matches": null,
+        "detail": "lsattr unavailable or path absent"
+      },
+      {
+        "attribute": "pgdata_mount_options",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/var/lib/docker/volumes/ledgerline_pgdata/_data"
+        ],
+        "value": null,
+        "expected": "noatime",
+        "matches": null,
+        "detail": "findmnt unavailable"
+      },
+      {
+        "attribute": "services_active",
+        "kind": "setting",
+        "tier": "1",
+        "paths": [],
+        "value": {
+          "tuned.service": "inactive",
+          "power-profiles-daemon.service": "inactive",
+          "irqbalance.service": "inactive"
+        },
+        "expected": "not active",
+        "matches": true,
+        "detail": ""
+      },
+      {
+        "attribute": "services_enabled",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [],
+        "value": {
+          "tuned.service": "enabled",
+          "power-profiles-daemon.service": "not-found",
+          "irqbalance.service": "enabled"
+        },
+        "expected": null,
+        "matches": null,
+        "detail": "recorded, not gated: host-setup.sh stops these units, never disables them"
+      },
+      {
+        "attribute": "isolcpus",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/sys/devices/system/cpu/isolated",
+          "/proc/cmdline"
+        ],
+        "value": null,
+        "expected": "0-5",
+        "matches": null,
+        "detail": "source: /sys/devices/system/cpu/isolated (the kernel's own answer); the SUT cores are not isolated"
+      },
+      {
+        "attribute": "nohz_full",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/sys/devices/system/cpu/nohz_full",
+          "/proc/cmdline"
+        ],
+        "value": null,
+        "expected": "0-5",
+        "matches": null,
+        "detail": "source: /sys/devices/system/cpu/nohz_full (the kernel's own answer); the SUT cores are not isolated"
+      },
+      {
+        "attribute": "kernel_cmdline",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/proc/cmdline"
+        ],
+        "value": "BOOT_IMAGE=(hd0,gpt5)/vmlinuz-7.1.8-100.fc43.x86_64 root=UUID=104a5e6f-6a57-46f4-a90b-83a44defe29e ro rootflags=subvol=root rhgb quiet",
+        "expected": null,
+        "matches": null,
+        "detail": "recorded verbatim; no expectation is declared for the whole line"
+      },
+      {
+        "attribute": "topology",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/sys/devices/system/cpu/cpu*/cache/index*/shared_cpu_list"
+        ],
+        "value": {
+          "l3_groups": {
+            "0-7,16-23": [
+              "cpu0",
+              "cpu1",
+              "cpu2",
+              "cpu3",
+              "cpu4",
+              "cpu5",
+              "cpu6",
+              "cpu7",
+              "cpu16",
+              "cpu17",
+              "cpu18",
+              "cpu19",
+              "cpu20",
+              "cpu21",
+              "cpu22",
+              "cpu23"
+            ],
+            "8-15,24-31": [
+              "cpu8",
+              "cpu9",
+              "cpu10",
+              "cpu11",
+              "cpu12",
+              "cpu13",
+              "cpu14",
+              "cpu15",
+              "cpu24",
+              "cpu25",
+              "cpu26",
+              "cpu27",
+              "cpu28",
+              "cpu29",
+              "cpu30",
+              "cpu31"
+            ]
+          },
+          "thread_siblings": {
+            "cpu0": "0,16",
+            "cpu1": "1,17",
+            "cpu2": "2,18",
+            "cpu3": "3,19",
+            "cpu4": "4,20",
+            "cpu5": "5,21",
+            "cpu6": "6,22",
+            "cpu7": "7,23",
+            "cpu8": "8,24",
+            "cpu9": "9,25",
+            "cpu10": "10,26",
+            "cpu11": "11,27",
+            "cpu12": "12,28",
+            "cpu13": "13,29",
+            "cpu14": "14,30",
+            "cpu15": "15,31",
+            "cpu16": "0,16",
+            "cpu17": "1,17",
+            "cpu18": "2,18",
+            "cpu19": "3,19",
+            "cpu20": "4,20",
+            "cpu21": "5,21",
+            "cpu22": "6,22",
+            "cpu23": "7,23",
+            "cpu24": "8,24",
+            "cpu25": "9,25",
+            "cpu26": "10,26",
+            "cpu27": "11,27",
+            "cpu28": "12,28",
+            "cpu29": "13,29",
+            "cpu30": "14,30",
+            "cpu31": "15,31"
+          },
+          "smt_control": "on",
+          "scaling_driver": [
+            "amd-pstate-epp"
+          ],
+          "energy_performance_preference": [
+            "performance"
+          ],
+          "amd_pstate_status": "active"
+        },
+        "expected": null,
+        "matches": null,
+        "detail": "recorded as evidence for the compose cpusets; no target declared"
+      },
+      {
+        "attribute": "systemd_cpuaffinity_dropin",
+        "kind": "setting",
+        "tier": "1",
+        "paths": [
+          "/etc/systemd/system.conf.d/99-ledgerline-affinity.conf"
+        ],
+        "value": "[Manager]\nCPUAffinity=15",
+        "expected": "[Manager]\nCPUAffinity=15",
+        "matches": true,
+        "detail": ""
+      }
+    ],
+    "first_readings": [
+      {
+        "attribute": "governor",
+        "kind": "setting",
+        "tier": "1",
+        "paths": [
+          "/sys/devices/system/cpu/cpu0/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu1/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu10/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu11/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu12/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu13/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu14/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu15/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu16/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu17/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu18/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu19/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu2/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu20/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu21/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu22/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu23/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu24/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu25/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu26/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu27/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu28/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu29/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu3/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu30/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu31/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu4/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu5/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu6/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu7/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu8/cpufreq/scaling_governor",
+          "/sys/devices/system/cpu/cpu9/cpufreq/scaling_governor"
+        ],
+        "value": [
+          "performance"
+        ],
+        "expected": "performance",
+        "matches": true,
+        "detail": "32 cpu(s) read performance"
+      },
+      {
+        "attribute": "boost",
+        "kind": "setting",
+        "tier": "1",
+        "paths": [
+          "/sys/devices/system/cpu/cpufreq/boost",
+          "/sys/devices/system/cpu/cpufreq/policy0/boost",
+          "/sys/devices/system/cpu/cpufreq/policy1/boost",
+          "/sys/devices/system/cpu/cpufreq/policy10/boost",
+          "/sys/devices/system/cpu/cpufreq/policy11/boost",
+          "/sys/devices/system/cpu/cpufreq/policy12/boost",
+          "/sys/devices/system/cpu/cpufreq/policy13/boost",
+          "/sys/devices/system/cpu/cpufreq/policy14/boost",
+          "/sys/devices/system/cpu/cpufreq/policy15/boost",
+          "/sys/devices/system/cpu/cpufreq/policy16/boost",
+          "/sys/devices/system/cpu/cpufreq/policy17/boost",
+          "/sys/devices/system/cpu/cpufreq/policy18/boost",
+          "/sys/devices/system/cpu/cpufreq/policy19/boost",
+          "/sys/devices/system/cpu/cpufreq/policy2/boost",
+          "/sys/devices/system/cpu/cpufreq/policy20/boost",
+          "/sys/devices/system/cpu/cpufreq/policy21/boost",
+          "/sys/devices/system/cpu/cpufreq/policy22/boost",
+          "/sys/devices/system/cpu/cpufreq/policy23/boost",
+          "/sys/devices/system/cpu/cpufreq/policy24/boost",
+          "/sys/devices/system/cpu/cpufreq/policy25/boost",
+          "/sys/devices/system/cpu/cpufreq/policy26/boost",
+          "/sys/devices/system/cpu/cpufreq/policy27/boost",
+          "/sys/devices/system/cpu/cpufreq/policy28/boost",
+          "/sys/devices/system/cpu/cpufreq/policy29/boost",
+          "/sys/devices/system/cpu/cpufreq/policy3/boost",
+          "/sys/devices/system/cpu/cpufreq/policy30/boost",
+          "/sys/devices/system/cpu/cpufreq/policy31/boost",
+          "/sys/devices/system/cpu/cpufreq/policy4/boost",
+          "/sys/devices/system/cpu/cpufreq/policy5/boost",
+          "/sys/devices/system/cpu/cpufreq/policy6/boost",
+          "/sys/devices/system/cpu/cpufreq/policy7/boost",
+          "/sys/devices/system/cpu/cpufreq/policy8/boost",
+          "/sys/devices/system/cpu/cpufreq/policy9/boost"
+        ],
+        "value": {
+          "/sys/devices/system/cpu/cpufreq/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy0/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy1/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy10/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy11/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy12/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy13/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy14/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy15/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy16/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy17/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy18/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy19/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy2/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy20/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy21/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy22/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy23/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy24/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy25/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy26/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy27/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy28/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy29/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy3/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy30/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy31/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy4/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy5/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy6/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy7/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy8/boost": "0",
+          "/sys/devices/system/cpu/cpufreq/policy9/boost": "0"
+        },
+        "expected": "0",
+        "matches": true,
+        "detail": "33 knob(s) read 0"
+      },
+      {
+        "attribute": "cpu_freq_outcome",
+        "kind": "outcome",
+        "tier": "2",
+        "paths": [],
+        "value": {
+          "scaling_cur_freq_khz": {
+            "cpu0": "4465472",
+            "cpu1": "4465950",
+            "cpu2": "4475441",
+            "cpu3": "4466433",
+            "cpu4": "4464893",
+            "cpu5": "4457723"
+          },
+          "core_throttle_count": {}
+        },
+        "expected": null,
+        "matches": null,
+        "detail": "single sample at phase time; idle-box frequencies, not a load reading"
+      },
+      {
+        "attribute": "cstates",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/sys/devices/system/cpu/cpu*/cpuidle"
+        ],
+        "value": {
+          "cpu0": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu1": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu2": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu3": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu4": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu5": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu6": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu7": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu8": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu9": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu10": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu11": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu12": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu13": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu14": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu15": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu16": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu17": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu18": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu19": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu20": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu21": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu22": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu23": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu24": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu25": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu26": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu27": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu28": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu29": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu30": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ],
+          "cpu31": [
+            [
+              "POLL",
+              0,
+              0
+            ],
+            [
+              "C1",
+              0,
+              1
+            ],
+            [
+              "C2",
+              1,
+              18
+            ],
+            [
+              "C3",
+              1,
+              350
+            ]
+          ]
+        },
+        "expected": [
+          "C2",
+          "C3"
+        ],
+        "matches": true,
+        "detail": "disabled by exit latency > 2 us"
+      },
+      {
+        "attribute": "thp_enabled",
+        "kind": "setting",
+        "tier": "1",
+        "paths": [
+          "/sys/kernel/mm/transparent_hugepage/enabled"
+        ],
+        "value": "madvise",
+        "expected": "madvise",
+        "matches": true,
+        "detail": "raw: always [madvise] never"
+      },
+      {
+        "attribute": "thp_defrag",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/sys/kernel/mm/transparent_hugepage/defrag"
+        ],
+        "value": "madvise",
+        "expected": null,
+        "matches": null,
+        "detail": "raw: always defer defer+madvise [madvise] never"
+      },
+      {
+        "attribute": "thp_shmem_enabled",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/sys/kernel/mm/transparent_hugepage/shmem_enabled"
+        ],
+        "value": "never",
+        "expected": null,
+        "matches": null,
+        "detail": "raw: always within_size advise [never] deny force"
+      },
+      {
+        "attribute": "irq_default_smp_affinity",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/proc/irq/default_smp_affinity"
+        ],
+        "value": "00008000",
+        "expected": "15",
+        "matches": true,
+        "detail": "governs only interrupts allocated after the write; it does not move the ones already on the SUT cores"
+      },
+      {
+        "attribute": "irq_smp_affinity",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/proc/irq/*/smp_affinity_list"
+        ],
+        "value": {
+          "0": "0-31",
+          "1": "0-31",
+          "10": "0-31",
+          "100": "26",
+          "101": "11",
+          "102": "27",
+          "103": "12",
+          "104": "28",
+          "105": "13",
+          "106": "29",
+          "107": "14",
+          "108": "30",
+          "109": "15",
+          "11": "0-31",
+          "110": "31",
+          "111": "2",
+          "112": "18",
+          "113": "0",
+          "114": "16",
+          "115": "26",
+          "116": "28",
+          "117": "11",
+          "118": "21",
+          "119": "9",
+          "12": "0-31",
+          "120": "7",
+          "121": "18",
+          "123": "0-31",
+          "124": "0-31",
+          "13": "0-31",
+          "14": "0-31",
+          "15": "0-31",
+          "2": "0-31",
+          "26": "0-31",
+          "27": "0-31",
+          "28": "3,19",
+          "29": "4,20",
+          "3": "0-31",
+          "30": "9,25",
+          "31": "12,28",
+          "32": "8,24",
+          "33": "1,17",
+          "35": "11,27",
+          "37": "0,16",
+          "39": "13,29",
+          "4": "0-31",
+          "40": "14,30",
+          "41": "7,23",
+          "42": "5,21",
+          "43": "2,18",
+          "44": "25",
+          "45": "15,31",
+          "5": "0-31",
+          "54": "6,22",
+          "6": "0-31",
+          "63": "10,26",
+          "7": "0-31",
+          "71": "8,24",
+          "8": "0-31",
+          "80": "0-31",
+          "82": "2",
+          "83": "1",
+          "84": "17",
+          "85": "3",
+          "86": "19",
+          "87": "4",
+          "88": "20",
+          "89": "5",
+          "9": "0-31",
+          "90": "21",
+          "91": "6",
+          "92": "22",
+          "93": "7",
+          "94": "23",
+          "95": "8",
+          "96": "24",
+          "97": "9",
+          "98": "25",
+          "99": "10"
+        },
+        "expected": "no intersection with SUT cpus 0-5",
+        "matches": false,
+        "detail": "0(IR-IO-APIC 2-edge timer)=0-31; 1()=0-31; 10(IR-IO-APIC 10-edge AMDI0010:00)=0-31; 11(IR-IO-APIC 11-edge AMDI0010:01)=0-31; 111(IR-PCI-MSIX-0000:0e:00.0 29-edge nvme0q29)=2; 113(IR-PCI-MSIX-0000:0e:00.0 31-edge nvme0q31)=0; 12()=0-31; 123(IR-PCI-MSI-0000:0f:00.1 0-edge snd_hda_intel:card0)=0-31; +26 more"
+      },
+      {
+        "attribute": "irq_counts_on_sut_cores",
+        "kind": "outcome",
+        "tier": "2",
+        "paths": [
+          "/proc/interrupts"
+        ],
+        "value": {
+          "0": 41998250,
+          "1": 35228946,
+          "2": 40379056,
+          "3": 34931812,
+          "4": 33970386,
+          "5": 38636626
+        },
+        "expected": null,
+        "matches": null,
+        "detail": "lifetime counts at phase time; a delta needs two reads"
+      },
+      {
+        "attribute": "daemon_cpus_allowed",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/proc/<pid>/status"
+        ],
+        "value": {
+          "docker.service": "0-31",
+          "containerd.service": "0-31",
+          "systemd-journald.service": "0-31"
+        },
+        "expected": null,
+        "matches": null,
+        "detail": "recorded, not gated: the system.conf.d drop-in applies to units started after it, and host-setup.sh issues no set-property, so a running dockerd keeps its old mask"
+      },
+      {
+        "attribute": "pgdata_attrs",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/var/lib/docker/volumes/ledgerline_pgdata/_data"
+        ],
+        "value": null,
+        "expected": "C (nodatacow)",
+        "matches": null,
+        "detail": "lsattr unavailable or path absent"
+      },
+      {
+        "attribute": "pgdata_mount_options",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/var/lib/docker/volumes/ledgerline_pgdata/_data"
+        ],
+        "value": null,
+        "expected": "noatime",
+        "matches": null,
+        "detail": "findmnt unavailable"
+      },
+      {
+        "attribute": "services_active",
+        "kind": "setting",
+        "tier": "1",
+        "paths": [],
+        "value": {
+          "tuned.service": "inactive",
+          "power-profiles-daemon.service": "inactive",
+          "irqbalance.service": "inactive"
+        },
+        "expected": "not active",
+        "matches": true,
+        "detail": ""
+      },
+      {
+        "attribute": "services_enabled",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [],
+        "value": {
+          "tuned.service": "enabled",
+          "power-profiles-daemon.service": "not-found",
+          "irqbalance.service": "enabled"
+        },
+        "expected": null,
+        "matches": null,
+        "detail": "recorded, not gated: host-setup.sh stops these units, never disables them"
+      },
+      {
+        "attribute": "isolcpus",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/sys/devices/system/cpu/isolated",
+          "/proc/cmdline"
+        ],
+        "value": null,
+        "expected": "0-5",
+        "matches": null,
+        "detail": "source: /sys/devices/system/cpu/isolated (the kernel's own answer); the SUT cores are not isolated"
+      },
+      {
+        "attribute": "nohz_full",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/sys/devices/system/cpu/nohz_full",
+          "/proc/cmdline"
+        ],
+        "value": null,
+        "expected": "0-5",
+        "matches": null,
+        "detail": "source: /sys/devices/system/cpu/nohz_full (the kernel's own answer); the SUT cores are not isolated"
+      },
+      {
+        "attribute": "kernel_cmdline",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/proc/cmdline"
+        ],
+        "value": "BOOT_IMAGE=(hd0,gpt5)/vmlinuz-7.1.8-100.fc43.x86_64 root=UUID=104a5e6f-6a57-46f4-a90b-83a44defe29e ro rootflags=subvol=root rhgb quiet",
+        "expected": null,
+        "matches": null,
+        "detail": "recorded verbatim; no expectation is declared for the whole line"
+      },
+      {
+        "attribute": "topology",
+        "kind": "setting",
+        "tier": "2",
+        "paths": [
+          "/sys/devices/system/cpu/cpu*/cache/index*/shared_cpu_list"
+        ],
+        "value": {
+          "l3_groups": {
+            "0-7,16-23": [
+              "cpu0",
+              "cpu1",
+              "cpu2",
+              "cpu3",
+              "cpu4",
+              "cpu5",
+              "cpu6",
+              "cpu7",
+              "cpu16",
+              "cpu17",
+              "cpu18",
+              "cpu19",
+              "cpu20",
+              "cpu21",
+              "cpu22",
+              "cpu23"
+            ],
+            "8-15,24-31": [
+              "cpu8",
+              "cpu9",
+              "cpu10",
+              "cpu11",
+              "cpu12",
+              "cpu13",
+              "cpu14",
+              "cpu15",
+              "cpu24",
+              "cpu25",
+              "cpu26",
+              "cpu27",
+              "cpu28",
+              "cpu29",
+              "cpu30",
+              "cpu31"
+            ]
+          },
+          "thread_siblings": {
+            "cpu0": "0,16",
+            "cpu1": "1,17",
+            "cpu2": "2,18",
+            "cpu3": "3,19",
+            "cpu4": "4,20",
+            "cpu5": "5,21",
+            "cpu6": "6,22",
+            "cpu7": "7,23",
+            "cpu8": "8,24",
+            "cpu9": "9,25",
+            "cpu10": "10,26",
+            "cpu11": "11,27",
+            "cpu12": "12,28",
+            "cpu13": "13,29",
+            "cpu14": "14,30",
+            "cpu15": "15,31",
+            "cpu16": "0,16",
+            "cpu17": "1,17",
+            "cpu18": "2,18",
+            "cpu19": "3,19",
+            "cpu20": "4,20",
+            "cpu21": "5,21",
+            "cpu22": "6,22",
+            "cpu23": "7,23",
+            "cpu24": "8,24",
+            "cpu25": "9,25",
+            "cpu26": "10,26",
+            "cpu27": "11,27",
+            "cpu28": "12,28",
+            "cpu29": "13,29",
+            "cpu30": "14,30",
+            "cpu31": "15,31"
+          },
+          "smt_control": "on",
+          "scaling_driver": [
+            "amd-pstate-epp"
+          ],
+          "energy_performance_preference": [
+            "performance"
+          ],
+          "amd_pstate_status": "active"
+        },
+        "expected": null,
+        "matches": null,
+        "detail": "recorded as evidence for the compose cpusets; no target declared"
+      },
+      {
+        "attribute": "systemd_cpuaffinity_dropin",
+        "kind": "setting",
+        "tier": "1",
+        "paths": [
+          "/etc/systemd/system.conf.d/99-ledgerline-affinity.conf"
+        ],
+        "value": "[Manager]\nCPUAffinity=15",
+        "expected": "[Manager]\nCPUAffinity=15",
+        "matches": true,
+        "detail": ""
+      }
+    ],
+    "changed_during_run": [],
+    "tier1_failures": [],
+    "tier1_not_evaluable": [],
+    "tier2_notes": [
+      "irq_smp_affinity: read {'0': '0-31', '1': '0-31', '10': '0-31', '100': '26', '101': '11', '102': '27', '103': '12', '104': '28', '105': '13', '106': '29', '107': '14', '108': '30', '109': '15', '11': '0-31', '110': '31',..., expected 'no intersection with SUT cpus 0-5' (0(IR-IO-APIC 2-edge timer)=0-31; 1()=0-31; 10(IR-IO-APIC 10-edge AMDI0010:00)=0-31; 11(IR-IO-APIC 11-edge AMDI0010:01)=0-31; 111(IR-PCI-MSIX-0000:0e:00.0 29-edge nvme0q29)=2; 113(IR-PCI-MSIX-0000:0e:00.0 31-edge nvme0q31)=0; 12()=0-31; 123(IR-PCI-MSI-0000:0f:00.1 0-edge snd_hda_intel:card0)=0-31; +26 more)",
+      "pgdata_attrs: not evaluable on this box (lsattr unavailable or path absent)",
+      "pgdata_mount_options: not evaluable on this box (findmnt unavailable)",
+      "isolcpus: not evaluable on this box (source: /sys/devices/system/cpu/isolated (the kernel's own answer); the SUT cores are not isolated)",
+      "nohz_full: not evaluable on this box (source: /sys/devices/system/cpu/nohz_full (the kernel's own answer); the SUT cores are not isolated)"
+    ]
+  },
+  "topology": {
+    "source": "measured",
+    "note": "cpuset.cpus.effective / memory.max / memory.swap.max read off each sampled cgroup at window start; the LAST window's values, with the cpuset the compose overlay asked for beside them. swap_current_max_bytes is the OUTCOME: the largest memory.swap.current seen at any window edge, over ALL windows, and swap_peak_max_bytes is the kernel's own high-water mark beside it, which is what catches a cgroup that swapped out and faulted back between two edges",
+    "containers": {
+      "containerd": {
+        "cpuset_effective": "0-31",
+        "mem_limit_bytes": null,
+        "mem_swap_max": "max",
+        "swap_current_max_bytes": 0,
+        "swap_peak_max_bytes": 0,
+        "expected_cpuset": null,
+        "matches": null,
+        "windows": 116
+      },
+      "dockerd": {
+        "cpuset_effective": "0-31",
+        "mem_limit_bytes": null,
+        "mem_swap_max": "max",
+        "swap_current_max_bytes": 0,
+        "swap_peak_max_bytes": 0,
+        "expected_cpuset": null,
+        "matches": null,
+        "windows": 116
+      },
+      "dotnet": {
+        "cpuset_effective": "0-5",
+        "mem_limit_bytes": 12884901888,
+        "mem_swap_max": "0",
+        "swap_current_max_bytes": 0,
+        "swap_peak_max_bytes": 0,
+        "expected_cpuset": "0-5",
+        "matches": true,
+        "windows": 63
+      },
+      "java": {
+        "cpuset_effective": "0-5",
+        "mem_limit_bytes": 12884901888,
+        "mem_swap_max": "0",
+        "swap_current_max_bytes": 0,
+        "swap_peak_max_bytes": 0,
+        "expected_cpuset": "0-5",
+        "matches": true,
+        "windows": 53
+      },
+      "postgres": {
+        "cpuset_effective": "8-10",
+        "mem_limit_bytes": 8589934592,
+        "mem_swap_max": "0",
+        "swap_current_max_bytes": 0,
+        "swap_peak_max_bytes": 0,
+        "expected_cpuset": "8-10",
+        "matches": true,
+        "windows": 116
+      },
+      "redis": {
+        "cpuset_effective": "14",
+        "mem_limit_bytes": 2147483648,
+        "mem_swap_max": "0",
+        "swap_current_max_bytes": 0,
+        "swap_peak_max_bytes": 0,
+        "expected_cpuset": "14",
+        "matches": true,
+        "windows": 116
+      },
+      "vegeta": {
+        "cpuset_effective": "11-13",
+        "mem_limit_bytes": 4294967296,
+        "mem_swap_max": "0",
+        "swap_current_max_bytes": 0,
+        "swap_peak_max_bytes": 0,
+        "expected_cpuset": "11-13",
+        "matches": true,
+        "windows": 116
+      }
+    },
+    "l3_groups": {
+      "0-7,16-23": "cpu0,cpu1,cpu2,cpu3,cpu4,cpu5,cpu6,cpu7,cpu16,cpu17,cpu18,cpu19,cpu20,cpu21,cpu22,cpu23",
+      "8-15,24-31": "cpu8,cpu9,cpu10,cpu11,cpu12,cpu13,cpu14,cpu15,cpu24,cpu25,cpu26,cpu27,cpu28,cpu29,cpu30,cpu31"
+    },
+    "smt_control": "on"
+  },
+  "postgres_config": {
+    "source": "measured",
+    "note": "SELECT name,setting,unit,source,boot_val,reset_val FROM pg_settings, read at finalization while PostgreSQL was still up",
+    "values": {
+      "allow_alter_system": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "allow_in_place_tablespaces": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "allow_system_table_mods": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "application_name": {
+        "setting": "psql",
+        "unit": "",
+        "source": "client",
+        "boot_val": "",
+        "reset_val": "psql"
+      },
+      "archive_cleanup_command": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "archive_command": {
+        "setting": "(disabled)",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "archive_library": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "archive_mode": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "archive_timeout": {
+        "setting": "0",
+        "unit": "s",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "array_nulls": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "authentication_timeout": {
+        "setting": "60",
+        "unit": "s",
+        "source": "default",
+        "boot_val": "60",
+        "reset_val": "60"
+      },
+      "autovacuum": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "autovacuum_analyze_scale_factor": {
+        "setting": "0.1",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0.1",
+        "reset_val": "0.1"
+      },
+      "autovacuum_analyze_threshold": {
+        "setting": "50",
+        "unit": "",
+        "source": "default",
+        "boot_val": "50",
+        "reset_val": "50"
+      },
+      "autovacuum_freeze_max_age": {
+        "setting": "200000000",
+        "unit": "",
+        "source": "default",
+        "boot_val": "200000000",
+        "reset_val": "200000000"
+      },
+      "autovacuum_max_workers": {
+        "setting": "3",
+        "unit": "",
+        "source": "default",
+        "boot_val": "3",
+        "reset_val": "3"
+      },
+      "autovacuum_multixact_freeze_max_age": {
+        "setting": "400000000",
+        "unit": "",
+        "source": "default",
+        "boot_val": "400000000",
+        "reset_val": "400000000"
+      },
+      "autovacuum_naptime": {
+        "setting": "60",
+        "unit": "s",
+        "source": "default",
+        "boot_val": "60",
+        "reset_val": "60"
+      },
+      "autovacuum_vacuum_cost_delay": {
+        "setting": "2",
+        "unit": "ms",
+        "source": "default",
+        "boot_val": "2",
+        "reset_val": "2"
+      },
+      "autovacuum_vacuum_cost_limit": {
+        "setting": "-1",
+        "unit": "",
+        "source": "default",
+        "boot_val": "-1",
+        "reset_val": "-1"
+      },
+      "autovacuum_vacuum_insert_scale_factor": {
+        "setting": "0.2",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0.2",
+        "reset_val": "0.2"
+      },
+      "autovacuum_vacuum_insert_threshold": {
+        "setting": "1000",
+        "unit": "",
+        "source": "default",
+        "boot_val": "1000",
+        "reset_val": "1000"
+      },
+      "autovacuum_vacuum_max_threshold": {
+        "setting": "100000000",
+        "unit": "",
+        "source": "default",
+        "boot_val": "100000000",
+        "reset_val": "100000000"
+      },
+      "autovacuum_vacuum_scale_factor": {
+        "setting": "0.2",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0.2",
+        "reset_val": "0.2"
+      },
+      "autovacuum_vacuum_threshold": {
+        "setting": "50",
+        "unit": "",
+        "source": "default",
+        "boot_val": "50",
+        "reset_val": "50"
+      },
+      "autovacuum_worker_slots": {
+        "setting": "16",
+        "unit": "",
+        "source": "default",
+        "boot_val": "16",
+        "reset_val": "16"
+      },
+      "autovacuum_work_mem": {
+        "setting": "-1",
+        "unit": "kB",
+        "source": "default",
+        "boot_val": "-1",
+        "reset_val": "-1"
+      },
+      "backend_flush_after": {
+        "setting": "0",
+        "unit": "8kB",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "backslash_quote": {
+        "setting": "safe_encoding",
+        "unit": "",
+        "source": "default",
+        "boot_val": "safe_encoding",
+        "reset_val": "safe_encoding"
+      },
+      "backtrace_functions": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "bgwriter_delay": {
+        "setting": "200",
+        "unit": "ms",
+        "source": "default",
+        "boot_val": "200",
+        "reset_val": "200"
+      },
+      "bgwriter_flush_after": {
+        "setting": "64",
+        "unit": "8kB",
+        "source": "default",
+        "boot_val": "64",
+        "reset_val": "64"
+      },
+      "bgwriter_lru_maxpages": {
+        "setting": "100",
+        "unit": "",
+        "source": "default",
+        "boot_val": "100",
+        "reset_val": "100"
+      },
+      "bgwriter_lru_multiplier": {
+        "setting": "2",
+        "unit": "",
+        "source": "default",
+        "boot_val": "2",
+        "reset_val": "2"
+      },
+      "block_size": {
+        "setting": "8192",
+        "unit": "",
+        "source": "default",
+        "boot_val": "8192",
+        "reset_val": "8192"
+      },
+      "bonjour": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "bonjour_name": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "bytea_output": {
+        "setting": "hex",
+        "unit": "",
+        "source": "default",
+        "boot_val": "hex",
+        "reset_val": "hex"
+      },
+      "check_function_bodies": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "checkpoint_completion_target": {
+        "setting": "0.9",
+        "unit": "",
+        "source": "configuration file",
+        "boot_val": "0.9",
+        "reset_val": "0.9"
+      },
+      "checkpoint_flush_after": {
+        "setting": "32",
+        "unit": "8kB",
+        "source": "default",
+        "boot_val": "32",
+        "reset_val": "32"
+      },
+      "checkpoint_timeout": {
+        "setting": "300",
+        "unit": "s",
+        "source": "default",
+        "boot_val": "300",
+        "reset_val": "300"
+      },
+      "checkpoint_warning": {
+        "setting": "30",
+        "unit": "s",
+        "source": "default",
+        "boot_val": "30",
+        "reset_val": "30"
+      },
+      "client_connection_check_interval": {
+        "setting": "0",
+        "unit": "ms",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "client_encoding": {
+        "setting": "UTF8",
+        "unit": "",
+        "source": "default",
+        "boot_val": "SQL_ASCII",
+        "reset_val": "UTF8"
+      },
+      "client_min_messages": {
+        "setting": "notice",
+        "unit": "",
+        "source": "default",
+        "boot_val": "notice",
+        "reset_val": "notice"
+      },
+      "cluster_name": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "commit_delay": {
+        "setting": "0",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "commit_siblings": {
+        "setting": "5",
+        "unit": "",
+        "source": "default",
+        "boot_val": "5",
+        "reset_val": "5"
+      },
+      "commit_timestamp_buffers": {
+        "setting": "512",
+        "unit": "8kB",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "512"
+      },
+      "compute_query_id": {
+        "setting": "auto",
+        "unit": "",
+        "source": "default",
+        "boot_val": "auto",
+        "reset_val": "auto"
+      },
+      "config_file": {
+        "setting": "/etc/postgresql/postgresql.conf",
+        "unit": "",
+        "source": "override",
+        "boot_val": "",
+        "reset_val": "/etc/postgresql/postgresql.conf"
+      },
+      "constraint_exclusion": {
+        "setting": "partition",
+        "unit": "",
+        "source": "default",
+        "boot_val": "partition",
+        "reset_val": "partition"
+      },
+      "cpu_index_tuple_cost": {
+        "setting": "0.005",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0.005",
+        "reset_val": "0.005"
+      },
+      "cpu_operator_cost": {
+        "setting": "0.0025",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0.0025",
+        "reset_val": "0.0025"
+      },
+      "cpu_tuple_cost": {
+        "setting": "0.01",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0.01",
+        "reset_val": "0.01"
+      },
+      "createrole_self_grant": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "cursor_tuple_fraction": {
+        "setting": "0.1",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0.1",
+        "reset_val": "0.1"
+      },
+      "data_checksums": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "on"
+      },
+      "data_directory": {
+        "setting": "/var/lib/postgresql/18/docker",
+        "unit": "",
+        "source": "override",
+        "boot_val": "",
+        "reset_val": "/var/lib/postgresql/18/docker"
+      },
+      "data_directory_mode": {
+        "setting": "0700",
+        "unit": "",
+        "source": "default",
+        "boot_val": "448",
+        "reset_val": "448"
+      },
+      "data_sync_retry": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "DateStyle": {
+        "setting": "ISO, MDY",
+        "unit": "",
+        "source": "default",
+        "boot_val": "ISO, MDY",
+        "reset_val": "ISO, MDY"
+      },
+      "deadlock_timeout": {
+        "setting": "1000",
+        "unit": "ms",
+        "source": "default",
+        "boot_val": "1000",
+        "reset_val": "1000"
+      },
+      "debug_assertions": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "debug_discard_caches": {
+        "setting": "0",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "debug_io_direct": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "debug_logical_replication_streaming": {
+        "setting": "buffered",
+        "unit": "",
+        "source": "default",
+        "boot_val": "buffered",
+        "reset_val": "buffered"
+      },
+      "debug_parallel_query": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "debug_pretty_print": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "debug_print_parse": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "debug_print_plan": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "debug_print_rewritten": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "default_statistics_target": {
+        "setting": "100",
+        "unit": "",
+        "source": "default",
+        "boot_val": "100",
+        "reset_val": "100"
+      },
+      "default_table_access_method": {
+        "setting": "heap",
+        "unit": "",
+        "source": "default",
+        "boot_val": "heap",
+        "reset_val": "heap"
+      },
+      "default_tablespace": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "default_text_search_config": {
+        "setting": "pg_catalog.simple",
+        "unit": "",
+        "source": "default",
+        "boot_val": "pg_catalog.simple",
+        "reset_val": "pg_catalog.simple"
+      },
+      "default_toast_compression": {
+        "setting": "pglz",
+        "unit": "",
+        "source": "default",
+        "boot_val": "pglz",
+        "reset_val": "pglz"
+      },
+      "default_transaction_deferrable": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "default_transaction_isolation": {
+        "setting": "read committed",
+        "unit": "",
+        "source": "default",
+        "boot_val": "read committed",
+        "reset_val": "read committed"
+      },
+      "default_transaction_read_only": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "dynamic_library_path": {
+        "setting": "$libdir",
+        "unit": "",
+        "source": "default",
+        "boot_val": "$libdir",
+        "reset_val": "$libdir"
+      },
+      "dynamic_shared_memory_type": {
+        "setting": "posix",
+        "unit": "",
+        "source": "default",
+        "boot_val": "posix",
+        "reset_val": "posix"
+      },
+      "effective_cache_size": {
+        "setting": "786432",
+        "unit": "8kB",
+        "source": "configuration file",
+        "boot_val": "524288",
+        "reset_val": "786432"
+      },
+      "effective_io_concurrency": {
+        "setting": "200",
+        "unit": "",
+        "source": "configuration file",
+        "boot_val": "16",
+        "reset_val": "200"
+      },
+      "enable_async_append": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_bitmapscan": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_distinct_reordering": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_gathermerge": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_group_by_reordering": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_hashagg": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_hashjoin": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_incremental_sort": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_indexonlyscan": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_indexscan": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_material": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_memoize": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_mergejoin": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_nestloop": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_parallel_append": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_parallel_hash": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_partition_pruning": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_partitionwise_aggregate": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "enable_partitionwise_join": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "enable_presorted_aggregate": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_self_join_elimination": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_seqscan": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_sort": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "enable_tidscan": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "escape_string_warning": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "event_source": {
+        "setting": "PostgreSQL",
+        "unit": "",
+        "source": "default",
+        "boot_val": "PostgreSQL",
+        "reset_val": "PostgreSQL"
+      },
+      "event_triggers": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "exit_on_error": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "extension_control_path": {
+        "setting": "$system",
+        "unit": "",
+        "source": "default",
+        "boot_val": "$system",
+        "reset_val": "$system"
+      },
+      "external_pid_file": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "extra_float_digits": {
+        "setting": "1",
+        "unit": "",
+        "source": "default",
+        "boot_val": "1",
+        "reset_val": "1"
+      },
+      "file_copy_method": {
+        "setting": "copy",
+        "unit": "",
+        "source": "default",
+        "boot_val": "copy",
+        "reset_val": "copy"
+      },
+      "file_extend_method": {
+        "setting": "posix_fallocate",
+        "unit": "",
+        "source": "default",
+        "boot_val": "posix_fallocate",
+        "reset_val": "posix_fallocate"
+      },
+      "from_collapse_limit": {
+        "setting": "8",
+        "unit": "",
+        "source": "default",
+        "boot_val": "8",
+        "reset_val": "8"
+      },
+      "fsync": {
+        "setting": "on",
+        "unit": "",
+        "source": "configuration file",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "full_page_writes": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "geqo": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "geqo_effort": {
+        "setting": "5",
+        "unit": "",
+        "source": "default",
+        "boot_val": "5",
+        "reset_val": "5"
+      },
+      "geqo_generations": {
+        "setting": "0",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "geqo_pool_size": {
+        "setting": "0",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "geqo_seed": {
+        "setting": "0",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "geqo_selection_bias": {
+        "setting": "2",
+        "unit": "",
+        "source": "default",
+        "boot_val": "2",
+        "reset_val": "2"
+      },
+      "geqo_threshold": {
+        "setting": "12",
+        "unit": "",
+        "source": "default",
+        "boot_val": "12",
+        "reset_val": "12"
+      },
+      "gin_fuzzy_search_limit": {
+        "setting": "0",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "gin_pending_list_limit": {
+        "setting": "4096",
+        "unit": "kB",
+        "source": "default",
+        "boot_val": "4096",
+        "reset_val": "4096"
+      },
+      "gss_accept_delegation": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "hash_mem_multiplier": {
+        "setting": "2",
+        "unit": "",
+        "source": "default",
+        "boot_val": "2",
+        "reset_val": "2"
+      },
+      "hba_file": {
+        "setting": "/var/lib/postgresql/18/docker/pg_hba.conf",
+        "unit": "",
+        "source": "override",
+        "boot_val": "",
+        "reset_val": "/var/lib/postgresql/18/docker/pg_hba.conf"
+      },
+      "hot_standby": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "hot_standby_feedback": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "huge_pages": {
+        "setting": "try",
+        "unit": "",
+        "source": "configuration file",
+        "boot_val": "try",
+        "reset_val": "try"
+      },
+      "huge_page_size": {
+        "setting": "0",
+        "unit": "kB",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "huge_pages_status": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "unknown",
+        "reset_val": "off"
+      },
+      "icu_validation_level": {
+        "setting": "warning",
+        "unit": "",
+        "source": "default",
+        "boot_val": "warning",
+        "reset_val": "warning"
+      },
+      "ident_file": {
+        "setting": "/var/lib/postgresql/18/docker/pg_ident.conf",
+        "unit": "",
+        "source": "override",
+        "boot_val": "",
+        "reset_val": "/var/lib/postgresql/18/docker/pg_ident.conf"
+      },
+      "idle_in_transaction_session_timeout": {
+        "setting": "10000",
+        "unit": "ms",
+        "source": "configuration file",
+        "boot_val": "0",
+        "reset_val": "10000"
+      },
+      "idle_replication_slot_timeout": {
+        "setting": "0",
+        "unit": "s",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "idle_session_timeout": {
+        "setting": "0",
+        "unit": "ms",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "ignore_checksum_failure": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "ignore_invalid_pages": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "ignore_system_indexes": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "in_hot_standby": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "integer_datetimes": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "IntervalStyle": {
+        "setting": "postgres",
+        "unit": "",
+        "source": "default",
+        "boot_val": "postgres",
+        "reset_val": "postgres"
+      },
+      "io_combine_limit": {
+        "setting": "16",
+        "unit": "8kB",
+        "source": "default",
+        "boot_val": "16",
+        "reset_val": "16"
+      },
+      "io_max_combine_limit": {
+        "setting": "16",
+        "unit": "8kB",
+        "source": "default",
+        "boot_val": "16",
+        "reset_val": "16"
+      },
+      "io_max_concurrency": {
+        "setting": "64",
+        "unit": "",
+        "source": "default",
+        "boot_val": "-1",
+        "reset_val": "64"
+      },
+      "io_method": {
+        "setting": "worker",
+        "unit": "",
+        "source": "default",
+        "boot_val": "worker",
+        "reset_val": "worker"
+      },
+      "io_workers": {
+        "setting": "3",
+        "unit": "",
+        "source": "default",
+        "boot_val": "3",
+        "reset_val": "3"
+      },
+      "jit": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "jit_above_cost": {
+        "setting": "100000",
+        "unit": "",
+        "source": "default",
+        "boot_val": "100000",
+        "reset_val": "100000"
+      },
+      "jit_debugging_support": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "jit_dump_bitcode": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "jit_expressions": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "jit_inline_above_cost": {
+        "setting": "500000",
+        "unit": "",
+        "source": "default",
+        "boot_val": "500000",
+        "reset_val": "500000"
+      },
+      "jit_optimize_above_cost": {
+        "setting": "500000",
+        "unit": "",
+        "source": "default",
+        "boot_val": "500000",
+        "reset_val": "500000"
+      },
+      "jit_profiling_support": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "jit_provider": {
+        "setting": "llvmjit",
+        "unit": "",
+        "source": "default",
+        "boot_val": "llvmjit",
+        "reset_val": "llvmjit"
+      },
+      "jit_tuple_deforming": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "join_collapse_limit": {
+        "setting": "8",
+        "unit": "",
+        "source": "default",
+        "boot_val": "8",
+        "reset_val": "8"
+      },
+      "krb_caseins_users": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "krb_server_keyfile": {
+        "setting": "FILE:/etc/postgresql-common/krb5.keytab",
+        "unit": "",
+        "source": "default",
+        "boot_val": "FILE:/etc/postgresql-common/krb5.keytab",
+        "reset_val": "FILE:/etc/postgresql-common/krb5.keytab"
+      },
+      "lc_messages": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "lc_monetary": {
+        "setting": "C",
+        "unit": "",
+        "source": "default",
+        "boot_val": "C",
+        "reset_val": "C"
+      },
+      "lc_numeric": {
+        "setting": "C",
+        "unit": "",
+        "source": "default",
+        "boot_val": "C",
+        "reset_val": "C"
+      },
+      "lc_time": {
+        "setting": "C",
+        "unit": "",
+        "source": "default",
+        "boot_val": "C",
+        "reset_val": "C"
+      },
+      "listen_addresses": {
+        "setting": "*",
+        "unit": "",
+        "source": "configuration file",
+        "boot_val": "localhost",
+        "reset_val": "*"
+      },
+      "local_preload_libraries": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "lock_timeout": {
+        "setting": "1000",
+        "unit": "ms",
+        "source": "configuration file",
+        "boot_val": "0",
+        "reset_val": "1000"
+      },
+      "lo_compat_privileges": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "log_autovacuum_min_duration": {
+        "setting": "600000",
+        "unit": "ms",
+        "source": "default",
+        "boot_val": "600000",
+        "reset_val": "600000"
+      },
+      "log_checkpoints": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "log_connections": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "log_destination": {
+        "setting": "stderr",
+        "unit": "",
+        "source": "default",
+        "boot_val": "stderr",
+        "reset_val": "stderr"
+      },
+      "log_directory": {
+        "setting": "log",
+        "unit": "",
+        "source": "default",
+        "boot_val": "log",
+        "reset_val": "log"
+      },
+      "log_disconnections": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "log_duration": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "log_error_verbosity": {
+        "setting": "default",
+        "unit": "",
+        "source": "default",
+        "boot_val": "default",
+        "reset_val": "default"
+      },
+      "log_executor_stats": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "log_file_mode": {
+        "setting": "0600",
+        "unit": "",
+        "source": "default",
+        "boot_val": "384",
+        "reset_val": "384"
+      },
+      "log_filename": {
+        "setting": "postgresql-%Y-%m-%d_%H%M%S.log",
+        "unit": "",
+        "source": "default",
+        "boot_val": "postgresql-%Y-%m-%d_%H%M%S.log",
+        "reset_val": "postgresql-%Y-%m-%d_%H%M%S.log"
+      },
+      "logging_collector": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "log_hostname": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "logical_decoding_work_mem": {
+        "setting": "65536",
+        "unit": "kB",
+        "source": "default",
+        "boot_val": "65536",
+        "reset_val": "65536"
+      },
+      "log_line_prefix": {
+        "setting": "%m [%p] ",
+        "unit": "",
+        "source": "default",
+        "boot_val": "%m [%p] ",
+        "reset_val": "%m [%p] "
+      },
+      "log_lock_failures": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "log_lock_waits": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "log_min_duration_sample": {
+        "setting": "-1",
+        "unit": "ms",
+        "source": "default",
+        "boot_val": "-1",
+        "reset_val": "-1"
+      },
+      "log_min_duration_statement": {
+        "setting": "-1",
+        "unit": "ms",
+        "source": "default",
+        "boot_val": "-1",
+        "reset_val": "-1"
+      },
+      "log_min_error_statement": {
+        "setting": "error",
+        "unit": "",
+        "source": "default",
+        "boot_val": "error",
+        "reset_val": "error"
+      },
+      "log_min_messages": {
+        "setting": "warning",
+        "unit": "",
+        "source": "default",
+        "boot_val": "warning",
+        "reset_val": "warning"
+      },
+      "log_parameter_max_length": {
+        "setting": "-1",
+        "unit": "B",
+        "source": "default",
+        "boot_val": "-1",
+        "reset_val": "-1"
+      },
+      "log_parameter_max_length_on_error": {
+        "setting": "0",
+        "unit": "B",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "log_parser_stats": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "log_planner_stats": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "log_recovery_conflict_waits": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "log_replication_commands": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "log_rotation_age": {
+        "setting": "1440",
+        "unit": "min",
+        "source": "default",
+        "boot_val": "1440",
+        "reset_val": "1440"
+      },
+      "log_rotation_size": {
+        "setting": "10240",
+        "unit": "kB",
+        "source": "default",
+        "boot_val": "10240",
+        "reset_val": "10240"
+      },
+      "log_startup_progress_interval": {
+        "setting": "10000",
+        "unit": "ms",
+        "source": "default",
+        "boot_val": "10000",
+        "reset_val": "10000"
+      },
+      "log_statement": {
+        "setting": "none",
+        "unit": "",
+        "source": "default",
+        "boot_val": "none",
+        "reset_val": "none"
+      },
+      "log_statement_sample_rate": {
+        "setting": "1",
+        "unit": "",
+        "source": "default",
+        "boot_val": "1",
+        "reset_val": "1"
+      },
+      "log_statement_stats": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "log_temp_files": {
+        "setting": "-1",
+        "unit": "kB",
+        "source": "default",
+        "boot_val": "-1",
+        "reset_val": "-1"
+      },
+      "log_timezone": {
+        "setting": "GMT",
+        "unit": "",
+        "source": "default",
+        "boot_val": "GMT",
+        "reset_val": "GMT"
+      },
+      "log_transaction_sample_rate": {
+        "setting": "0",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "log_truncate_on_rotation": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "maintenance_io_concurrency": {
+        "setting": "16",
+        "unit": "",
+        "source": "default",
+        "boot_val": "16",
+        "reset_val": "16"
+      },
+      "maintenance_work_mem": {
+        "setting": "65536",
+        "unit": "kB",
+        "source": "default",
+        "boot_val": "65536",
+        "reset_val": "65536"
+      },
+      "max_active_replication_origins": {
+        "setting": "10",
+        "unit": "",
+        "source": "default",
+        "boot_val": "10",
+        "reset_val": "10"
+      },
+      "max_connections": {
+        "setting": "100",
+        "unit": "",
+        "source": "configuration file",
+        "boot_val": "100",
+        "reset_val": "100"
+      },
+      "max_files_per_process": {
+        "setting": "1000",
+        "unit": "",
+        "source": "default",
+        "boot_val": "1000",
+        "reset_val": "1000"
+      },
+      "max_function_args": {
+        "setting": "100",
+        "unit": "",
+        "source": "default",
+        "boot_val": "100",
+        "reset_val": "100"
+      },
+      "max_identifier_length": {
+        "setting": "63",
+        "unit": "",
+        "source": "default",
+        "boot_val": "63",
+        "reset_val": "63"
+      },
+      "max_index_keys": {
+        "setting": "32",
+        "unit": "",
+        "source": "default",
+        "boot_val": "32",
+        "reset_val": "32"
+      },
+      "max_locks_per_transaction": {
+        "setting": "64",
+        "unit": "",
+        "source": "default",
+        "boot_val": "64",
+        "reset_val": "64"
+      },
+      "max_logical_replication_workers": {
+        "setting": "4",
+        "unit": "",
+        "source": "default",
+        "boot_val": "4",
+        "reset_val": "4"
+      },
+      "max_notify_queue_pages": {
+        "setting": "1048576",
+        "unit": "",
+        "source": "default",
+        "boot_val": "1048576",
+        "reset_val": "1048576"
+      },
+      "max_parallel_apply_workers_per_subscription": {
+        "setting": "2",
+        "unit": "",
+        "source": "default",
+        "boot_val": "2",
+        "reset_val": "2"
+      },
+      "max_parallel_maintenance_workers": {
+        "setting": "2",
+        "unit": "",
+        "source": "default",
+        "boot_val": "2",
+        "reset_val": "2"
+      },
+      "max_parallel_workers": {
+        "setting": "8",
+        "unit": "",
+        "source": "default",
+        "boot_val": "8",
+        "reset_val": "8"
+      },
+      "max_parallel_workers_per_gather": {
+        "setting": "2",
+        "unit": "",
+        "source": "default",
+        "boot_val": "2",
+        "reset_val": "2"
+      },
+      "max_pred_locks_per_page": {
+        "setting": "2",
+        "unit": "",
+        "source": "default",
+        "boot_val": "2",
+        "reset_val": "2"
+      },
+      "max_pred_locks_per_relation": {
+        "setting": "-2",
+        "unit": "",
+        "source": "default",
+        "boot_val": "-2",
+        "reset_val": "-2"
+      },
+      "max_pred_locks_per_transaction": {
+        "setting": "64",
+        "unit": "",
+        "source": "default",
+        "boot_val": "64",
+        "reset_val": "64"
+      },
+      "max_prepared_transactions": {
+        "setting": "0",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "max_replication_slots": {
+        "setting": "10",
+        "unit": "",
+        "source": "default",
+        "boot_val": "10",
+        "reset_val": "10"
+      },
+      "max_slot_wal_keep_size": {
+        "setting": "-1",
+        "unit": "MB",
+        "source": "default",
+        "boot_val": "-1",
+        "reset_val": "-1"
+      },
+      "max_stack_depth": {
+        "setting": "2048",
+        "unit": "kB",
+        "source": "default",
+        "boot_val": "100",
+        "reset_val": "2048"
+      },
+      "max_standby_archive_delay": {
+        "setting": "30000",
+        "unit": "ms",
+        "source": "default",
+        "boot_val": "30000",
+        "reset_val": "30000"
+      },
+      "max_standby_streaming_delay": {
+        "setting": "30000",
+        "unit": "ms",
+        "source": "default",
+        "boot_val": "30000",
+        "reset_val": "30000"
+      },
+      "max_sync_workers_per_subscription": {
+        "setting": "2",
+        "unit": "",
+        "source": "default",
+        "boot_val": "2",
+        "reset_val": "2"
+      },
+      "max_wal_senders": {
+        "setting": "10",
+        "unit": "",
+        "source": "default",
+        "boot_val": "10",
+        "reset_val": "10"
+      },
+      "max_wal_size": {
+        "setting": "4096",
+        "unit": "MB",
+        "source": "configuration file",
+        "boot_val": "1024",
+        "reset_val": "4096"
+      },
+      "max_worker_processes": {
+        "setting": "8",
+        "unit": "",
+        "source": "default",
+        "boot_val": "8",
+        "reset_val": "8"
+      },
+      "md5_password_warnings": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "min_dynamic_shared_memory": {
+        "setting": "0",
+        "unit": "MB",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "min_parallel_index_scan_size": {
+        "setting": "64",
+        "unit": "8kB",
+        "source": "default",
+        "boot_val": "64",
+        "reset_val": "64"
+      },
+      "min_parallel_table_scan_size": {
+        "setting": "1024",
+        "unit": "8kB",
+        "source": "default",
+        "boot_val": "1024",
+        "reset_val": "1024"
+      },
+      "min_wal_size": {
+        "setting": "80",
+        "unit": "MB",
+        "source": "default",
+        "boot_val": "80",
+        "reset_val": "80"
+      },
+      "multixact_member_buffers": {
+        "setting": "32",
+        "unit": "8kB",
+        "source": "default",
+        "boot_val": "32",
+        "reset_val": "32"
+      },
+      "multixact_offset_buffers": {
+        "setting": "16",
+        "unit": "8kB",
+        "source": "default",
+        "boot_val": "16",
+        "reset_val": "16"
+      },
+      "notify_buffers": {
+        "setting": "16",
+        "unit": "8kB",
+        "source": "default",
+        "boot_val": "16",
+        "reset_val": "16"
+      },
+      "num_os_semaphores": {
+        "setting": "174",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "174"
+      },
+      "oauth_validator_libraries": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "parallel_leader_participation": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "parallel_setup_cost": {
+        "setting": "1000",
+        "unit": "",
+        "source": "default",
+        "boot_val": "1000",
+        "reset_val": "1000"
+      },
+      "parallel_tuple_cost": {
+        "setting": "0.1",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0.1",
+        "reset_val": "0.1"
+      },
+      "password_encryption": {
+        "setting": "scram-sha-256",
+        "unit": "",
+        "source": "default",
+        "boot_val": "scram-sha-256",
+        "reset_val": "scram-sha-256"
+      },
+      "plan_cache_mode": {
+        "setting": "auto",
+        "unit": "",
+        "source": "default",
+        "boot_val": "auto",
+        "reset_val": "auto"
+      },
+      "port": {
+        "setting": "5432",
+        "unit": "",
+        "source": "default",
+        "boot_val": "5432",
+        "reset_val": "5432"
+      },
+      "post_auth_delay": {
+        "setting": "0",
+        "unit": "s",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "pre_auth_delay": {
+        "setting": "0",
+        "unit": "s",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "primary_conninfo": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "primary_slot_name": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "quote_all_identifiers": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "random_page_cost": {
+        "setting": "1.1",
+        "unit": "",
+        "source": "configuration file",
+        "boot_val": "4",
+        "reset_val": "1.1"
+      },
+      "recovery_end_command": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "recovery_init_sync_method": {
+        "setting": "fsync",
+        "unit": "",
+        "source": "default",
+        "boot_val": "fsync",
+        "reset_val": "fsync"
+      },
+      "recovery_min_apply_delay": {
+        "setting": "0",
+        "unit": "ms",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "recovery_prefetch": {
+        "setting": "try",
+        "unit": "",
+        "source": "default",
+        "boot_val": "try",
+        "reset_val": "try"
+      },
+      "recovery_target": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "recovery_target_action": {
+        "setting": "pause",
+        "unit": "",
+        "source": "default",
+        "boot_val": "pause",
+        "reset_val": "pause"
+      },
+      "recovery_target_inclusive": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "recovery_target_lsn": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "recovery_target_name": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "recovery_target_time": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "recovery_target_timeline": {
+        "setting": "latest",
+        "unit": "",
+        "source": "default",
+        "boot_val": "latest",
+        "reset_val": "latest"
+      },
+      "recovery_target_xid": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "recursive_worktable_factor": {
+        "setting": "10",
+        "unit": "",
+        "source": "default",
+        "boot_val": "10",
+        "reset_val": "10"
+      },
+      "remove_temp_files_after_crash": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "reserved_connections": {
+        "setting": "0",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "restart_after_crash": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "restore_command": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "restrict_nonsystem_relation_kind": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "row_security": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "scram_iterations": {
+        "setting": "4096",
+        "unit": "",
+        "source": "default",
+        "boot_val": "4096",
+        "reset_val": "4096"
+      },
+      "search_path": {
+        "setting": "\"$user\", public",
+        "unit": "",
+        "source": "default",
+        "boot_val": "\"$user\", public",
+        "reset_val": "\"$user\", public"
+      },
+      "segment_size": {
+        "setting": "131072",
+        "unit": "8kB",
+        "source": "default",
+        "boot_val": "131072",
+        "reset_val": "131072"
+      },
+      "send_abort_for_crash": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "send_abort_for_kill": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "seq_page_cost": {
+        "setting": "1",
+        "unit": "",
+        "source": "default",
+        "boot_val": "1",
+        "reset_val": "1"
+      },
+      "serializable_buffers": {
+        "setting": "32",
+        "unit": "8kB",
+        "source": "default",
+        "boot_val": "32",
+        "reset_val": "32"
+      },
+      "server_encoding": {
+        "setting": "UTF8",
+        "unit": "",
+        "source": "default",
+        "boot_val": "SQL_ASCII",
+        "reset_val": "UTF8"
+      },
+      "server_version": {
+        "setting": "18.4 (Debian 18.4-1.pgdg12+1)",
+        "unit": "",
+        "source": "default",
+        "boot_val": "18.4 (Debian 18.4-1.pgdg12+1)",
+        "reset_val": "18.4 (Debian 18.4-1.pgdg12+1)"
+      },
+      "server_version_num": {
+        "setting": "180004",
+        "unit": "",
+        "source": "default",
+        "boot_val": "180004",
+        "reset_val": "180004"
+      },
+      "session_preload_libraries": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "session_replication_role": {
+        "setting": "origin",
+        "unit": "",
+        "source": "default",
+        "boot_val": "origin",
+        "reset_val": "origin"
+      },
+      "shared_buffers": {
+        "setting": "262144",
+        "unit": "8kB",
+        "source": "configuration file",
+        "boot_val": "16384",
+        "reset_val": "262144"
+      },
+      "shared_memory_size": {
+        "setting": "2190",
+        "unit": "MB",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "2190"
+      },
+      "shared_memory_size_in_huge_pages": {
+        "setting": "1095",
+        "unit": "",
+        "source": "default",
+        "boot_val": "-1",
+        "reset_val": "1095"
+      },
+      "shared_memory_type": {
+        "setting": "mmap",
+        "unit": "",
+        "source": "default",
+        "boot_val": "mmap",
+        "reset_val": "mmap"
+      },
+      "shared_preload_libraries": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "ssl": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "ssl_ca_file": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "ssl_cert_file": {
+        "setting": "server.crt",
+        "unit": "",
+        "source": "default",
+        "boot_val": "server.crt",
+        "reset_val": "server.crt"
+      },
+      "ssl_ciphers": {
+        "setting": "HIGH:MEDIUM:+3DES:!aNULL",
+        "unit": "",
+        "source": "default",
+        "boot_val": "HIGH:MEDIUM:+3DES:!aNULL",
+        "reset_val": "HIGH:MEDIUM:+3DES:!aNULL"
+      },
+      "ssl_crl_dir": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "ssl_crl_file": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "ssl_dh_params_file": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "ssl_groups": {
+        "setting": "X25519:prime256v1",
+        "unit": "",
+        "source": "default",
+        "boot_val": "X25519:prime256v1",
+        "reset_val": "X25519:prime256v1"
+      },
+      "ssl_key_file": {
+        "setting": "server.key",
+        "unit": "",
+        "source": "default",
+        "boot_val": "server.key",
+        "reset_val": "server.key"
+      },
+      "ssl_library": {
+        "setting": "OpenSSL",
+        "unit": "",
+        "source": "default",
+        "boot_val": "OpenSSL",
+        "reset_val": "OpenSSL"
+      },
+      "ssl_max_protocol_version": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "ssl_min_protocol_version": {
+        "setting": "TLSv1.2",
+        "unit": "",
+        "source": "default",
+        "boot_val": "TLSv1.2",
+        "reset_val": "TLSv1.2"
+      },
+      "ssl_passphrase_command": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "ssl_passphrase_command_supports_reload": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "ssl_prefer_server_ciphers": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "ssl_tls13_ciphers": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "standard_conforming_strings": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "statement_timeout": {
+        "setting": "5000",
+        "unit": "ms",
+        "source": "configuration file",
+        "boot_val": "0",
+        "reset_val": "5000"
+      },
+      "stats_fetch_consistency": {
+        "setting": "cache",
+        "unit": "",
+        "source": "default",
+        "boot_val": "cache",
+        "reset_val": "cache"
+      },
+      "subtransaction_buffers": {
+        "setting": "512",
+        "unit": "8kB",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "512"
+      },
+      "summarize_wal": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "superuser_reserved_connections": {
+        "setting": "3",
+        "unit": "",
+        "source": "default",
+        "boot_val": "3",
+        "reset_val": "3"
+      },
+      "synchronized_standby_slots": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "synchronize_seqscans": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "synchronous_commit": {
+        "setting": "on",
+        "unit": "",
+        "source": "configuration file",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "synchronous_standby_names": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "sync_replication_slots": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "syslog_facility": {
+        "setting": "local0",
+        "unit": "",
+        "source": "default",
+        "boot_val": "local0",
+        "reset_val": "local0"
+      },
+      "syslog_ident": {
+        "setting": "postgres",
+        "unit": "",
+        "source": "default",
+        "boot_val": "postgres",
+        "reset_val": "postgres"
+      },
+      "syslog_sequence_numbers": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "syslog_split_messages": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "tcp_keepalives_count": {
+        "setting": "0",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "tcp_keepalives_idle": {
+        "setting": "0",
+        "unit": "s",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "tcp_keepalives_interval": {
+        "setting": "0",
+        "unit": "s",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "tcp_user_timeout": {
+        "setting": "0",
+        "unit": "ms",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "temp_buffers": {
+        "setting": "1024",
+        "unit": "8kB",
+        "source": "default",
+        "boot_val": "1024",
+        "reset_val": "1024"
+      },
+      "temp_file_limit": {
+        "setting": "-1",
+        "unit": "kB",
+        "source": "default",
+        "boot_val": "-1",
+        "reset_val": "-1"
+      },
+      "temp_tablespaces": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "TimeZone": {
+        "setting": "GMT",
+        "unit": "",
+        "source": "default",
+        "boot_val": "GMT",
+        "reset_val": "GMT"
+      },
+      "timezone_abbreviations": {
+        "setting": "Default",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": "Default"
+      },
+      "trace_connection_negotiation": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "trace_notify": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "trace_sort": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "track_activities": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "track_activity_query_size": {
+        "setting": "1024",
+        "unit": "B",
+        "source": "default",
+        "boot_val": "1024",
+        "reset_val": "1024"
+      },
+      "track_commit_timestamp": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "track_cost_delay_timing": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "track_counts": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "track_functions": {
+        "setting": "none",
+        "unit": "",
+        "source": "default",
+        "boot_val": "none",
+        "reset_val": "none"
+      },
+      "track_io_timing": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "track_wal_io_timing": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "transaction_buffers": {
+        "setting": "512",
+        "unit": "8kB",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "512"
+      },
+      "transaction_deferrable": {
+        "setting": "off",
+        "unit": "",
+        "source": "override",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "transaction_isolation": {
+        "setting": "read committed",
+        "unit": "",
+        "source": "override",
+        "boot_val": "read committed",
+        "reset_val": "read committed"
+      },
+      "transaction_read_only": {
+        "setting": "off",
+        "unit": "",
+        "source": "override",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "transaction_timeout": {
+        "setting": "0",
+        "unit": "ms",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "transform_null_equals": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "unix_socket_directories": {
+        "setting": "/var/run/postgresql",
+        "unit": "",
+        "source": "default",
+        "boot_val": "/var/run/postgresql",
+        "reset_val": "/var/run/postgresql"
+      },
+      "unix_socket_group": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "unix_socket_permissions": {
+        "setting": "0777",
+        "unit": "",
+        "source": "default",
+        "boot_val": "511",
+        "reset_val": "511"
+      },
+      "update_process_title": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "vacuum_buffer_usage_limit": {
+        "setting": "2048",
+        "unit": "kB",
+        "source": "default",
+        "boot_val": "2048",
+        "reset_val": "2048"
+      },
+      "vacuum_cost_delay": {
+        "setting": "0",
+        "unit": "ms",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "vacuum_cost_limit": {
+        "setting": "200",
+        "unit": "",
+        "source": "default",
+        "boot_val": "200",
+        "reset_val": "200"
+      },
+      "vacuum_cost_page_dirty": {
+        "setting": "20",
+        "unit": "",
+        "source": "default",
+        "boot_val": "20",
+        "reset_val": "20"
+      },
+      "vacuum_cost_page_hit": {
+        "setting": "1",
+        "unit": "",
+        "source": "default",
+        "boot_val": "1",
+        "reset_val": "1"
+      },
+      "vacuum_cost_page_miss": {
+        "setting": "2",
+        "unit": "",
+        "source": "default",
+        "boot_val": "2",
+        "reset_val": "2"
+      },
+      "vacuum_failsafe_age": {
+        "setting": "1600000000",
+        "unit": "",
+        "source": "default",
+        "boot_val": "1600000000",
+        "reset_val": "1600000000"
+      },
+      "vacuum_freeze_min_age": {
+        "setting": "50000000",
+        "unit": "",
+        "source": "default",
+        "boot_val": "50000000",
+        "reset_val": "50000000"
+      },
+      "vacuum_freeze_table_age": {
+        "setting": "150000000",
+        "unit": "",
+        "source": "default",
+        "boot_val": "150000000",
+        "reset_val": "150000000"
+      },
+      "vacuum_max_eager_freeze_failure_rate": {
+        "setting": "0.03",
+        "unit": "",
+        "source": "default",
+        "boot_val": "0.03",
+        "reset_val": "0.03"
+      },
+      "vacuum_multixact_failsafe_age": {
+        "setting": "1600000000",
+        "unit": "",
+        "source": "default",
+        "boot_val": "1600000000",
+        "reset_val": "1600000000"
+      },
+      "vacuum_multixact_freeze_min_age": {
+        "setting": "5000000",
+        "unit": "",
+        "source": "default",
+        "boot_val": "5000000",
+        "reset_val": "5000000"
+      },
+      "vacuum_multixact_freeze_table_age": {
+        "setting": "150000000",
+        "unit": "",
+        "source": "default",
+        "boot_val": "150000000",
+        "reset_val": "150000000"
+      },
+      "vacuum_truncate": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "wal_block_size": {
+        "setting": "8192",
+        "unit": "",
+        "source": "default",
+        "boot_val": "8192",
+        "reset_val": "8192"
+      },
+      "wal_buffers": {
+        "setting": "8192",
+        "unit": "8kB",
+        "source": "configuration file",
+        "boot_val": "-1",
+        "reset_val": "8192"
+      },
+      "wal_compression": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "wal_consistency_checking": {
+        "setting": "",
+        "unit": "",
+        "source": "default",
+        "boot_val": "",
+        "reset_val": ""
+      },
+      "wal_decode_buffer_size": {
+        "setting": "524288",
+        "unit": "B",
+        "source": "default",
+        "boot_val": "524288",
+        "reset_val": "524288"
+      },
+      "wal_init_zero": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "wal_keep_size": {
+        "setting": "0",
+        "unit": "MB",
+        "source": "default",
+        "boot_val": "0",
+        "reset_val": "0"
+      },
+      "wal_level": {
+        "setting": "replica",
+        "unit": "",
+        "source": "default",
+        "boot_val": "replica",
+        "reset_val": "replica"
+      },
+      "wal_log_hints": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "wal_receiver_create_temp_slot": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      },
+      "wal_receiver_status_interval": {
+        "setting": "10",
+        "unit": "s",
+        "source": "default",
+        "boot_val": "10",
+        "reset_val": "10"
+      },
+      "wal_receiver_timeout": {
+        "setting": "60000",
+        "unit": "ms",
+        "source": "default",
+        "boot_val": "60000",
+        "reset_val": "60000"
+      },
+      "wal_recycle": {
+        "setting": "on",
+        "unit": "",
+        "source": "default",
+        "boot_val": "on",
+        "reset_val": "on"
+      },
+      "wal_retrieve_retry_interval": {
+        "setting": "5000",
+        "unit": "ms",
+        "source": "default",
+        "boot_val": "5000",
+        "reset_val": "5000"
+      },
+      "wal_segment_size": {
+        "setting": "16777216",
+        "unit": "B",
+        "source": "default",
+        "boot_val": "16777216",
+        "reset_val": "16777216"
+      },
+      "wal_sender_timeout": {
+        "setting": "60000",
+        "unit": "ms",
+        "source": "default",
+        "boot_val": "60000",
+        "reset_val": "60000"
+      },
+      "wal_skip_threshold": {
+        "setting": "2048",
+        "unit": "kB",
+        "source": "default",
+        "boot_val": "2048",
+        "reset_val": "2048"
+      },
+      "wal_summary_keep_time": {
+        "setting": "14400",
+        "unit": "min",
+        "source": "default",
+        "boot_val": "14400",
+        "reset_val": "14400"
+      },
+      "wal_sync_method": {
+        "setting": "fdatasync",
+        "unit": "",
+        "source": "default",
+        "boot_val": "fdatasync",
+        "reset_val": "fdatasync"
+      },
+      "wal_writer_delay": {
+        "setting": "200",
+        "unit": "ms",
+        "source": "default",
+        "boot_val": "200",
+        "reset_val": "200"
+      },
+      "wal_writer_flush_after": {
+        "setting": "128",
+        "unit": "8kB",
+        "source": "default",
+        "boot_val": "128",
+        "reset_val": "128"
+      },
+      "work_mem": {
+        "setting": "16384",
+        "unit": "kB",
+        "source": "configuration file",
+        "boot_val": "4096",
+        "reset_val": "16384"
+      },
+      "xmlbinary": {
+        "setting": "base64",
+        "unit": "",
+        "source": "default",
+        "boot_val": "base64",
+        "reset_val": "base64"
+      },
+      "xmloption": {
+        "setting": "content",
+        "unit": "",
+        "source": "default",
+        "boot_val": "content",
+        "reset_val": "content"
+      },
+      "zero_damaged_pages": {
+        "setting": "off",
+        "unit": "",
+        "source": "default",
+        "boot_val": "off",
+        "reset_val": "off"
+      }
+    }
+  },
+  "achieved_vs_offered": [
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r500/b0/java",
+      "offered_rate": 500.0,
+      "achieved_rate": 500.0065649278621,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r500/b0/dotnet",
+      "offered_rate": 500.0,
+      "achieved_rate": 500.006427924302,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r500/b1/java",
+      "offered_rate": 500.0,
+      "achieved_rate": 500.00528113494687,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r500/b1/dotnet",
+      "offered_rate": 500.0,
+      "achieved_rate": 500.0090907694478,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r500/b2/dotnet",
+      "offered_rate": 500.0,
+      "achieved_rate": 500.0059219868057,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r500/b2/java",
+      "offered_rate": 500.0,
+      "achieved_rate": 500.0057593830069,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r600/b3/java",
+      "offered_rate": 600.0,
+      "achieved_rate": 600.0107906440599,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r600/b3/dotnet",
+      "offered_rate": 600.0,
+      "achieved_rate": 600.0094073324942,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r600/b4/dotnet",
+      "offered_rate": 600.0,
+      "achieved_rate": 600.0109226988386,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r600/b4/java",
+      "offered_rate": 600.0,
+      "achieved_rate": 600.0059904498086,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r600/b5/dotnet",
+      "offered_rate": 600.0,
+      "achieved_rate": 600.0082932946297,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r600/b5/java",
+      "offered_rate": 600.0,
+      "achieved_rate": 600.0073911010462,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r720/b6/dotnet",
+      "offered_rate": 720.0,
+      "achieved_rate": 720.0110548337326,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r720/b6/java",
+      "offered_rate": 720.0,
+      "achieved_rate": 720.0112150686887,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r720/b7/dotnet",
+      "offered_rate": 720.0,
+      "achieved_rate": 720.0101422968677,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r720/b7/java",
+      "offered_rate": 720.0,
+      "achieved_rate": 720.0080990666982,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r720/b8/dotnet",
+      "offered_rate": 720.0,
+      "achieved_rate": 720.0107752072547,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r720/b8/java",
+      "offered_rate": 720.0,
+      "achieved_rate": 720.0122557486122,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r864/b9/dotnet",
+      "offered_rate": 864.0,
+      "achieved_rate": 864.0056570770397,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r864/b9/java",
+      "offered_rate": 864.0,
+      "achieved_rate": 864.015474212424,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r864/b10/dotnet",
+      "offered_rate": 864.0,
+      "achieved_rate": 864.0120245201462,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r864/b10/java",
+      "offered_rate": 864.0,
+      "achieved_rate": 864.0101861472883,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r864/b11/java",
+      "offered_rate": 864.0,
+      "achieved_rate": 864.0136280437545,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r864/b11/dotnet",
+      "offered_rate": 864.0,
+      "achieved_rate": 864.0085478885668,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1037/b12/java",
+      "offered_rate": 1037.0,
+      "achieved_rate": 1037.0044820888043,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1037/b12/dotnet",
+      "offered_rate": 1037.0,
+      "achieved_rate": 1037.0034461957775,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1037/b13/java",
+      "offered_rate": 1037.0,
+      "achieved_rate": 1037.0006547017217,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1037/b13/dotnet",
+      "offered_rate": 1037.0,
+      "achieved_rate": 1037.008081297161,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1037/b14/java",
+      "offered_rate": 1037.0,
+      "achieved_rate": 1037.0048368843773,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1037/b14/dotnet",
+      "offered_rate": 1037.0,
+      "achieved_rate": 1037.0017763149094,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1244/b15/dotnet",
+      "offered_rate": 1244.0,
+      "achieved_rate": 1244.0055821122148,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1244/b15/java",
+      "offered_rate": 1244.0,
+      "achieved_rate": 1244.0019138110647,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1244/b16/dotnet",
+      "offered_rate": 1244.0,
+      "achieved_rate": 1244.0066374492478,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1244/b16/java",
+      "offered_rate": 1244.0,
+      "achieved_rate": 1244.0028474395842,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1244/b17/java",
+      "offered_rate": 1244.0,
+      "achieved_rate": 1244.0070618652549,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1244/b17/dotnet",
+      "offered_rate": 1244.0,
+      "achieved_rate": 1244.0040759171545,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1493/b18/java",
+      "offered_rate": 1493.0,
+      "achieved_rate": 1493.0052036826398,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1493/b18/dotnet",
+      "offered_rate": 1493.0,
+      "achieved_rate": 1493.0071312987957,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1493/b19/java",
+      "offered_rate": 1493.0,
+      "achieved_rate": 1493.0061936491022,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1493/b19/dotnet",
+      "offered_rate": 1493.0,
+      "achieved_rate": 1493.0051014242476,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1493/b20/java",
+      "offered_rate": 1493.0,
+      "achieved_rate": 1493.008243221996,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1493/b20/dotnet",
+      "offered_rate": 1493.0,
+      "achieved_rate": 1493.0032664062448,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1792/b21/dotnet",
+      "offered_rate": 1792.0,
+      "achieved_rate": 1792.0092788597783,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1792/b21/java",
+      "offered_rate": 1792.0,
+      "achieved_rate": 1792.0081828170983,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1792/b22/dotnet",
+      "offered_rate": 1792.0,
+      "achieved_rate": 1792.0158067442258,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1792/b22/java",
+      "offered_rate": 1792.0,
+      "achieved_rate": 1792.0084174233282,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1792/b23/java",
+      "offered_rate": 1792.0,
+      "achieved_rate": 1792.0038328124645,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r1792/b23/dotnet",
+      "offered_rate": 1792.0,
+      "achieved_rate": 1792.019053848387,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r2150/b24/java",
+      "offered_rate": 2150.0,
+      "achieved_rate": 2150.0029500548812,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r2150/b24/dotnet",
+      "offered_rate": 2150.0,
+      "achieved_rate": 2150.0028628481323,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r2150/b25/dotnet",
+      "offered_rate": 2150.0,
+      "achieved_rate": 2150.0101239513483,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r2150/b25/java",
+      "offered_rate": 2150.0,
+      "achieved_rate": 2150.0100285585645,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r2150/b26/dotnet",
+      "offered_rate": 2150.0,
+      "achieved_rate": 2150.013372695927,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r2150/b26/java",
+      "offered_rate": 2150.0,
+      "achieved_rate": 2150.0034063399803,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r2580/b27/java",
+      "offered_rate": 2580.0,
+      "achieved_rate": 2580.0189477236527,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r2580/b27/dotnet",
+      "offered_rate": 2580.0,
+      "achieved_rate": 2580.0067491231894,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r2580/b28/dotnet",
+      "offered_rate": 2580.0,
+      "achieved_rate": 2580.0094471019115,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r2580/b28/java",
+      "offered_rate": 2580.0,
+      "achieved_rate": 2580.0094865658816,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r2580/b29/java",
+      "offered_rate": 2580.0,
+      "achieved_rate": 2580.012271184563,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r2580/b29/dotnet",
+      "offered_rate": 2580.0,
+      "achieved_rate": 2580.009082632471,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r3096/b30/java",
+      "offered_rate": 3096.0,
+      "achieved_rate": 3096.009250629274,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r3096/b30/dotnet",
+      "offered_rate": 3096.0,
+      "achieved_rate": 3096.0093402845714,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r3096/b31/dotnet",
+      "offered_rate": 3096.0,
+      "achieved_rate": 3096.029478414863,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r3096/b31/java",
+      "offered_rate": 3096.0,
+      "achieved_rate": 3096.0315912644523,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r3096/b32/java",
+      "offered_rate": 3096.0,
+      "achieved_rate": 3096.0084951771773,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r3096/b32/dotnet",
+      "offered_rate": 3096.0,
+      "achieved_rate": 3096.0098641870454,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r3715/b33/java",
+      "offered_rate": 3715.0,
+      "achieved_rate": 3715.005138626066,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r3715/b33/dotnet",
+      "offered_rate": 3715.0,
+      "achieved_rate": 3715.00167993469,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r3715/b34/java",
+      "offered_rate": 3715.0,
+      "achieved_rate": 3715.01468493047,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r3715/b34/dotnet",
+      "offered_rate": 3715.0,
+      "achieved_rate": 3715.002274567082,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r3715/b35/dotnet",
+      "offered_rate": 3715.0,
+      "achieved_rate": 3715.0235586269496,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r3715/b35/java",
+      "offered_rate": 3715.0,
+      "achieved_rate": 3715.0264168098447,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r4458/b36/java",
+      "offered_rate": 4458.0,
+      "achieved_rate": 4458.059082609755,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r4458/b36/dotnet",
+      "offered_rate": 4458.0,
+      "achieved_rate": 4458.04853394925,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r4458/b37/java",
+      "offered_rate": 4458.0,
+      "achieved_rate": 4458.057480777311,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r4458/b37/dotnet",
+      "offered_rate": 4458.0,
+      "achieved_rate": 4458.057564738164,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r4458/b38/dotnet",
+      "offered_rate": 4458.0,
+      "achieved_rate": 4458.0205384051305,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r4458/b38/java",
+      "offered_rate": 4458.0,
+      "achieved_rate": 4458.022342217633,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r5350/b39/java",
+      "offered_rate": 5350.0,
+      "achieved_rate": 5350.06891485833,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r5350/b39/dotnet",
+      "offered_rate": 5350.0,
+      "achieved_rate": 5350.064578233735,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r5350/b40/dotnet",
+      "offered_rate": 5350.0,
+      "achieved_rate": 5329.778416683918,
+      "ratio": 0.9962,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r5350/b40/java",
+      "offered_rate": 5350.0,
+      "achieved_rate": 5337.213251554043,
+      "ratio": 0.9976,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r5350/b41/java",
+      "offered_rate": 5350.0,
+      "achieved_rate": 5350.074319570947,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/ladder/r5350/b41/dotnet",
+      "offered_rate": 5350.0,
+      "achieved_rate": 5350.070129714069,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4833/b0/dotnet",
+      "offered_rate": 4833.0,
+      "achieved_rate": 4833.052717172118,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b0/dotnet",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4799.02119917521,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b0/java",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4799.019186788091,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b1/java",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4799.061136686783,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4833/b1/dotnet",
+      "offered_rate": 4833.0,
+      "achieved_rate": 4833.050090067594,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b1/dotnet",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4799.056514672625,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b2/dotnet",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4784.7201604226575,
+      "ratio": 0.997,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b2/java",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4798.997299044337,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4833/b2/dotnet",
+      "offered_rate": 4833.0,
+      "achieved_rate": 4833.040724493095,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4833/b3/dotnet",
+      "offered_rate": 4833.0,
+      "achieved_rate": 4833.041614745327,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b3/java",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4799.020618678157,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b3/dotnet",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4799.021432207508,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b4/dotnet",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4799.057905691109,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4833/b4/dotnet",
+      "offered_rate": 4833.0,
+      "achieved_rate": 4833.054063308541,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b4/java",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4799.059022801673,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b5/dotnet",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4799.020785165191,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b5/java",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4799.058283788743,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4833/b5/dotnet",
+      "offered_rate": 4833.0,
+      "achieved_rate": 4833.0317114700365,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b6/java",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4778.322388953823,
+      "ratio": 0.9957,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4833/b6/dotnet",
+      "offered_rate": 4833.0,
+      "achieved_rate": 4833.023788038735,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b6/dotnet",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4799.057463374179,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4833/b7/dotnet",
+      "offered_rate": 4833.0,
+      "achieved_rate": 4833.059713883753,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b7/java",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4799.023712678779,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b7/dotnet",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4799.0230467780675,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b8/dotnet",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4799.05805482312,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b8/java",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4799.061502381646,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4833/b8/dotnet",
+      "offered_rate": 4833.0,
+      "achieved_rate": 4833.029544497681,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4833/b9/dotnet",
+      "offered_rate": 4833.0,
+      "achieved_rate": 4833.052310064974,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b9/java",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4799.024934786751,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/confirm/r4799/b9/dotnet",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4799.037136719621,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/soak/r4833/b0/dotnet",
+      "offered_rate": 4833.0,
+      "achieved_rate": 4833.020079665204,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    },
+    {
+      "probe_id": "headline.mixed.gc-default/soak/r4799/b0/java",
+      "offered_rate": 4799.0,
+      "achieved_rate": 4799.025124228595,
+      "ratio": 1.0,
+      "max_workers": 512,
+      "connections": 64,
+      "timeout_s": 5.0
+    }
+  ],
+  "throttle_counters": [
+    {
+      "label": "dotnet",
+      "role": "sut",
+      "nr_throttled": 0,
+      "throttled_usec": 0,
+      "windows": 63,
+      "source": "cpu.stat nr_throttled/throttled_usec, end-minus-start across the MEASURED window only (the baseline is taken after warmup and after the head-of-window discard), summed over the run's probe windows over every probe window under cells/ (all stages, all rates, including windows the analysis excludes as under-warmed); the report's per-request figures use a narrower set and the two are not interchangeable"
+    },
+    {
+      "label": "java",
+      "role": "sut",
+      "nr_throttled": 0,
+      "throttled_usec": 0,
+      "windows": 53,
+      "source": "cpu.stat nr_throttled/throttled_usec, end-minus-start across the MEASURED window only (the baseline is taken after warmup and after the head-of-window discard), summed over the run's probe windows over every probe window under cells/ (all stages, all rates, including windows the analysis excludes as under-warmed); the report's per-request figures use a narrower set and the two are not interchangeable"
+    },
+    {
+      "label": "postgres",
+      "role": "database",
+      "nr_throttled": 0,
+      "throttled_usec": 0,
+      "windows": 116,
+      "source": "cpu.stat nr_throttled/throttled_usec, end-minus-start across the MEASURED window only (the baseline is taken after warmup and after the head-of-window discard), summed over the run's probe windows over every probe window under cells/ (all stages, all rates, including windows the analysis excludes as under-warmed); the report's per-request figures use a narrower set and the two are not interchangeable"
+    },
+    {
+      "label": "redis",
+      "role": "cache",
+      "nr_throttled": 0,
+      "throttled_usec": 0,
+      "windows": 116,
+      "source": "cpu.stat nr_throttled/throttled_usec, end-minus-start across the MEASURED window only (the baseline is taken after warmup and after the head-of-window discard), summed over the run's probe windows over every probe window under cells/ (all stages, all rates, including windows the analysis excludes as under-warmed); the report's per-request figures use a narrower set and the two are not interchangeable"
+    }
+  ],
+  "fault_counts": [
+    {
+      "label": "dotnet",
+      "role": "sut",
+      "major_faults": 0,
+      "minor_faults": 11324364,
+      "windows": 63,
+      "source": "memory.stat pgmajfault/pgfault deltas over the measured windows"
+    },
+    {
+      "label": "java",
+      "role": "sut",
+      "major_faults": 0,
+      "minor_faults": 295400,
+      "windows": 53,
+      "source": "memory.stat pgmajfault/pgfault deltas over the measured windows"
+    },
+    {
+      "label": "postgres",
+      "role": "database",
+      "major_faults": 35,
+      "minor_faults": 33082855,
+      "windows": 116,
+      "source": "memory.stat pgmajfault/pgfault deltas over the measured windows"
+    },
+    {
+      "label": "redis",
+      "role": "cache",
+      "major_faults": 8,
+      "minor_faults": 6677093,
+      "windows": 116,
+      "source": "memory.stat pgmajfault/pgfault deltas over the measured windows"
+    }
+  ],
+  "resource_deltas": [
+    {
+      "label": "dotnet",
+      "role": "sut",
+      "persistent": false,
+      "cpu_usage_usec_delta": 12752385761,
+      "mem_anon_p99_bytes": 188628992,
+      "mem_current_p99_bytes": 1777360896,
+      "mem_peak_start_bytes": 313741312,
+      "mem_peak_bytes": 1835413504,
+      "windows": 63,
+      "source": "cgroup v2 per-probe windows: CPU is a sum of measured-window deltas; the anon and memory.current figures are maxes of per-window in-window p99s; memory.peak is the kernel HIGH-WATER MARK over the cgroup's LIFETIME (one probe for the force-recreated SUT, the whole run for a persistent cgroup) and is not a window figure over every probe window under cells/ (all stages, all rates, including windows the analysis excludes as under-warmed); the report's per-request figures use a narrower set and the two are not interchangeable"
+    },
+    {
+      "label": "java",
+      "role": "sut",
+      "persistent": false,
+      "cpu_usage_usec_delta": 4686309450,
+      "mem_anon_p99_bytes": 672624640,
+      "mem_current_p99_bytes": 2330021888,
+      "mem_peak_start_bytes": 667049984,
+      "mem_peak_bytes": 2344595456,
+      "windows": 53,
+      "source": "cgroup v2 per-probe windows: CPU is a sum of measured-window deltas; the anon and memory.current figures are maxes of per-window in-window p99s; memory.peak is the kernel HIGH-WATER MARK over the cgroup's LIFETIME (one probe for the force-recreated SUT, the whole run for a persistent cgroup) and is not a window figure over every probe window under cells/ (all stages, all rates, including windows the analysis excludes as under-warmed); the report's per-request figures use a narrower set and the two are not interchangeable"
+    },
+    {
+      "label": "postgres",
+      "role": "database",
+      "persistent": true,
+      "cpu_usage_usec_delta": 4869967775,
+      "mem_anon_p99_bytes": 75030528,
+      "mem_current_p99_bytes": 8057389056,
+      "mem_peak_start_bytes": 1155248128,
+      "mem_peak_bytes": 8082169856,
+      "windows": 116,
+      "source": "cgroup v2 per-probe windows: CPU is a sum of measured-window deltas; the anon and memory.current figures are maxes of per-window in-window p99s; memory.peak is the kernel HIGH-WATER MARK over the cgroup's LIFETIME (one probe for the force-recreated SUT, the whole run for a persistent cgroup) and is not a window figure over every probe window under cells/ (all stages, all rates, including windows the analysis excludes as under-warmed); the report's per-request figures use a narrower set and the two are not interchangeable"
+    },
+    {
+      "label": "redis",
+      "role": "cache",
+      "persistent": true,
+      "cpu_usage_usec_delta": 301170193,
+      "mem_anon_p99_bytes": 194863104,
+      "mem_current_p99_bytes": 203104256,
+      "mem_peak_start_bytes": 34291712,
+      "mem_peak_bytes": 209014784,
+      "windows": 116,
+      "source": "cgroup v2 per-probe windows: CPU is a sum of measured-window deltas; the anon and memory.current figures are maxes of per-window in-window p99s; memory.peak is the kernel HIGH-WATER MARK over the cgroup's LIFETIME (one probe for the force-recreated SUT, the whole run for a persistent cgroup) and is not a window figure over every probe window under cells/ (all stages, all rates, including windows the analysis excludes as under-warmed); the report's per-request figures use a narrower set and the two are not interchangeable"
+    }
+  ],
+  "load_generator_overhead": [
+    {
+      "label": "containerd",
+      "role": "container_runtime",
+      "cpu_usage_usec_delta": 660578589,
+      "windows": 116,
+      "excluded_from_per_request_cost": true,
+      "source": "cgroup v2 measured-window CPU deltas for the load generator and the container runtime. Published for single-host accounting and EXCLUDED from every per-request cost: this is the apparatus, not the system under test over every probe window under cells/ (all stages, all rates, including windows the analysis excludes as under-warmed); the report's per-request figures use a narrower set and the two are not interchangeable"
+    },
+    {
+      "label": "dockerd",
+      "role": "container_runtime",
+      "cpu_usage_usec_delta": 1386143305,
+      "windows": 116,
+      "excluded_from_per_request_cost": true,
+      "source": "cgroup v2 measured-window CPU deltas for the load generator and the container runtime. Published for single-host accounting and EXCLUDED from every per-request cost: this is the apparatus, not the system under test over every probe window under cells/ (all stages, all rates, including windows the analysis excludes as under-warmed); the report's per-request figures use a narrower set and the two are not interchangeable"
+    },
+    {
+      "label": "vegeta",
+      "role": "load_generator",
+      "cpu_usage_usec_delta": 3886432251,
+      "windows": 116,
+      "excluded_from_per_request_cost": true,
+      "source": "cgroup v2 measured-window CPU deltas for the load generator and the container runtime. Published for single-host accounting and EXCLUDED from every per-request cost: this is the apparatus, not the system under test over every probe window under cells/ (all stages, all rates, including windows the analysis excludes as under-warmed); the report's per-request figures use a narrower set and the two are not interchangeable"
+    }
+  ],
+  "aggregate_provenance": {
+    "achieved_vs_offered": "vegeta achieved rate vs offered rate, one row per probe",
+    "throttle_counters": "cpu.stat nr_throttled/throttled_usec, end-minus-start across the MEASURED window only (the baseline is taken after warmup and after the head-of-window discard), summed over the run's probe windows over every probe window under cells/ (all stages, all rates, including windows the analysis excludes as under-warmed); the report's per-request figures use a narrower set and the two are not interchangeable",
+    "fault_counts": "memory.stat pgmajfault/pgfault deltas over the measured windows",
+    "resource_deltas": "cgroup v2 per-probe windows: CPU is a sum of measured-window deltas; the anon and memory.current figures are maxes of per-window in-window p99s; memory.peak is the kernel HIGH-WATER MARK over the cgroup's LIFETIME (one probe for the force-recreated SUT, the whole run for a persistent cgroup) and is not a window figure over every probe window under cells/ (all stages, all rates, including windows the analysis excludes as under-warmed); the report's per-request figures use a narrower set and the two are not interchangeable",
+    "load_generator_overhead": "cgroup v2 measured-window CPU deltas for the load generator and the container runtime. Published for single-host accounting and EXCLUDED from every per-request cost: this is the apparatus, not the system under test over every probe window under cells/ (all stages, all rates, including windows the analysis excludes as under-warmed); the report's per-request figures use a narrower set and the two are not interchangeable"
+  },
+  "cache_stats": {
+    "keyspace_hits": 8387063,
+    "keyspace_misses": 4938999,
+    "hit_rate": 0.6293729535402132,
+    "windows": 116,
+    "source": "redis INFO keyspace_hits/misses deltas over measured windows",
+    "note": "target by construction: 0.8"
+  },
+  "errors": {
+    "count": 1,
+    "rate": 2.2520826866571735e-8,
+    "total_requests": 44403343,
+    "status_codes": {
+      "200": 37747565,
+      "201": 6655777,
+      "500": 1
+    },
+    "probe_summaries": 116,
+    "source": "vegeta per-probe report status_codes over all measured windows"
+  },
+  "resource_accounting": "enabled",
+  "finalization_error": null
+}

@@ -1,0 +1,48 @@
+{
+  "slot": "dotnet",
+  "cell_id": "headline.mixed.gc-default",
+  "stage": "ladder",
+  "rate": 600,
+  "block": 4,
+  "draw_mode": "per_probe_stream",
+  "seed_formula": "PCG64(seed=workload.rng.target_generator_seed_default, inc=util.pcg64.stream_for(seed, run_id, cell_id, stage, rate, block, phase))",
+  "measured_window_seconds": 120,
+  "measured": {
+    "phase": "measured",
+    "inc": "8beb432959da9438f5ea725153f12781",
+    "requests_drawn": 73440,
+    "distinct_invoice_ids": 14579,
+    "distinct_customer_ids": 13438,
+    "distinct_customer_ids_list_urls": 9150,
+    "distinct_customer_ids_create_bodies": 5648,
+    "endpoint_counts": {
+      "get_invoice": 21956,
+      "list_invoices": 18560,
+      "pricing_quote": 14628,
+      "create_invoice": 10978,
+      "pdf_stub": 5887,
+      "healthz": 1431
+    },
+    "invoice_read_requests": 27843,
+    "generation_seconds": 0.2073,
+    "ship_seconds": 0.0379
+  },
+  "warmup_stream_incs": [
+    "ff97f40493aac4d0620854deb50defc9",
+    "19321433e1e58dbdabfc5d67b54d63b7",
+    "ca3d0db932bfb2408f5970610c0cbfeb",
+    "0cf2fd0f175ca98427f23a49c7ad61c5",
+    "77436a01c9d9c94c948f516a620d8e05",
+    "132181af4b02399950386ddd2d6804b3",
+    "7cb7baf16338d1a8096dfb3e27b04a35",
+    "9d541633c51ccd9558dbe33f72a3e6d5"
+  ],
+  "probe_draw_seconds": 1.059,
+  "prewarm_containment": {
+    "measured_against": "the union of the invoice ids drawn by every warmup segment and by the head-of-window discard, i.e. every attack between the Redis FLUSHALL and the measured window",
+    "invoice_read_requests": 27843,
+    "requests_hitting_a_prewarmed_id": 16473,
+    "prewarmed_distinct_invoice_ids": 30330,
+    "fraction": 0.591639
+  }
+}

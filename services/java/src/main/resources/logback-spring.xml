@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  spec/logging.md, in the one place Boot's programmatic logging setup cannot express: the async
+  sink. Boot builds a bare ConsoleAppender on the root logger, so the bounded lossless queue the
+  contract pins has to be declared here.
+
+  Three of AsyncAppender's defaults break the contract and every one of them fails SILENTLY:
+    - discardingThreshold resolves to queueSize/5 and isDiscardable() is true for level <= INFO,
+      and EVERY http_access line is INFO - so at the default the access log starts dropping lines
+      once the queue is 80% full, i.e. exactly under the load being measured.
+    - maxFlushTime is 1000 ms, which caps the shutdown drain spec/logging.md requires to complete.
+    - includeCallerData would walk the stack on every event to fill fields nothing emits.
+  LoggingContractTest asserts all four settings off the running appender, not off this file.
+-->
+<configuration>
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="org.springframework.boot.logging.logback.StructuredLogEncoder">
+      <format>io.ledgerline.logging.LedgerStructuredLogFormatter</format>
+      <charset>UTF-8</charset>
+    </encoder>
+  </appender>
+
+  <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+    <queueSize>${LOG_QUEUE_LEN:-8192}</queueSize>
+    <discardingThreshold>0</discardingThreshold>
+    <neverBlock>false</neverBlock>
+    <maxFlushTime>60000</maxFlushTime>
+    <includeCallerData>false</includeCallerData>
+    <appender-ref ref="CONSOLE"/>
+  </appender>
+
+  <root level="INFO">
+    <appender-ref ref="ASYNC"/>
+  </root>
+</configuration>

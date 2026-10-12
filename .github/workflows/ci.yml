@@ -1,0 +1,112 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# `actions/checkout` runs a bare `git init`, and git answers with a multi-line
+# hint about the default branch name unless one is configured.
+env:
+  GIT_CONFIG_COUNT: 1
+  GIT_CONFIG_KEY_0: init.defaultBranch
+  GIT_CONFIG_VALUE_0: main
+
+# Every job names the runner image instead of `ubuntu-latest`, so the image only
+# changes when this file does.
+jobs:
+  bench:
+    name: bench (runner + validation + analysis)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      # setup-uv publishes no moving major tag since v8: the full version is the
+      # only tag there is.
+      - uses: astral-sh/setup-uv@v10.2.0
+      # Docker-marked harness tests are exercised by `make smoke`, not CI;
+      # live equivalence tests skip without LEDGER_*_URL. This job proves the
+      # pure-logic surface: runner, ledger/resume, stats, goldens, normalizer.
+      - run: uv sync
+        working-directory: bench
+      - run: uv run ruff check .
+        working-directory: bench
+      # The analysis suites (isotonic fit, PAVA, Mann-Kendall, paired CI, report
+      # assembly) import numpy at module top level and `analysis/tests/conftest.py`
+      # SKIPS COLLECTION when the stack is absent, so a missing dependency would
+      # make this job go green with the whole analysis surface silently gone.
+      #
+      # The floor is the midpoint between the two collected counts measured on
+      # this tree, 2026-08-24:
+      #   911  collected with the scientific stack installed
+      #   865  collected without it (`tests/` 804 + `validation/tests/` 61;
+      #        `analysis/tests/` contributes the missing 46)
+      # 888 is the midpoint. Re-derive both counts when changing it.
+      - name: collected test count floor
+        run: |
+          n=$(uv run pytest -q -m "not docker" --collect-only 2>/dev/null | grep -oE '^[0-9]+ tests collected' | grep -oE '^[0-9]+')
+          echo "collected: $n"
+          if [ -z "$n" ] || [ "$n" -lt 888 ]; then echo "expected >= 888 collected tests"; exit 1; fi
+        working-directory: bench
+      - run: uv run pytest -q -m "not docker"
+        working-directory: bench
+
+  # The seeder stays Go on purpose (CLAUDE.md): it loads PostgreSQL and never runs
+  # inside a measured window, so it is tooling, not a system under test. This job
+  # builds `seed/` and nothing else.
+  seed:
+    name: seed (go)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: seed/go.mod
+          cache-dependency-path: seed/go.sum
+      - name: gofmt
+        run: |
+          fmt=$(gofmt -l seed)
+          if [ -n "$fmt" ]; then echo "gofmt needed:"; echo "$fmt"; exit 1; fi
+      - run: go vet ./...
+        working-directory: seed
+      - run: go test ./...
+        working-directory: seed
+
+  java:
+    name: java (service)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '25'
+          cache: maven
+          # The matcher re-posts every javac warning as a run annotation; the log
+          # already carries them.
+          problem-matcher: false
+      # `./mvnw`, not a system Maven: the wrapper pins 3.9.16 (D11) and is what
+      # every other entry point uses, so CI cannot pass on a Maven the operator
+      # does not have. There is no format-verify step because the module declares
+      # no formatter plugin -- adding one here would check nothing.
+      #
+      # `LEDGERLINE_LIVE` is deliberately NOT set: `LiveEndpointTest` is gated on
+      # it, so the live-infra tests skip and the rest of the suite runs with no
+      # PostgreSQL and no Redis on the runner. Measured on this tree: 256 tests,
+      # 11 skipped, BUILD SUCCESS with nothing running.
+      - run: ./mvnw -B test
+        working-directory: services/java
+
+  dotnet:
+    name: dotnet (service)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: 10.0.x
+      # .editorconfig pins 3-space C# indentation and LF; without it `dotnet format`
+      # rewrites every file to its 4-space default.
+      - run: dotnet format --verify-no-changes
+        working-directory: services/dotnet
+      - run: dotnet test -c Release Ledgerline.Tests
+        working-directory: services/dotnet

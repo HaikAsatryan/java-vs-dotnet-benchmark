@@ -1,0 +1,148 @@
+{
+  "language": "dotnet",
+  "cell_id": "headline.mixed.gc-default",
+  "stage": "confirm",
+  "block": 9,
+  "gate_set_id": "1a9ba4cd6509",
+  "warmup_rate": 618,
+  "thresholds": {
+    "hard_cap_seconds": 300,
+    "flatness_trailing_samples": 30,
+    "mann_kendall_alpha": 0.05,
+    "per_endpoint_min_calls": {
+      "get_invoice": 20000,
+      "list_invoices": 20000,
+      "pricing_quote": 15000,
+      "create_invoice": 10000,
+      "pdf_stub": 5000,
+      "healthz": 2000
+    },
+    "flatness_min_samples_per_second": {
+      "p99_flat": 0.0,
+      "p999_flat": 1000.0
+    }
+  },
+  "elapsed_seconds": 306.29233516199747,
+  "gates": [
+    {
+      "name": "per_endpoint_min_calls",
+      "passed": true,
+      "status": "measured",
+      "at_seconds": 306.2916652999993,
+      "enforce": true,
+      "detail": {
+        "shortfall": {}
+      },
+      "enforced": true
+    },
+    {
+      "name": "p99_flat",
+      "passed": false,
+      "status": "measured",
+      "at_seconds": 306.2916652999993,
+      "enforce": true,
+      "detail": {
+        "samples": 30,
+        "usable_samples": 30,
+        "min_samples": 3,
+        "flatness": {
+          "enforced_statistic": "mann_kendall_alpha_only",
+          "quantile": 0.99,
+          "status": "measured",
+          "reason": "",
+          "n": 30,
+          "samples_per_second": 618.0,
+          "samples_per_second_source": "measured_bucket_median",
+          "alpha": 0.05,
+          "min_samples": 3,
+          "min_samples_per_second": 0.0,
+          "median": 1.6469269999999998,
+          "mk_z": 3.3184317666512935,
+          "mk_p_increasing": 0.0004526221818450629,
+          "mk_tau": 0.4298850574712644,
+          "slope_per_second": 0.0055589473684210435,
+          "s_rel_pct_per_min": 20.252072016869153,
+          "lag1_autocorrelation": -0.0013174783951620287,
+          "half_vs_half_median_ratio": 1.0351100745137685,
+          "observe_only": [
+            "s_rel_pct_per_min",
+            "lag1_autocorrelation",
+            "half_vs_half_median_ratio"
+          ]
+        }
+      },
+      "enforced": true
+    },
+    {
+      "name": "gc_steady",
+      "passed": true,
+      "status": "measured",
+      "at_seconds": 306.2916652999993,
+      "enforce": true,
+      "detail": {
+        "model": "generational (gen0/1/2) with DATAS heap-count adaptation",
+        "requires": [
+          "heap_committed",
+          "collection_cadence"
+        ],
+        "cadence_basis": [
+          "generations"
+        ],
+        "samples": {
+          "heap_committed": 30,
+          "collection_cadence": 30
+        },
+        "usable_samples": {
+          "heap_committed": 30,
+          "collection_cadence": 30
+        },
+        "status_by_series": {
+          "heap_committed": "measured",
+          "collection_cadence": "measured"
+        },
+        "min_samples": 3,
+        "poller_snapshots": 307
+      },
+      "enforced": true
+    },
+    {
+      "name": "pools_warm",
+      "passed": true,
+      "status": "measured",
+      "at_seconds": 306.2916652999993,
+      "enforce": true,
+      "detail": {},
+      "enforced": true
+    }
+  ],
+  "segments": 10,
+  "segment_seconds": 30,
+  "exit_reason": "cap_reached",
+  "final_db_pool_total": 24,
+  "final_db_pool_max": 24,
+  "major_faults": 0,
+  "finished_utc": "2026-08-28T06:04:42.985835Z",
+  "target_draw_incs": [
+    "c09b80ca8ff88359f60f14828df70d8f",
+    "316f02bcf78225988fd2fe3832c213f9",
+    "03cefa0dfaa858085e345379febf702d",
+    "a27de962fe6d5f4bec471699f2acb493",
+    "07b625a197b32d72ebd1a8789619b989",
+    "9694a62bc3a0bead841e2d5a28ea6607",
+    "c38500a87fe98d37be4aed8afe6eadeb",
+    "bb2b93b4e09f7675d9d84c880e29a81f",
+    "e4a8b3a5da3e30ba0b0857586b34e103",
+    "785885f7fbf23371ee24f6a67116bb5f"
+  ],
+  "target_draw_seconds": 0.9038976230367552,
+  "gates_evaluated": [
+    "per_endpoint_min_calls",
+    "p99_flat",
+    "gc_steady",
+    "pools_warm"
+  ],
+  "gates_failed": [
+    "p99_flat"
+  ],
+  "under_warmed": true
+}

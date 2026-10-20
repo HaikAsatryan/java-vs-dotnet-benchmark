@@ -75,6 +75,10 @@ Everything the run does **not** establish is listed there and in
 What I found after the run, and my plan for the next one:
 [`docs/NEXT-ROUND.md`](docs/NEXT-ROUND.md).
 
+The narrative write-up, in plain words:
+[I'm a .NET Developer. I Benchmarked Java vs C# and I Didn't Like the Answer. Again.](https://dev.to/haikasatryan/im-a-net-developer-i-benchmarked-java-vs-c-and-i-didnt-like-the-answer-again-164n)
+on dev.to.
+
 ---
 
 ## Start here

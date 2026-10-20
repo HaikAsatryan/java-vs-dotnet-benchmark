@@ -72,6 +72,9 @@ Full tables: [`results/full-20260827T174611-fedora/report/report.md`](results/fu
 Everything the run does **not** establish is listed there and in
 [`results/README.md`](results/README.md); read that before quoting a number.
 
+What I found after the run, and my plan for the next one:
+[`docs/NEXT-ROUND.md`](docs/NEXT-ROUND.md).
+
 ---
 
 ## Start here
